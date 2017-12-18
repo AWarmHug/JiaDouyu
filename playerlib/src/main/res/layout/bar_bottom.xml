@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_50"
+    android:gravity="center_vertical"
+    android:orientation="horizontal">
+
+    <ImageButton
+        android:id="@+id/bt_play"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/ic_vec_play_small" />
+
+    <TextView
+        android:id="@+id/tv_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/bt_play"
+        android:gravity="center_vertical"
+        android:text="00:00"
+        android:textColor="@color/white" />
+
+    <SeekBar
+        android:id="@+id/sb_progress"
+        style="@style/AppTheme.SeekBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/bt_full"
+        android:layout_toRightOf="@+id/tv_time"
+        android:layout_weight="1"
+        android:max="100" />
+
+    <ImageButton
+        android:id="@+id/bt_full"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@null"
+        android:src="@drawable/ic_vec_play_tofull" />
+
+
+</LinearLayout>
