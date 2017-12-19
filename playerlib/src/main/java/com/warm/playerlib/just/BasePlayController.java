@@ -98,6 +98,7 @@ public abstract class BasePlayController extends FrameLayout {
 
     }
 
+
     public void setScaleType(int scale) {
 
         player.setScaleType(scale);
@@ -106,6 +107,10 @@ public abstract class BasePlayController extends FrameLayout {
     public void onCurrentChange(long current) {
 
 
+    }
+
+    public void startAgain(){
+        player.startAgain();
     }
 
 
@@ -128,6 +133,7 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
     public final void seekTo(long seekTo) {
+//        player.pause();
         player.seekTo(seekTo);
     }
 
@@ -193,6 +199,7 @@ public abstract class BasePlayController extends FrameLayout {
 
         void setScaleType(int scaleType);
 
+        void startAgain();
     }
 
 }

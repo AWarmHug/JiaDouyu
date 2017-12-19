@@ -12,7 +12,7 @@
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:background="@null"
-        android:src="@drawable/ic_vec_play_small" />
+        android:src="@drawable/ic_vec_start" />
 
     <TextView
         android:id="@+id/tv_time"
@@ -28,7 +28,7 @@
         android:id="@+id/sb_progress"
         style="@style/AppTheme.SeekBar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_toLeftOf="@+id/bt_full"
         android:layout_toRightOf="@+id/tv_time"
         android:layout_weight="1"
@@ -40,7 +40,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@null"
-        android:src="@drawable/ic_vec_play_tofull" />
+        android:src="@drawable/ic_vec_tofull" />
 
 
 </LinearLayout>

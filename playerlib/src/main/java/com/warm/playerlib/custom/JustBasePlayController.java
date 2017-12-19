@@ -3,9 +3,13 @@ package com.warm.playerlib.custom;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import com.warm.playerlib.R;
 import com.warm.playerlib.just.BasePlayController;
+import com.warm.playerlib.just.JustVideoView;
 
 /**
  * 作者：warm
@@ -17,7 +21,15 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     private static final String TAG = "JustBasePlayController";
     private TitleBar title;
     private BottomBar bottom;
+    private ProgressBar progressBar;
+    private ImageView startAgain;
+    private Runnable mRunnable=new Runnable() {
+        @Override
+        public void run() {
+            animTitleBottom();
 
+        }
+    };
 
     public JustBasePlayController(Context context) {
         this(context, null);
@@ -31,7 +43,18 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         super(context, attrs, defStyleAttr);
         title = (TitleBar) findViewById(R.id.title);
         bottom = (BottomBar) findViewById(R.id.bottom);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        startAgain = (ImageView) findViewById(R.id.start_again);
+
         bottom.setOnBottomOperationListener(this);
+        startAgain.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startAgain.setVisibility(GONE);
+                startAgain();
+            }
+        });
+
     }
 
     @Override
@@ -41,28 +64,52 @@ public class JustBasePlayController extends BasePlayController implements Bottom
 
     @Override
     public void show() {
-        animController();
+        animTitleBottom();
     }
 
     @Override
     public void dismiss() {
-        animController();
+        animTitleBottom();
     }
 
     @Override
     public void setPlayState(int state) {
+        Log.d(TAG, "setPlayState: state=" + state);
+        switch (state) {
+            case JustVideoView.STATE_PREPARING:
+            case JustVideoView.STATE_BUFFERING_START:
+                progressBar.setVisibility(VISIBLE);
+                break;
+            case JustVideoView.STATE_PREPARED:
+            case JustVideoView.STATE_BUFFERING_END:
+                progressBar.setVisibility(GONE);
+                break;
+            case JustVideoView.STATE_ERROR:
+                break;
+            case JustVideoView.STATE_PAUSE:
+                break;
+            case JustVideoView.STATE_PLAYING:
+                progressBar.setVisibility(GONE);
+                animTitleBottom();
+                break;
+            case JustVideoView.STATE_COMPLETION:
+                startAgain.setVisibility(VISIBLE);
+                break;
+
+        }
 
     }
 
-    private void animController() {
+    private void animTitleBottom() {
         if (title.getTranslationY() == 0) {
             title.animate().translationY(-title.getHeight()).setDuration(500).start();
             bottom.animate().translationY(bottom.getHeight()).setDuration(500).start();
-//            mHandler.removeMessages(MSG_CONTROLLER);
+            removeCallbacks(mRunnable);
         } else {
             title.animate().translationY(0).setDuration(500).start();
             bottom.animate().translationY(0).setDuration(500).start();
-//            mHandler.sendEmptyMessageDelayed(MSG_CONTROLLER,5000);
+            postDelayed(mRunnable, 5000);
+
         }
     }
 
@@ -96,9 +143,9 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     @Override
     public void onCurrentChange(long current) {
 //        super.onCurrentChange(current);
-        Log.d(TAG, "onCurrentChange: current="+current);
+        Log.d(TAG, "onCurrentChange: current=" + current);
         if (getDuration() != 0)
-            bottom.updateProgress(current, (int) (current*100 / getDuration()));
+            bottom.updateProgress(current, (int) (current * 100 / getDuration()));
     }
 
     @Override

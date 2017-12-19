@@ -1,6 +1,7 @@
 package com.warm.playerlib.just;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,6 +26,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     private static final String TAG = "JustVideoView";
     private IMediaPlayer mMediaPlayer;//ijkPlayer
     private JustTextureView mTextureView;
+    //所有的控件都装到这上面 否则不断刷新时间会导致 mTextureView.onMeasure()不断调用
+    private FrameLayout mPlayerFrame;
 
     private BasePlayController mController;
 
@@ -45,33 +48,39 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     public static final int STATE_NET_ERROR = -2;
 
     /**
-     * 加载中
+     * 视频缓冲中
      */
-    public static final int STATE_LONGING = 1;
+    public static final int STATE_BUFFERING_START = 1;
+
+    /**
+     * 视频缓冲结束
+     */
+    public static final int STATE_BUFFERING_END = 2;
+
+
+    /**
+     * 准备中的状态
+     */
+    public static final int STATE_PREPARING = 3;
 
     /**
      * 准备好的状态
      */
-    public static final int STATE_PREPAREING = 2;
-
-    /**
-     * 准备好的状态
-     */
-    public static final int STATE_PREPARED = 2;
+    public static final int STATE_PREPARED = 4;
     /**
      * 播放ing
      */
-    public static final int STATE_PLAYING = 3;
+    public static final int STATE_PLAYING = 5;
 
     /**
      * 播放暂停
      */
-    public static final int STATE_PAUSE = 4;
+    public static final int STATE_PAUSE = 6;
 
     /**
      * 播放完成
      */
-    private static final int STATE_COMPLETION = 5;
+    public static final int STATE_COMPLETION = 7;
 
 
     private int mState = STATE_INIT;
@@ -95,19 +104,23 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     public JustVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        mPlayerFrame = new FrameLayout(getContext());
+        mPlayerFrame.setBackgroundColor(Color.BLACK);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.addView(mPlayerFrame, params);
     }
 
 
     public void addController(BasePlayController playController) {
         this.mController = playController;
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        addView(playController, params);
+        mPlayerFrame.addView(playController, params);
         mController.setControl(this);
     }
 
 
     private void initPlayer() {
-        if (mMediaPlayer==null) {
+        if (mMediaPlayer == null) {
             mMediaPlayer = new IjkMediaPlayer();
             //开启硬解码
             ((IjkMediaPlayer) mMediaPlayer).setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
@@ -126,8 +139,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     }
 
     private void addTextureView() {
-        if (mTextureView!=null){
-            mController.removeView(mTextureView);
+        if (mTextureView != null) {
+            mPlayerFrame.removeView(mTextureView);
         }
 
         mTextureView = new JustTextureView(getContext());
@@ -154,20 +167,15 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
             }
         });
-        mController.addView(mTextureView, 0, params);
+        mPlayerFrame.addView(mTextureView, 0, params);
     }
 
-
-    public void setDataSource(String urlPath) {
-        this.urlPath = urlPath;
-
-    }
 
     @Override
     public boolean isPlaying() {
-        if (mMediaPlayer!=null) {
+        if (mMediaPlayer != null) {
             return mMediaPlayer.isPlaying();
-        }else {
+        } else {
             return false;
         }
     }
@@ -176,46 +184,48 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     public void start() {
         if (mState == STATE_INIT) {
             initPlayer();
-            setDataSourceAndPrepare();
+            setSourceAndPrepareAndStart();
+        }else {
+            mMediaPlayer.start();
+            mState = STATE_PLAYING;
+            setControllerState();
         }
-        mMediaPlayer.start();
-        mState = STATE_PLAYING;
-        setControllerState();
     }
 
-    private void setDataSourceAndPrepare() {
+    private void setSourceAndPrepareAndStart() {
 
         try {
             mMediaPlayer.setDataSource(urlPath);
             mMediaPlayer.prepareAsync();
-            mState = STATE_PREPAREING;
+            mState = STATE_PREPARING;
             setControllerState();
         } catch (IOException e) {
             e.printStackTrace();
             mState = STATE_ERROR;
+            setControllerState();
+
         }
 
     }
 
     @Override
     public void pause() {
-        if (mMediaPlayer!=null) {
+        if (mMediaPlayer != null) {
             mMediaPlayer.pause();
         }
         mState = STATE_PAUSE;
         setControllerState();
     }
 
-    public void resume(){
-        if (!isPlaying()&&mState==STATE_PAUSE){
+    public void resume() {
+        if (!isPlaying() && mState == STATE_PAUSE) {
             start();
         }
 
     }
 
 
-
-    public void resetPlayer(){
+    public void resetPlayer() {
         mMediaPlayer.reset();
         initPlayer();
     }
@@ -227,14 +237,14 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
+        mPlayerFrame.removeView(mTextureView);
     }
 
     @Override
     public void seekTo(long seekTo) {
         Log.d(TAG, "seekTo: " + seekTo + "d=" + mMediaPlayer.getDuration());
-        if (mState == STATE_PAUSE || mState == STATE_PLAYING) {
-            mMediaPlayer.seekTo(seekTo);
-        }
+        mMediaPlayer.seekTo(seekTo);
+
     }
 
     @Override
@@ -263,8 +273,16 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         mTextureView.setScaleType(mScale);
     }
 
-    private void setControllerState(){
-        if (mController!=null)
+    @Override
+    public void startAgain() {
+        if (mState==STATE_COMPLETION){
+            resetPlayer();
+            setSourceAndPrepareAndStart();
+        }
+    }
+
+    private void setControllerState() {
+        if (mController != null)
             mController.setPlayState(mState);
     }
 
@@ -281,7 +299,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     };
 
 
-
     /**
      * 播放缓冲回调
      */
@@ -289,7 +306,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         @Override
         public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int percent) {
             Log.d(TAG, "onBufferingUpdate: " + percent);
-            mController.setBuffering( percent);
+            mController.setBuffering(percent);
 
         }
     };
@@ -302,7 +319,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         public boolean onError(IMediaPlayer iMediaPlayer, int what, int extra) {
             //onError: i=-10000i1=0
             Log.d(TAG, "onError: i=" + what + "i1=" + extra);
-            mState=STATE_ERROR;
+            mState = STATE_ERROR;
             setControllerState();
             return false;
         }
@@ -336,6 +353,17 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 //            int MEDIA_INFO_MEDIA_ACCURATE_SEEK_COMPLETE = 10100;
 
             Log.d(TAG, "onInfo: what=" + what + "extra=" + extra + "name=" + iMediaPlayer.getMediaInfo());
+            switch (what){
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
+                    mState=STATE_BUFFERING_START;
+                    setControllerState();
+                    break;
+                case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
+                    mState=STATE_BUFFERING_END;
+                    setControllerState();
+                    break;
+            }
+
 
             return false;
         }
@@ -349,6 +377,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             Log.d(TAG, "onPrepared: ");
             mState = STATE_PREPARED;
             setControllerState();
+            start();
 
         }
     };
@@ -366,7 +395,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     };
 
     /**
-     * 拖动后完成的回调
+     * 完成拖动后加载后的回调
      */
     private IMediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new IMediaPlayer.OnSeekCompleteListener() {
         @Override
@@ -375,6 +404,14 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
         }
     };
+
+
+
+    public JustVideoView setDataSource(String urlPath) {
+        this.urlPath = urlPath;
+        return this;
+    }
+
 
 
 }

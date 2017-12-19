@@ -127,12 +127,12 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
             playing = false;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.play(false);
-            bt_play.setImageResource(R.drawable.ic_vec_play_small);
+            bt_play.setImageResource(R.drawable.ic_vec_start);
         } else {
             playing = true;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.play(true);
-            bt_play.setImageResource(R.drawable.ic_vec_play_stop_small);
+            bt_play.setImageResource(R.drawable.ic_vec_pause);
         }
     }
 
@@ -143,12 +143,12 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
             fulling = false;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.toFull(false);
-            bt_full.setImageResource(R.drawable.ic_vec_play_nofull);
+            bt_full.setImageResource(R.drawable.ic_vec_nofull);
         } else {
             fulling = true;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.toFull(true);
-            bt_full.setImageResource(R.drawable.ic_vec_play_tofull);
+            bt_full.setImageResource(R.drawable.ic_vec_tofull);
         }
 
     }

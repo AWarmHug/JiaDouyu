@@ -34,13 +34,13 @@ public class MainActivity extends AppCompatActivity {
         scaleType.add(JustVideoView.SCALE_16_9);
 
         final JustBasePlayController controller = new JustBasePlayController(this);
-        videoView.addController(controller);
-        videoView.setDataSource(LIVE_URL);
+        videoView.setDataSource(LIVE_URL)
+                .addController(controller);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this, "i="+i, Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "i=" + i, Toast.LENGTH_SHORT).show();
                 controller.setScaleType(scaleType.get(i));
                 i++;
                 if (i == 4) {
