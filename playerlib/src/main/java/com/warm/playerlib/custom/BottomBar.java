@@ -77,12 +77,12 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
     }
 
 
-    private String stringForTime(int timeMs) {
-        int totalSeconds = timeMs / 1000;
+    public String stringForTime(long timeMs) {
+        long totalSeconds = timeMs / 1000;
 
-        int seconds = totalSeconds % 60;
-        int minutes = (totalSeconds / 60) % 60;
-        int hours = totalSeconds / 3600;
+        long seconds = totalSeconds % 60;
+        long minutes = (totalSeconds / 60) % 60;
+        long hours = totalSeconds / 3600;
 
         mFormatBuilder.setLength(0);
         if (hours > 0) {
@@ -153,22 +153,20 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
 
     }
 
-    public void updataProgress(int m, int progress) {
-        updataProgress(m, progress, 0);
-        if (onBottomOperationListener != null)
-            onBottomOperationListener.updateProgress(m, progress);
 
-    }
-
-
-    public void updataProgress(int m, int progress, int secondProgress) {
-        Log.d("EnVideoPlayer", "updateProgress: " + progress + "," + secondProgress);
+    public void updateProgress(long m, int progress) {
 
         tv_time.setText(stringForTime(m));
 
         sb_progress.setProgress(progress);
-//        sb_progress.setSecondaryProgress(secondProgress);
+
     }
+
+    public void setBuffering(int percent) {
+        sb_progress.setSecondaryProgress(percent);
+
+    }
+
 
     public interface OnBottomOperationListener {
         void seekBarTo(int progress);
@@ -176,8 +174,6 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
         void play(boolean play);
 
         void toFull(boolean full);
-
-        void updateProgress(int m, int progress);
     }
 
 

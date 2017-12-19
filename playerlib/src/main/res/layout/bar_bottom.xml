@@ -4,12 +4,13 @@
     android:layout_height="match_parent"
     android:background="@color/black_50"
     android:gravity="center_vertical"
+    android:minHeight="40dp"
     android:orientation="horizontal">
 
     <ImageButton
         android:id="@+id/bt_play"
         android:layout_width="48dp"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@null"
         android:src="@drawable/ic_vec_play_small" />
 
@@ -19,7 +20,8 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/bt_play"
         android:gravity="center_vertical"
-        android:text="00:00"
+        android:text="00:00/00:00"
+        android:textSize="14sp"
         android:textColor="@color/white" />
 
     <SeekBar
@@ -34,8 +36,8 @@
 
     <ImageButton
         android:id="@+id/bt_full"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
         android:layout_alignParentRight="true"
         android:background="@null"
         android:src="@drawable/ic_vec_play_tofull" />

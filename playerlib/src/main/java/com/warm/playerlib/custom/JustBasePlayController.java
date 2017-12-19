@@ -2,6 +2,7 @@ package com.warm.playerlib.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 
 import com.warm.playerlib.R;
 import com.warm.playerlib.just.BasePlayController;
@@ -13,6 +14,7 @@ import com.warm.playerlib.just.BasePlayController;
  */
 
 public class JustBasePlayController extends BasePlayController implements BottomBar.OnBottomOperationListener {
+    private static final String TAG = "JustBasePlayController";
     private TitleBar title;
     private BottomBar bottom;
 
@@ -47,6 +49,11 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         animController();
     }
 
+    @Override
+    public void setPlayState(int state) {
+
+    }
+
     private void animController() {
         if (title.getTranslationY() == 0) {
             title.animate().translationY(-title.getHeight()).setDuration(500).start();
@@ -59,6 +66,12 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         }
     }
 
+    @Override
+    public void setBuffering(int percent) {
+//        super.setBuffering(percent);
+        bottom.setBuffering(percent);
+
+    }
 
     @Override
     public void seekBarTo(int progress) {
@@ -78,7 +91,14 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         } else {
             pause();
         }
+    }
 
+    @Override
+    public void onCurrentChange(long current) {
+//        super.onCurrentChange(current);
+        Log.d(TAG, "onCurrentChange: current="+current);
+        if (getDuration() != 0)
+            bottom.updateProgress(current, (int) (current*100 / getDuration()));
     }
 
     @Override
@@ -86,8 +106,5 @@ public class JustBasePlayController extends BasePlayController implements Bottom
 
     }
 
-    @Override
-    public void updateProgress(int m, int progress) {
 
-    }
 }

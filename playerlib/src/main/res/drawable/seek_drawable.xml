@@ -9,21 +9,21 @@
     </item>
     <!--&lt;!&ndash;缓冲进度条&ndash;&gt;-->
 
-    <!--<item-->
-    <!--android:id="@android:id/secondaryProgress">-->
-    <!--<shape>-->
-    <!--<solid android:color="@color/black_30" />-->
-    <!--</shape>-->
-    <!--</item>-->
+    <item android:id="@android:id/secondaryProgress">
+        <clip>
+            <shape>
+                <solid android:color="@color/black_30" />
+            </shape>
+        </clip>
+
+    </item>
 
 
     <!-- 进度条 -->
     <item android:id="@android:id/progress">
         <clip>
             <shape>
-                <gradient
-                    android:endColor="@color/colorAccent"
-                    android:startColor="@color/colorPrimary"/>
+                <solid android:color="@color/colorPrimary" />
             </shape>
         </clip>
     </item>

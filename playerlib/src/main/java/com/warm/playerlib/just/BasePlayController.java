@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
-import android.widget.RelativeLayout;
+import android.widget.FrameLayout;
 
 /**
  * 作者：warm
@@ -12,10 +12,10 @@ import android.widget.RelativeLayout;
  * 描述：
  */
 
-public abstract class BasePlayController extends RelativeLayout {
+public abstract class BasePlayController extends FrameLayout {
 
 
-    private PlayControl mControl;
+    private PlayControl player; //Player
 
     private GestureDetector mGesture;
 
@@ -26,6 +26,7 @@ public abstract class BasePlayController extends RelativeLayout {
      */
     private boolean fulling;
 
+
     /**
      * 控制器是否显示
      */
@@ -33,7 +34,7 @@ public abstract class BasePlayController extends RelativeLayout {
 
 
     public void setControl(PlayControl playControl) {
-        this.mControl = playControl;
+        this.player = playControl;
     }
 
     public BasePlayController(Context context) {
@@ -59,13 +60,28 @@ public abstract class BasePlayController extends RelativeLayout {
         return true;
     }
 
+    private Runnable progressRunnable = new Runnable() {
+        @Override
+        public void run() {
+            if (isPlaying()) {
+                onCurrentChange(player.getCurrentPosition());
+            }
+            postDelayed(progressRunnable, 1000);
+        }
+    };
 
-    public void start() {
-        mControl.start();
+
+    public final void start() {
+        player.start();
+        post(progressRunnable);
+
     }
 
-    public void pause() {
-        mControl.pause();
+
+    public final void pause() {
+        player.pause();
+        removeCallbacks(progressRunnable);
+
     }
 
     /**
@@ -84,19 +100,39 @@ public abstract class BasePlayController extends RelativeLayout {
 
     public void setScaleType(int scale) {
 
-        mControl.setScaleType(scale);
+        player.setScaleType(scale);
     }
 
-    public long getDuration() {
-        return mControl.getDuration();
+    public void onCurrentChange(long current) {
+
+
     }
 
-    public boolean isPlaying() {
-        return mControl.isPlaying();
+
+    /**
+     * 当前播放View的状态
+     * //用于设置各种状态的ui。
+     *
+     * @param state {@link JustVideoView#STATE_COMPLETION}等等
+     */
+    public abstract void setPlayState(int state);
+
+
+    public final long getDuration() {
+        return player.getDuration();
     }
 
-    public void seekTo(long seekTo) {
-        mControl.seekTo(seekTo);
+
+    public final boolean isPlaying() {
+        return player.isPlaying();
+    }
+
+    public final void seekTo(long seekTo) {
+        player.seekTo(seekTo);
+    }
+
+    public void setBuffering(int percent) {
+
     }
 
     /**
@@ -127,7 +163,7 @@ public abstract class BasePlayController extends RelativeLayout {
                 }
                 System.out.print("****************" + distanceX);
                 //让videoView的播放位置移动到手势拖动后的位置(*15知识为了缩小滑动比例)
-                mControl.seekTo((int) (mControl.getCurrentPosition() - distanceX * seekSpeed));
+                player.seekTo((int) (player.getCurrentPosition() - distanceX * seekSpeed));
 
             } else {
 
