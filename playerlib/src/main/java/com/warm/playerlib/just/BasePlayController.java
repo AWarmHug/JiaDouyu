@@ -1,4 +1,4 @@
-package com.warm.playerlib.controller;
+package com.warm.playerlib.just;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -82,15 +82,20 @@ public abstract class BasePlayController extends RelativeLayout {
 
     }
 
-    public long getDuration(){
-       return mControl.getDuration();
+    public void setScaleType(int scale) {
+
+        mControl.setScaleType(scale);
     }
 
-    public boolean isPlaying(){
+    public long getDuration() {
+        return mControl.getDuration();
+    }
+
+    public boolean isPlaying() {
         return mControl.isPlaying();
     }
 
-    public void seekTo(long seekTo){
+    public void seekTo(long seekTo) {
         mControl.seekTo(seekTo);
     }
 
@@ -149,6 +154,8 @@ public abstract class BasePlayController extends RelativeLayout {
         long getCurrentPosition();
 
         long getDuration();
+
+        void setScaleType(int scaleType);
 
     }
 

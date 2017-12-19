@@ -3,20 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    <com.warm.playerlib.weight.TitleBar
+    <com.warm.playerlib.custom.TitleBar
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="40dp">
 
-    </com.warm.playerlib.weight.TitleBar>
+    </com.warm.playerlib.custom.TitleBar>
 
-    <com.warm.playerlib.weight.PlayBottomBar
+    <com.warm.playerlib.custom.BottomBar
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_alignParentBottom="true">
 
-    </com.warm.playerlib.weight.PlayBottomBar>
+    </com.warm.playerlib.custom.BottomBar>
 
 
 </RelativeLayout>

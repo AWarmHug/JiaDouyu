@@ -1,11 +1,10 @@
-package com.warm.playerlib.controller;
+package com.warm.playerlib.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
 
 import com.warm.playerlib.R;
-import com.warm.playerlib.weight.PlayBottomBar;
-import com.warm.playerlib.weight.TitleBar;
+import com.warm.playerlib.just.BasePlayController;
 
 /**
  * 作者：warm
@@ -13,9 +12,9 @@ import com.warm.playerlib.weight.TitleBar;
  * 描述：
  */
 
-public class JustBasePlayController extends BasePlayController implements PlayBottomBar.OnBottomOperationListener {
+public class JustBasePlayController extends BasePlayController implements BottomBar.OnBottomOperationListener {
     private TitleBar title;
-    private PlayBottomBar bottom;
+    private BottomBar bottom;
 
 
     public JustBasePlayController(Context context) {
@@ -29,7 +28,7 @@ public class JustBasePlayController extends BasePlayController implements PlayBo
     public JustBasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         title = (TitleBar) findViewById(R.id.title);
-        bottom = (PlayBottomBar) findViewById(R.id.bottom);
+        bottom = (BottomBar) findViewById(R.id.bottom);
         bottom.setOnBottomOperationListener(this);
     }
 

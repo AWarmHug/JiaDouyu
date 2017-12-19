@@ -1,4 +1,4 @@
-package com.warm.playerlib.weight;
+package com.warm.playerlib.just;
 
 import android.content.Context;
 import android.graphics.SurfaceTexture;
@@ -10,13 +10,10 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.warm.playerlib.controller.BasePlayController;
-
 import java.io.IOException;
 
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
-import tv.danmaku.ijk.media.player.IjkTimedText;
 
 /**
  * 作者：warm
@@ -27,7 +24,7 @@ import tv.danmaku.ijk.media.player.IjkTimedText;
 public class JustVideoView extends FrameLayout implements BasePlayController.PlayControl {
     private static final String TAG = "JustVideoView";
     private IMediaPlayer mMediaPlayer;//ijkPlayer
-    private TextureView mTextureView;
+    private JustTextureView mTextureView;
 
     private BasePlayController mController;
 
@@ -74,6 +71,14 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     private int mState = STATE_DEFAULT;
 
 
+    public static final int SCALE_16_9 = 100;
+    public static final int SCALE_4_3 = 101;
+    public static final int SCALE_MATCH_PARENT = 102;
+    public static final int SCALE_WRAP_CONTENT = 103;
+
+    private int mScale = SCALE_WRAP_CONTENT;
+
+
     public JustVideoView(Context context) {
         this(context, null);
     }
@@ -99,7 +104,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     private void initPlayer() {
         mMediaPlayer = new IjkMediaPlayer();
-        ((IjkMediaPlayer) mMediaPlayer).setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);//开启硬解码
+        //开启硬解码
+        ((IjkMediaPlayer) mMediaPlayer).setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", 1);
         ((IjkMediaPlayer) mMediaPlayer).setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-auto-rotate", 1);
         ((IjkMediaPlayer) mMediaPlayer).setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec-handle-resolution-change", 1);
         mMediaPlayer.setOnCompletionListener(onCompletionListener);
@@ -108,9 +114,10 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         mMediaPlayer.setOnInfoListener(onInfoListener);
         mMediaPlayer.setOnPreparedListener(onPreparedListener);
         mMediaPlayer.setOnBufferingUpdateListener(onBufferingUpdateListener);
+        mMediaPlayer.setOnVideoSizeChangedListener(onVideoSizeChangedListener);
     }
 
-    public void addTextureView() {
+    private void addTextureView() {
 
 
         mTextureView = new JustTextureView(getContext());
@@ -175,10 +182,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     @Override
     public void pause() {
-
         mMediaPlayer.pause();
         mState = STATE_PAUSE;
-
     }
 
     public void release() {
@@ -215,6 +220,11 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     @Override
     public long getDuration() {
         return mMediaPlayer.getDuration();
+    }
+
+    public void setScaleType(int scaleType) {
+        this.mScale = scaleType;
+        mTextureView.setScaleType(mScale);
     }
 
 
@@ -274,22 +284,16 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
         }
     };
-    /**
-     * 播放时间
-     */
-    private IMediaPlayer.OnTimedTextListener onTimedTextListener = new IMediaPlayer.OnTimedTextListener() {
-        @Override
-        public void onTimedText(IMediaPlayer iMediaPlayer, IjkTimedText ijkTimedText) {
-            Log.d(TAG, "onTimedText: " + ijkTimedText.getText());
 
-        }
-    };
 
     private IMediaPlayer.OnVideoSizeChangedListener onVideoSizeChangedListener = new IMediaPlayer.OnVideoSizeChangedListener() {
         @Override
         public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height,
                                        int sar_num, int sar_den) {
-
+            //获取到宽高，默认宽高比例应该在这里来计算。
+            mTextureView.setSize(width, height);
+            mTextureView.setScaleType(SCALE_MATCH_PARENT);
+            Log.d(TAG, String.format("onVideoSizeChanged: width=%s,height=%s,sar_num=%s,sar_den%s", width, height, sar_num, sar_den));
         }
     };
 

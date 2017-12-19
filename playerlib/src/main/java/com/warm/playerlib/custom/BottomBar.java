@@ -1,4 +1,4 @@
-package com.warm.playerlib.weight;
+package com.warm.playerlib.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -16,10 +16,12 @@ import java.util.Locale;
 
 
 /**
- * Created by warm on 17/5/6.
+ * 作者：warm
+ * 时间：2017-12-19 08:56
+ * 描述：
  */
 
-public class PlayBottomBar extends RelativeLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
 
     /**
@@ -45,15 +47,15 @@ public class PlayBottomBar extends RelativeLayout implements SeekBar.OnSeekBarCh
         this.onBottomOperationListener = onBottomOperationListener;
     }
 
-    public PlayBottomBar(Context context) {
+    public BottomBar(Context context) {
         this(context, null);
     }
 
-    public PlayBottomBar(Context context, AttributeSet attrs) {
+    public BottomBar(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public PlayBottomBar(Context context, AttributeSet attrs, int defStyle) {
+    public BottomBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         initView(context, attrs, defStyle);
     }

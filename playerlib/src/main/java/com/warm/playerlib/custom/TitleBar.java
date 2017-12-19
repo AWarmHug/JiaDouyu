@@ -1,8 +1,7 @@
-package com.warm.playerlib.weight;
+package com.warm.playerlib.custom;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -17,7 +16,6 @@ import java.util.Locale;
  */
 
 public class TitleBar extends LinearLayout {
-    private ImageButton bt_back;
     private TextView tv_title, tv_totalTime;
 
     public TitleBar(Context context) {
@@ -35,9 +33,13 @@ public class TitleBar extends LinearLayout {
 
     private void initView(Context context, AttributeSet attrs, int defStyle) {
         inflate(context, R.layout.bar_title, this);
-        bt_back = (ImageButton) findViewById(R.id.bt_back);
         tv_title = (TextView) findViewById(R.id.tv_title);
         tv_totalTime = (TextView) findViewById(R.id.tv_totalTime);
+    }
+
+    public void setTitle(String title) {
+        tv_title.setText(title);
+
     }
 
     public void setTotalTime(int m) {
