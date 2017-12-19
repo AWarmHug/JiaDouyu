@@ -3,7 +3,9 @@ package com.warm.playerlib.just;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
+import android.view.View;
 import android.widget.FrameLayout;
 
 /**
@@ -21,10 +23,7 @@ public abstract class BasePlayController extends FrameLayout {
 
     private int seekSpeed = 25;
 
-    /**
-     * 是否全屏
-     */
-    private boolean fulling;
+    protected View content;
 
 
     /**
@@ -38,16 +37,16 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
     public BasePlayController(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public BasePlayController(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
     }
 
     public BasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        inflate(context, getLayoutRes(), this);
+        content = LayoutInflater.from(context).inflate(getLayoutRes(), this);
         mGesture = new GestureDetector(getContext(), new MyGester());
     }
 
@@ -109,7 +108,7 @@ public abstract class BasePlayController extends FrameLayout {
 
     }
 
-    public void startAgain(){
+    public void startAgain() {
         player.startAgain();
     }
 
@@ -201,5 +200,6 @@ public abstract class BasePlayController extends FrameLayout {
 
         void startAgain();
     }
+
 
 }

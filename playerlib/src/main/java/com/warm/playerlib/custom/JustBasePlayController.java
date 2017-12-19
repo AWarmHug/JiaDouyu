@@ -23,7 +23,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     private BottomBar bottom;
     private ProgressBar progressBar;
     private ImageView startAgain;
-    private Runnable mRunnable=new Runnable() {
+    private Runnable mRunnable = new Runnable() {
         @Override
         public void run() {
             animTitleBottom();
@@ -32,19 +32,19 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     };
 
     public JustBasePlayController(Context context) {
-        this(context, null);
+        this(context,null);
     }
 
     public JustBasePlayController(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        this(context, attrs,0);
     }
 
     public JustBasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        title = (TitleBar) findViewById(R.id.title);
-        bottom = (BottomBar) findViewById(R.id.bottom);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
-        startAgain = (ImageView) findViewById(R.id.start_again);
+        title = (TitleBar) content.findViewById(R.id.title);
+        bottom = (BottomBar)content. findViewById(R.id.bottom);
+        progressBar = (ProgressBar) content.findViewById(R.id.progressBar);
+        startAgain = (ImageView) content.findViewById(R.id.start_again);
 
         bottom.setOnBottomOperationListener(this);
         startAgain.setOnClickListener(new OnClickListener() {

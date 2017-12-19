@@ -4,8 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -21,7 +21,7 @@ import java.util.Locale;
  * 描述：
  */
 
-public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
+public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeListener, View.OnClickListener {
 
 
     /**
@@ -154,9 +154,9 @@ public class BottomBar extends RelativeLayout implements SeekBar.OnSeekBarChange
     }
 
 
-    public void updateProgress(long m, int progress) {
+    public void updateProgress(long current, int progress) {
 
-        tv_time.setText(stringForTime(m));
+        tv_time.setText(stringForTime(current));
 
         sb_progress.setProgress(progress);
 

@@ -111,13 +111,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     }
 
 
-    public void addController(BasePlayController playController) {
-        this.mController = playController;
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mPlayerFrame.addView(playController, params);
-        mController.setControl(this);
-    }
-
 
     private void initPlayer() {
         if (mMediaPlayer == null) {
@@ -143,6 +136,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             mPlayerFrame.removeView(mTextureView);
         }
 
+//        mTextureView = new JustTextureView(getContext());
         mTextureView = new JustTextureView(getContext());
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
@@ -186,9 +180,11 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             initPlayer();
             setSourceAndPrepareAndStart();
         }else {
-            mMediaPlayer.start();
-            mState = STATE_PLAYING;
-            setControllerState();
+            if (mMediaPlayer!=null) {
+                mMediaPlayer.start();
+                mState = STATE_PLAYING;
+                setControllerState();
+            }
         }
     }
 
@@ -409,6 +405,15 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     public JustVideoView setDataSource(String urlPath) {
         this.urlPath = urlPath;
+        return this;
+    }
+
+    public JustVideoView addController(BasePlayController playController) {
+        mPlayerFrame.removeView(mController);
+        playController.setControl(this);
+        this.mController = playController;
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mPlayerFrame.addView(mController, params);
         return this;
     }
 
