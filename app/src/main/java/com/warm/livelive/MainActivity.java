@@ -1,6 +1,5 @@
 package com.warm.livelive;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -40,14 +39,11 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Toast.makeText(MainActivity.this, "i=" + i, Toast.LENGTH_SHORT).show();
-//                controller.setScaleType(scaleType.get(i));
-//                i++;
-//                if (i == 4) {
-//                    i = 0;
-//                }
-                startActivity(new Intent(MainActivity.this,SActivity.class));
-
+                controller.setScaleType(scaleType.get(i));
+                i++;
+                if (i == 4) {
+                    i = 0;
+                }
             }
         });
     }

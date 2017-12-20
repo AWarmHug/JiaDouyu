@@ -34,6 +34,11 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     private String urlPath;
 
     /**
+     * 判断是否手动暂停
+     */
+    private boolean userPause;
+
+    /**
      * 初始状态
      */
     public static final int STATE_INIT = 0;
@@ -73,14 +78,14 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     public static final int STATE_PLAYING = 5;
 
     /**
-     * 播放暂停
+     * 暂停
      */
     public static final int STATE_PAUSE = 6;
 
     /**
      * 播放完成
      */
-    public static final int STATE_COMPLETION = 7;
+    public static final int STATE_COMPLETION = 8;
 
 
     private int mState = STATE_INIT;
@@ -91,7 +96,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     public static final int SCALE_MATCH_PARENT = 102;
     public static final int SCALE_WRAP_CONTENT = 103;
 
-    private int mScale = SCALE_WRAP_CONTENT;
+    private int mScale = SCALE_MATCH_PARENT;
 
 
     public JustVideoView(Context context) {
@@ -111,7 +116,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     }
 
 
-
     private void initPlayer() {
         if (mMediaPlayer == null) {
             mMediaPlayer = new IjkMediaPlayer();
@@ -128,7 +132,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             mMediaPlayer.setOnVideoSizeChangedListener(onVideoSizeChangedListener);
         }
         addTextureView();
-
     }
 
     private void addTextureView() {
@@ -138,7 +141,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
 //        mTextureView = new JustTextureView(getContext());
         mTextureView = new JustTextureView(getContext());
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
@@ -161,7 +163,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
             }
         });
-        mPlayerFrame.addView(mTextureView, 0, params);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+        addView(mTextureView, 0, params);
     }
 
 
@@ -179,14 +182,15 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         if (mState == STATE_INIT) {
             initPlayer();
             setSourceAndPrepareAndStart();
-        }else {
-            if (mMediaPlayer!=null) {
+        } else {
+            if (mMediaPlayer != null) {
                 mMediaPlayer.start();
                 mState = STATE_PLAYING;
                 setControllerState();
             }
         }
     }
+
 
     private void setSourceAndPrepareAndStart() {
 
@@ -199,29 +203,34 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             e.printStackTrace();
             mState = STATE_ERROR;
             setControllerState();
-
         }
-
     }
 
     @Override
-    public void pause() {
-        if (mMediaPlayer != null) {
-            mMediaPlayer.pause();
-        }
-        mState = STATE_PAUSE;
-        setControllerState();
+    public void pauseUser() {
+        pause();
+        userPause = true;
     }
 
+    public void pause() {
+        if (mMediaPlayer != null && isPlaying() && mState != STATE_PAUSE) {
+            mMediaPlayer.pause();
+            mState = STATE_PAUSE;
+            setControllerState();
+            userPause = false;
+        }
+    }
+
+
     public void resume() {
-        if (!isPlaying() && mState == STATE_PAUSE) {
+        if (!isPlaying() && mState == STATE_PAUSE && !userPause) {
             start();
         }
-
     }
 
 
     public void resetPlayer() {
+        if (mMediaPlayer!=null)
         mMediaPlayer.reset();
         initPlayer();
     }
@@ -261,7 +270,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     @Override
     public long getDuration() {
-        return mMediaPlayer.getDuration();
+
+        return mMediaPlayer == null ? 0 : mMediaPlayer.getDuration();
     }
 
     public void setScaleType(int scaleType) {
@@ -271,7 +281,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     @Override
     public void startAgain() {
-        if (mState==STATE_COMPLETION){
+        if (mState == STATE_COMPLETION) {
             resetPlayer();
             setSourceAndPrepareAndStart();
         }
@@ -349,13 +359,13 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 //            int MEDIA_INFO_MEDIA_ACCURATE_SEEK_COMPLETE = 10100;
 
             Log.d(TAG, "onInfo: what=" + what + "extra=" + extra + "name=" + iMediaPlayer.getMediaInfo());
-            switch (what){
+            switch (what) {
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    mState=STATE_BUFFERING_START;
+                    mState = STATE_BUFFERING_START;
                     setControllerState();
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    mState=STATE_BUFFERING_END;
+                    mState = STATE_BUFFERING_END;
                     setControllerState();
                     break;
             }
@@ -385,7 +395,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
                                        int sar_num, int sar_den) {
             //获取到宽高，默认宽高比例应该在这里来计算。
             mTextureView.setSize(width, height);
-            mTextureView.setScaleType(SCALE_MATCH_PARENT);
+            mTextureView.setScaleType(mScale);
             Log.d(TAG, String.format("onVideoSizeChanged: width=%s,height=%s,sar_num=%s,sar_den%s", width, height, sar_num, sar_den));
         }
     };
@@ -402,7 +412,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     };
 
 
-
     public JustVideoView setDataSource(String urlPath) {
         this.urlPath = urlPath;
         return this;
@@ -416,7 +425,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         mPlayerFrame.addView(mController, params);
         return this;
     }
-
 
 
 }

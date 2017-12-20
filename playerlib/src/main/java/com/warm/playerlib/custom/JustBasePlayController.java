@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
@@ -21,7 +23,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     private static final String TAG = "JustBasePlayController";
     private TitleBar title;
     private BottomBar bottom;
-    private ProgressBar progressBar;
+    private ProgressBar progressBar, progressBarDismiss;
     private ImageView startAgain;
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -32,18 +34,19 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     };
 
     public JustBasePlayController(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public JustBasePlayController(Context context, AttributeSet attrs) {
-        this(context, attrs,0);
+        this(context, attrs, 0);
     }
 
     public JustBasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         title = (TitleBar) content.findViewById(R.id.title);
-        bottom = (BottomBar)content. findViewById(R.id.bottom);
+        bottom = (BottomBar) content.findViewById(R.id.bottom);
         progressBar = (ProgressBar) content.findViewById(R.id.progressBar);
+        progressBarDismiss = (ProgressBar) content.findViewById(R.id.progressbar_dismiss);
         startAgain = (ImageView) content.findViewById(R.id.start_again);
 
         bottom.setOnBottomOperationListener(this);
@@ -54,6 +57,9 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 startAgain();
             }
         });
+
+        bottom.initValue();
+
 
     }
 
@@ -81,33 +87,39 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 progressBar.setVisibility(VISIBLE);
                 break;
             case JustVideoView.STATE_PREPARED:
+                bottom.setDuration(getDuration());
             case JustVideoView.STATE_BUFFERING_END:
                 progressBar.setVisibility(GONE);
                 break;
             case JustVideoView.STATE_ERROR:
                 break;
             case JustVideoView.STATE_PAUSE:
+                removeCallbacks(progressRunnable);
                 break;
             case JustVideoView.STATE_PLAYING:
+                post(progressRunnable);
+                setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 progressBar.setVisibility(GONE);
                 animTitleBottom();
                 break;
             case JustVideoView.STATE_COMPLETION:
                 startAgain.setVisibility(VISIBLE);
                 break;
-
         }
 
     }
 
     private void animTitleBottom() {
         if (title.getTranslationY() == 0) {
-            title.animate().translationY(-title.getHeight()).setDuration(500).start();
-            bottom.animate().translationY(bottom.getHeight()).setDuration(500).start();
+            title.animate().translationY(-title.getHeight()).setDuration(300).start();
+            bottom.animate().translationY(bottom.getHeight()).setDuration(300).start();
+            progressBarDismiss.setVisibility(VISIBLE);
+            progressBarDismiss.animate().alpha(1f).setDuration(300).start();
             removeCallbacks(mRunnable);
         } else {
-            title.animate().translationY(0).setDuration(500).start();
-            bottom.animate().translationY(0).setDuration(500).start();
+            title.animate().translationY(0).setDuration(300).start();
+            bottom.animate().translationY(0).setDuration(300).start();
+            progressBarDismiss.setVisibility(GONE);
             postDelayed(mRunnable, 5000);
 
         }
@@ -117,6 +129,9 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     public void setBuffering(int percent) {
 //        super.setBuffering(percent);
         bottom.setBuffering(percent);
+        if (progressBarDismiss.isShown()) {
+            progressBarDismiss.setSecondaryProgress(percent);
+        }
 
     }
 
@@ -136,7 +151,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         if (play) {
             start();
         } else {
-            pause();
+            pauseUser();
         }
     }
 
@@ -144,9 +159,17 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     public void onCurrentChange(long current) {
 //        super.onCurrentChange(current);
         Log.d(TAG, "onCurrentChange: current=" + current);
-        if (getDuration() != 0)
-            bottom.updateProgress(current, (int) (current * 100 / getDuration()));
+        if (getDuration() != 0) {
+            if (title.getTranslationY() == 0) {
+                bottom.updateProgress(current, (int) (current * 100 / getDuration()));
+            }
+            if (progressBarDismiss.isShown()) {
+                progressBarDismiss.setProgress((int) (current * 100 / getDuration()));
+            }
+        }
+
     }
+
 
     @Override
     public void toFull(boolean full) {

@@ -1,7 +1,6 @@
 package com.warm.playerlib.just;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.TextureView;
@@ -30,7 +29,6 @@ public class JustTextureView extends TextureView {
 
     public JustTextureView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        setBackgroundColor(ContextCompat.getColor(context, android.R.color.black));
     }
 
     public void setSize(int videoWidth, int videoHeight) {
@@ -45,15 +43,14 @@ public class JustTextureView extends TextureView {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+
         int width = getDefaultSize(mVideoWidth, widthMeasureSpec);
         int height = getDefaultSize(mVideoHeight, heightMeasureSpec);
-        Log.d(TAG, "onMeasure: width=" + width);
-        Log.d(TAG, "onMeasure: height=" + height);
+        Log.d(TAG, String.format("onMeasure: width=%d,height=%d", width, height));
         //宽度是否比高度长，长的那边始终长，所以需要判断，比如4：3，如果宽度长，那么宽4高3，否则高4宽3，
         boolean isWidthLong = mVideoWidth > mVideoHeight;
         float scale = isWidthLong ? (float) width / mVideoWidth : (float) height / mVideoHeight;
 
-        //必须保证视频不拉伸。
         switch (scaleType) {
             case JustVideoView.SCALE_4_3:
                 //设置一边铺满，另一半按比例
@@ -84,9 +81,8 @@ public class JustTextureView extends TextureView {
                 width = (int) (scale * mVideoWidth);
                 height = (int) (scale * mVideoHeight);
                 break;
-
         }
         setMeasuredDimension(width, height);
-
     }
+
 }

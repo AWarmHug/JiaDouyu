@@ -1,8 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/iv_thumb"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
     <com.warm.playerlib.custom.TitleBar
         android:id="@+id/title"
@@ -18,16 +25,17 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="gone"
-        />
+        tools:visibility="visible" />
 
     <ImageView
         android:id="@+id/start_again"
         android:layout_width="56dp"
         android:layout_height="56dp"
-        android:padding="8dp"
         android:layout_gravity="center"
+        android:padding="8dp"
+        android:src="@drawable/ic_vec_start_again"
         android:visibility="gone"
-        android:src="@drawable/ic_vec_start_again" />
+        tools:visibility="visible" />
 
 
     <com.warm.playerlib.custom.BottomBar
@@ -37,6 +45,19 @@
         android:layout_gravity="bottom">
 
     </com.warm.playerlib.custom.BottomBar>
+
+
+    <ProgressBar
+        android:id="@+id/progressbar_dismiss"
+        style="@style/Base.Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_gravity="bottom"
+        android:max="100"
+        android:progressDrawable="@drawable/seek_drawable"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
 
 
 </FrameLayout>

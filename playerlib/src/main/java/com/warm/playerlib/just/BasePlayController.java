@@ -2,6 +2,7 @@ package com.warm.playerlib.just;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -47,6 +48,8 @@ public abstract class BasePlayController extends FrameLayout {
     public BasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         content = LayoutInflater.from(context).inflate(getLayoutRes(), this);
+        setClickable(true);
+        setFocusable(true);
         mGesture = new GestureDetector(getContext(), new MyGester());
     }
 
@@ -59,13 +62,14 @@ public abstract class BasePlayController extends FrameLayout {
         return true;
     }
 
-    private Runnable progressRunnable = new Runnable() {
+    protected Runnable progressRunnable = new Runnable() {
         @Override
         public void run() {
             if (isPlaying()) {
+                Log.d("@@@@", "run: cur="+player.getCurrentPosition());
                 onCurrentChange(player.getCurrentPosition());
+                postDelayed(progressRunnable, 1000);
             }
-            postDelayed(progressRunnable, 1000);
         }
     };
 
@@ -77,10 +81,9 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
 
-    public final void pause() {
-        player.pause();
+    public final void pauseUser() {
+        player.pauseUser();
         removeCallbacks(progressRunnable);
-
     }
 
     /**
@@ -132,7 +135,7 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
     public final void seekTo(long seekTo) {
-//        player.pause();
+//        player.pauseUser();
         player.seekTo(seekTo);
     }
 
@@ -179,12 +182,27 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
 
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        post(progressRunnable);
+    }
+
+    @Override
+    protected void onWindowVisibilityChanged(int visibility) {
+        super.onWindowVisibilityChanged(visibility);
+        if (visibility == VISIBLE) {
+            post(progressRunnable);
+        }
+    }
+
     public interface PlayControl {
         boolean isPlaying();
 
         void start();
 
-        void pause();
+        void pauseUser();
+
 
         void seekTo(long seekTo);
 

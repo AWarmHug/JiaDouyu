@@ -35,7 +35,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     private boolean fulling = false;
 
     private ImageButton bt_play, bt_full;
-    private TextView tv_time;
+    private TextView tv_cur,tv_dur;
     private SeekBar sb_progress;
 
     private OnBottomOperationListener onBottomOperationListener;
@@ -66,7 +66,8 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
 
         bt_play = (ImageButton) findViewById(R.id.bt_play);
         bt_play.setOnClickListener(this);
-        tv_time = (TextView) findViewById(R.id.tv_time);
+        tv_cur = (TextView) findViewById(R.id.tv_cur);
+        tv_dur= (TextView) findViewById(R.id.tv_dur);
         sb_progress = (SeekBar) findViewById(R.id.sb_progress);
         sb_progress.setOnSeekBarChangeListener(this);
         sb_progress.setSecondaryProgress(0);
@@ -76,6 +77,26 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
         mFormatter = new Formatter(mFormatBuilder, Locale.getDefault());
     }
 
+    /**
+     * dismiss只显示一个seekbar
+     */
+    public void dismiss(){
+
+    }
+
+    /**
+     * 其他东西都显示出来
+     */
+    public void show(){
+
+
+
+    }
+
+
+    public void setDuration(long duration){
+        tv_dur.setText(stringForTime(duration));
+    }
 
     public String stringForTime(long timeMs) {
         long totalSeconds = timeMs / 1000;
@@ -93,6 +114,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     }
 
 
+
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         Log.d("seek", "onProgressChanged: " + progress);
@@ -108,6 +130,12 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (onBottomOperationListener != null)
             onBottomOperationListener.seekBarTo(seekBar.getProgress());
+
+    }
+
+    public void initValue(){
+        updateProgress(0, 0);
+        setDuration(0);
 
     }
 
@@ -143,12 +171,10 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
             fulling = false;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.toFull(false);
-            bt_full.setImageResource(R.drawable.ic_vec_nofull);
         } else {
             fulling = true;
             if (onBottomOperationListener != null)
                 onBottomOperationListener.toFull(true);
-            bt_full.setImageResource(R.drawable.ic_vec_tofull);
         }
 
     }
@@ -156,7 +182,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
 
     public void updateProgress(long current, int progress) {
 
-        tv_time.setText(stringForTime(current));
+        tv_cur.setText(stringForTime(current));
 
         sb_progress.setProgress(progress);
 
