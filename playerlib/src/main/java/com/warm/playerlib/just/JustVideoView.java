@@ -26,7 +26,6 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     private static final String TAG = "JustVideoView";
     private IMediaPlayer mMediaPlayer;//ijkPlayer
     private JustTextureView mTextureView;
-    //所有的控件都装到这上面 否则不断刷新时间会导致 mTextureView.onMeasure()不断调用
     private FrameLayout mPlayerFrame;
 
     private BasePlayController mController;
