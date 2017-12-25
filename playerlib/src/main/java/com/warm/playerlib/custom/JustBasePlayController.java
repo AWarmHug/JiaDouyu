@@ -94,7 +94,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 removeCallbacks(progressRunnable);
                 break;
             case JustVideoPlayer.STATE_PLAYING:
-                post(progressRunnable);
+//                post(progressRunnable);
                 setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 progressBar.setVisibility(GONE);
                 animTitleBottom();
@@ -103,6 +103,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 startAgain.setVisibility(VISIBLE);
                 break;
         }
+        bottom.setPlayState(state == JustVideoPlayer.STATE_PLAYING);
     }
 
     private void animTitleBottom() {
@@ -128,16 +129,14 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         } else {
             setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         }
-        bottom.setFullButton(state == STATE_FULL);
+        bottom.setFullState(state == STATE_FULL);
     }
 
     @Override
     public void setBuffering(int percent) {
 //        super.setBuffering(percent);
         bottom.setBuffering(percent);
-        if (progressBarDismiss.isShown()) {
-            progressBarDismiss.setSecondaryProgress(percent);
-        }
+        progressBarDismiss.setSecondaryProgress(percent);
     }
 
     @Override

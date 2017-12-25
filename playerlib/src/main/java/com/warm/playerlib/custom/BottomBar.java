@@ -27,12 +27,12 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     /**
      * 播放状态，用于标记播放情况
      */
-    private boolean playing = false;
+    private boolean mPlaying = false;
 
     /**
      * 屏幕的状态
      */
-    private boolean fulling = false;
+    private boolean mFulling = false;
 
     private ImageButton bt_play, bt_full;
     private TextView tv_cur, tv_dur;
@@ -136,39 +136,39 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
         setDuration(0);
     }
 
-    public void setFullButton(boolean fulling) {
-        this.fulling = fulling;
+    public void setFullState(boolean fulling) {
+        this.mFulling = fulling;
+    }
+
+    public void setPlayState(boolean playing) {
+        if (this.mPlaying != playing) {
+            this.mPlaying = playing;
+            bt_play.setImageResource(playing ? R.drawable.ic_vec_pause : R.drawable.ic_vec_start);
+        }
+
     }
 
     @Override
     public void onClick(View v) {
         int i = v.getId();
         if (i == R.id.bt_play) {
-            switchPlay(playing);
+            switchPlay();
 
         } else if (i == R.id.bt_full) {
             switchFull();
         }
     }
 
-    public void switchPlay(boolean isPlaying) {
-        if (isPlaying) {
-            playing = false;
-            if (onBottomOperationListener != null)
-                onBottomOperationListener.play(false);
-            bt_play.setImageResource(R.drawable.ic_vec_start);
-        } else {
-            playing = true;
-            if (onBottomOperationListener != null)
-                onBottomOperationListener.play(true);
-            bt_play.setImageResource(R.drawable.ic_vec_pause);
+    public void switchPlay() {
+        if (onBottomOperationListener != null) {
+            onBottomOperationListener.play(!mPlaying);
         }
     }
 
 
     public void switchFull() {
         if (onBottomOperationListener != null)
-            onBottomOperationListener.toFull(!fulling);
+            onBottomOperationListener.toFull(!mFulling);
     }
 
 
