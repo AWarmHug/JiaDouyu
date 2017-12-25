@@ -220,8 +220,10 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     private void setSourceAndPrepareAndStart() {
 
         try {
-            mMediaPlayer.setDataSource(urlPath);
-            mMediaPlayer.prepareAsync();
+            if (mMediaPlayer != null) {
+                mMediaPlayer.setDataSource(urlPath);
+                mMediaPlayer.prepareAsync();
+            }
             mState = STATE_PREPARING;
             setControllerState();
         } catch (IOException e) {
@@ -276,7 +278,8 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     @Override
     public void seekTo(long seekTo) {
         Log.d(TAG, "seekTo: " + seekTo + "d=" + mMediaPlayer.getDuration());
-        mMediaPlayer.seekTo(seekTo);
+        if (mMediaPlayer != null)
+            mMediaPlayer.seekTo(seekTo);
 
     }
 
@@ -358,9 +361,9 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
         if (mController.getPlayerState() == BasePlayController.STATE_FULL) {
             //设置为正常
             toNotFull();
-            return true;
-        } else {
             return false;
+        } else {
+            return true;
         }
     }
 

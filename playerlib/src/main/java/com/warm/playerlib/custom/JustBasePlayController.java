@@ -57,10 +57,7 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 startAgain();
             }
         });
-
         bottom.initValue();
-
-
     }
 
     @Override
@@ -106,7 +103,6 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 startAgain.setVisibility(VISIBLE);
                 break;
         }
-
     }
 
     private void animTitleBottom() {
@@ -121,18 +117,18 @@ public class JustBasePlayController extends BasePlayController implements Bottom
             bottom.animate().translationY(0).setDuration(300).start();
             progressBarDismiss.setVisibility(GONE);
             postDelayed(mRunnable, 5000);
-
         }
     }
 
     @Override
-    public void setPlayerState(int state) {
+    public void onPlayerStateChange(int state) {
+
         if (state == STATE_FULL) {
             setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         } else {
             setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-
         }
+        bottom.setFullButton(state == STATE_FULL);
     }
 
     @Override

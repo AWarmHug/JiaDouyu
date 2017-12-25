@@ -62,7 +62,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
 
     private void initView(Context context, AttributeSet attrs, int defStyle) {
 
-         inflate(context, R.layout.bar_bottom, this);
+        inflate(context, R.layout.bar_bottom, this);
 
         bt_play = (ImageButton) findViewById(R.id.bt_play);
         bt_play.setOnClickListener(this);
@@ -134,7 +134,10 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     public void initValue() {
         updateProgress(0, 0);
         setDuration(0);
+    }
 
+    public void setFullButton(boolean fulling) {
+        this.fulling = fulling;
     }
 
     @Override
@@ -144,7 +147,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
             switchPlay(playing);
 
         } else if (i == R.id.bt_full) {
-            switchFull(fulling);
+            switchFull();
         }
     }
 
@@ -163,18 +166,9 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     }
 
 
-    public void switchFull(boolean isfulling) {
-
-        if (isfulling) {
-            fulling = false;
-            if (onBottomOperationListener != null)
-                onBottomOperationListener.toFull(false);
-        } else {
-            fulling = true;
-            if (onBottomOperationListener != null)
-                onBottomOperationListener.toFull(true);
-        }
-
+    public void switchFull() {
+        if (onBottomOperationListener != null)
+            onBottomOperationListener.toFull(!fulling);
     }
 
 

@@ -21,10 +21,10 @@ public abstract class BasePlayController extends FrameLayout {
 
     private int seekSpeed = 25;
 
-    public static final int STATE_NO_FULL=0;
-    public static final int STATE_FULL=1;
+    public static final int STATE_NO_FULL = 0;
+    public static final int STATE_FULL = 1;
 
-    private int mPlayerState =STATE_NO_FULL;
+    private int mPlayerState = STATE_NO_FULL;
 
     public int getPlayerState() {
         return mPlayerState;
@@ -115,12 +115,12 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
 
-    protected void setPlayerState(int state){
-        mPlayerState =state;
+    void setPlayerState(int state) {
+        mPlayerState = state;
         onPlayerStateChange(state);
     }
 
-    public void onPlayerStateChange(int state){
+    public void onPlayerStateChange(int state) {
 
     }
 
@@ -155,7 +155,7 @@ public abstract class BasePlayController extends FrameLayout {
         mPlayer.seekTo(seekTo);
     }
 
-    public boolean isFull(){
+    public boolean isFull() {
         return mPlayer.isFull();
     }
 
