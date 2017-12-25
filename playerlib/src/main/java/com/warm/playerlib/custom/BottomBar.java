@@ -128,7 +128,6 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (onBottomOperationListener != null)
             onBottomOperationListener.seekBarTo(seekBar.getProgress());
-
     }
 
     public void initValue() {
@@ -145,7 +144,6 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
             this.mPlaying = playing;
             bt_play.setImageResource(playing ? R.drawable.ic_vec_pause : R.drawable.ic_vec_start);
         }
-
     }
 
     @Override
