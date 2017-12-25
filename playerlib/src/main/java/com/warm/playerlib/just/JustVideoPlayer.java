@@ -1,15 +1,20 @@
 package com.warm.playerlib.just;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.graphics.SurfaceTexture;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.warm.playerlib.DisplayUtils;
 
 import java.io.IOException;
 
@@ -22,13 +27,19 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
  * 描述：
  */
 
-public class JustVideoView extends FrameLayout implements BasePlayController.PlayControl {
+public class JustVideoPlayer extends FrameLayout implements BasePlayController.PlayControl {
     private static final String TAG = "JustVideoView";
     private IMediaPlayer mMediaPlayer;//ijkPlayer
     private JustTextureView mTextureView;
-    private FrameLayout mPlayerFrame;
+    private FrameLayout mContainer;
+    //判断是否自动旋转
+    private boolean autoRotation;
+    //用于监听屏幕的旋转情况
+    private OrientationEventListener mOrientationEventListener;
 
     private BasePlayController mController;
+
+    private SurfaceTexture mSurfaceTexture;
 
     private String urlPath;
 
@@ -40,7 +51,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     /**
      * 初始状态
      */
-    public static final int STATE_INIT = 0;
+    public static final int STATE_IDLE = 0;
 
     /**
      * 出错
@@ -87,7 +98,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     public static final int STATE_COMPLETION = 8;
 
 
-    private int mState = STATE_INIT;
+    private int mState = STATE_IDLE;
 
 
     public static final int SCALE_16_9 = 100;
@@ -97,21 +108,31 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     private int mScale = SCALE_MATCH_PARENT;
 
+    //竖向
+    public static final int SCREEN_ORIENTATION_PORTRAIT = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
+    //横向
+    public static final int SCREEN_ORIENTATION_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
+    //反向横向
+    public static final int SCREEN_ORIENTATION_REVERSE_LANDSCAPE = ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE;
 
-    public JustVideoView(Context context) {
+    //屏幕方向
+    private int mScreenOrientation = SCREEN_ORIENTATION_PORTRAIT;
+
+
+    public JustVideoPlayer(Context context) {
         this(context, null);
     }
 
-    public JustVideoView(Context context, AttributeSet attrs) {
+    public JustVideoPlayer(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public JustVideoView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public JustVideoPlayer(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mPlayerFrame = new FrameLayout(getContext());
-        mPlayerFrame.setBackgroundColor(Color.BLACK);
+        mContainer = new FrameLayout(context);
+        mContainer.setBackgroundColor(Color.BLACK);
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        this.addView(mPlayerFrame, params);
+        addView(mContainer, params);
     }
 
 
@@ -135,16 +156,19 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     private void addTextureView() {
         if (mTextureView != null) {
-            mPlayerFrame.removeView(mTextureView);
+            removeView(mTextureView);
         }
-
-//        mTextureView = new JustTextureView(getContext());
+        mSurfaceTexture = null;
         mTextureView = new JustTextureView(getContext());
         mTextureView.setSurfaceTextureListener(new TextureView.SurfaceTextureListener() {
             @Override
             public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-                Log.d(TAG, "onSurfaceTextureAvailable: ");
-                mMediaPlayer.setSurface(new Surface(surface));
+                if (mSurfaceTexture != null) {
+                    mTextureView.setSurfaceTexture(mSurfaceTexture);
+                } else {
+                    mSurfaceTexture = surface;
+                    mMediaPlayer.setSurface(new Surface(surface));
+                }
             }
 
             @Override
@@ -154,16 +178,18 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
             @Override
             public boolean onSurfaceTextureDestroyed(SurfaceTexture surface) {
-                return false;
+                Log.d(TAG, "onSurfaceTextureDestroyed: ");
+                return mSurfaceTexture == null;
             }
 
             @Override
             public void onSurfaceTextureUpdated(SurfaceTexture surface) {
 
+
             }
         });
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
-        addView(mTextureView, 0, params);
+        mContainer.addView(mTextureView, 0, params);
     }
 
 
@@ -178,7 +204,7 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     @Override
     public void start() {
-        if (mState == STATE_INIT) {
+        if (mState == STATE_IDLE) {
             initPlayer();
             setSourceAndPrepareAndStart();
         } else {
@@ -229,8 +255,8 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
 
     public void resetPlayer() {
-        if (mMediaPlayer!=null)
-        mMediaPlayer.reset();
+        if (mMediaPlayer != null)
+            mMediaPlayer.reset();
         initPlayer();
     }
 
@@ -241,7 +267,10 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
-        mPlayerFrame.removeView(mTextureView);
+        if (autoRotation && mOrientationEventListener != null) {
+            mOrientationEventListener.disable();
+        }
+        removeView(mTextureView);
     }
 
     @Override
@@ -252,19 +281,51 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     }
 
     @Override
-    public void toFull() {
+    public boolean isFull() {
+        return mScreenOrientation != SCREEN_ORIENTATION_PORTRAIT;
+    }
 
+    @Override
+    public void toFull() {
+        setScreenOrientation(SCREEN_ORIENTATION_LANDSCAPE);
+        _toFull();
+    }
+
+    private void _toFull() {
+        DisplayUtils.hideBar((Activity) getContext());
+        //全屏时，需要把播放器容器中的内容放到Activity的content中
+        this.removeView(mContainer);
+        Activity activity = ((Activity) getContext());
+        ViewGroup frame = (ViewGroup) activity.findViewById(android.R.id.content);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        frame.addView(mContainer, params);
+        mController.setPlayerState(BasePlayController.STATE_FULL);
     }
 
     @Override
     public void toNotFull() {
-
+        setScreenOrientation(SCREEN_ORIENTATION_PORTRAIT);
+        _toNotFull();
     }
 
+    private void _toNotFull() {
+        DisplayUtils.showBar((Activity) getContext());
+        Activity activity = ((Activity) getContext());
+        ViewGroup frame = (ViewGroup) activity.findViewById(android.R.id.content);
+        frame.removeView(mContainer);
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        this.addView(mContainer, params);
+        mController.setPlayerState(BasePlayController.STATE_NO_FULL);
+    }
+
+    public void setScreenOrientation(int screenOrientation) {
+        this.mScreenOrientation = screenOrientation;
+        ((Activity) getContext()).setRequestedOrientation(screenOrientation);
+    }
 
     @Override
     public long getCurrentPosition() {
-        return mMediaPlayer.getCurrentPosition();
+        return mMediaPlayer == null ? 0 : mMediaPlayer.getCurrentPosition();
     }
 
     @Override
@@ -275,7 +336,9 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
 
     public void setScaleType(int scaleType) {
         this.mScale = scaleType;
-        mTextureView.setScaleType(mScale);
+        if (mTextureView != null) {
+            mTextureView.setScaleType(mScale);
+        }
     }
 
     @Override
@@ -289,6 +352,16 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
     private void setControllerState() {
         if (mController != null)
             mController.setPlayState(mState);
+    }
+
+    public boolean onBackPressed() {
+        if (mController.getPlayerState() == BasePlayController.STATE_FULL) {
+            //设置为正常
+            toNotFull();
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -406,23 +479,68 @@ public class JustVideoView extends FrameLayout implements BasePlayController.Pla
         @Override
         public void onSeekComplete(IMediaPlayer iMediaPlayer) {
 
-
         }
     };
 
 
-    public JustVideoView setDataSource(String urlPath) {
+    public JustVideoPlayer setDataSource(String urlPath) {
         this.urlPath = urlPath;
         return this;
     }
 
-    public JustVideoView addController(BasePlayController playController) {
-        mPlayerFrame.removeView(mController);
+    public JustVideoPlayer setAutoRotation() {
+        this.autoRotation = true;
+        mOrientationEventListener = new OrientationEventListener(getContext()) {
+
+            @Override
+            public void onOrientationChanged(int orientation) {
+                if (((orientation >= 0) && (orientation < 45)) || (orientation > 315)) {
+                    //设置竖屏
+                    Log.d(TAG, "设置竖屏");
+                    //ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+                    if (mScreenOrientation != SCREEN_ORIENTATION_PORTRAIT) {
+                        setScreenOrientation(SCREEN_ORIENTATION_PORTRAIT);
+                        _toNotFull();
+                    }
+
+                } else if (orientation > 225 && orientation < 315) {
+                    //设置横屏
+                    Log.d(TAG, "设置横屏");
+                    //ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+                    if (mScreenOrientation != SCREEN_ORIENTATION_LANDSCAPE) {
+                        setScreenOrientation(SCREEN_ORIENTATION_LANDSCAPE);
+                        _toFull();
+                    }
+
+                } else if (orientation > 45 && orientation < 135) {
+                    // 设置反向横屏
+                    Log.d(TAG, "反向横屏");
+//                    ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE
+                    if (mScreenOrientation != SCREEN_ORIENTATION_REVERSE_LANDSCAPE) {
+                        setScreenOrientation(SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+                        _toFull();
+                    }
+
+                } else if (orientation > 135 && orientation < 225) {
+                    // 设置反向横屏
+                    Log.d(TAG, "反向竖屏");
+                }
+            }
+
+        };
+        return this;
+    }
+
+
+    public void addController(BasePlayController playController) {
+        removeView(mController);
         playController.setControl(this);
         this.mController = playController;
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        mPlayerFrame.addView(mController, params);
-        return this;
+        mContainer.addView(mController, params);
+        if (autoRotation && mOrientationEventListener != null && mOrientationEventListener.canDetectOrientation()) {
+            mOrientationEventListener.enable();
+        }
     }
 
 

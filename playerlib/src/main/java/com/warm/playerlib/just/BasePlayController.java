@@ -2,11 +2,8 @@ package com.warm.playerlib.just;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
-import android.view.LayoutInflater;
 import android.view.MotionEvent;
-import android.view.View;
 import android.widget.FrameLayout;
 
 /**
@@ -18,14 +15,20 @@ import android.widget.FrameLayout;
 public abstract class BasePlayController extends FrameLayout {
 
 
-    private PlayControl player; //Player
+    private PlayControl mPlayer; //Player
 
     private GestureDetector mGesture;
 
     private int seekSpeed = 25;
 
-    protected View content;
+    public static final int STATE_NO_FULL=0;
+    public static final int STATE_FULL=1;
 
+    private int mPlayerState =STATE_NO_FULL;
+
+    public int getPlayerState() {
+        return mPlayerState;
+    }
 
     /**
      * 控制器是否显示
@@ -34,7 +37,7 @@ public abstract class BasePlayController extends FrameLayout {
 
 
     public void setControl(PlayControl playControl) {
-        this.player = playControl;
+        this.mPlayer = playControl;
     }
 
     public BasePlayController(Context context) {
@@ -47,9 +50,7 @@ public abstract class BasePlayController extends FrameLayout {
 
     public BasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        content = LayoutInflater.from(context).inflate(getLayoutRes(), this);
-        setClickable(true);
-        setFocusable(true);
+        inflate(context, getLayoutRes(), this);
         mGesture = new GestureDetector(getContext(), new MyGester());
     }
 
@@ -66,8 +67,7 @@ public abstract class BasePlayController extends FrameLayout {
         @Override
         public void run() {
             if (isPlaying()) {
-                Log.d("@@@@", "run: cur="+player.getCurrentPosition());
-                onCurrentChange(player.getCurrentPosition());
+                onCurrentChange(mPlayer.getCurrentPosition());
                 postDelayed(progressRunnable, 1000);
             }
         }
@@ -75,14 +75,14 @@ public abstract class BasePlayController extends FrameLayout {
 
 
     public final void start() {
-        player.start();
+        mPlayer.start();
         post(progressRunnable);
 
     }
 
 
     public final void pauseUser() {
-        player.pauseUser();
+        mPlayer.pauseUser();
         removeCallbacks(progressRunnable);
     }
 
@@ -103,40 +103,60 @@ public abstract class BasePlayController extends FrameLayout {
 
     public void setScaleType(int scale) {
 
-        player.setScaleType(scale);
+        mPlayer.setScaleType(scale);
     }
 
     public void onCurrentChange(long current) {
 
-
     }
 
     public void startAgain() {
-        player.startAgain();
+        mPlayer.startAgain();
     }
 
+
+    protected void setPlayerState(int state){
+        mPlayerState =state;
+        onPlayerStateChange(state);
+    }
+
+    public void onPlayerStateChange(int state){
+
+    }
+
+    public void toFull() {
+        mPlayer.toFull();
+    }
+
+    public void toNotFull() {
+        mPlayer.toNotFull();
+    }
 
     /**
      * 当前播放View的状态
      * //用于设置各种状态的ui。
      *
-     * @param state {@link JustVideoView#STATE_COMPLETION}等等
+     * @param state {@link JustVideoPlayer#STATE_COMPLETION}等等
      */
     public abstract void setPlayState(int state);
 
 
     public final long getDuration() {
-        return player.getDuration();
+        return mPlayer.getDuration();
     }
 
 
     public final boolean isPlaying() {
-        return player.isPlaying();
+        return mPlayer.isPlaying();
     }
 
     public final void seekTo(long seekTo) {
 //        player.pauseUser();
-        player.seekTo(seekTo);
+        mPlayer.seekTo(seekTo);
+    }
+
+    public boolean isFull(){
+        return mPlayer.isFull();
     }
 
     public void setBuffering(int percent) {
@@ -171,7 +191,7 @@ public abstract class BasePlayController extends FrameLayout {
                 }
                 System.out.print("****************" + distanceX);
                 //让videoView的播放位置移动到手势拖动后的位置(*15知识为了缩小滑动比例)
-                player.seekTo((int) (player.getCurrentPosition() - distanceX * seekSpeed));
+                mPlayer.seekTo((int) (mPlayer.getCurrentPosition() - distanceX * seekSpeed));
 
             } else {
 
@@ -203,8 +223,9 @@ public abstract class BasePlayController extends FrameLayout {
 
         void pauseUser();
 
-
         void seekTo(long seekTo);
+
+        boolean isFull();
 
         void toFull();
 

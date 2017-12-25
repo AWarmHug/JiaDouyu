@@ -11,7 +11,7 @@ import android.widget.ProgressBar;
 
 import com.warm.playerlib.R;
 import com.warm.playerlib.just.BasePlayController;
-import com.warm.playerlib.just.JustVideoView;
+import com.warm.playerlib.just.JustVideoPlayer;
 
 /**
  * 作者：warm
@@ -43,11 +43,11 @@ public class JustBasePlayController extends BasePlayController implements Bottom
 
     public JustBasePlayController(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        title = (TitleBar) content.findViewById(R.id.title);
-        bottom = (BottomBar) content.findViewById(R.id.bottom);
-        progressBar = (ProgressBar) content.findViewById(R.id.progressBar);
-        progressBarDismiss = (ProgressBar) content.findViewById(R.id.progressbar_dismiss);
-        startAgain = (ImageView) content.findViewById(R.id.start_again);
+        title = (TitleBar) findViewById(R.id.title);
+        bottom = (BottomBar) findViewById(R.id.bottom);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBarDismiss = (ProgressBar) findViewById(R.id.progressbar_dismiss);
+        startAgain = (ImageView) findViewById(R.id.start_again);
 
         bottom.setOnBottomOperationListener(this);
         startAgain.setOnClickListener(new OnClickListener() {
@@ -82,27 +82,27 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     public void setPlayState(int state) {
         Log.d(TAG, "setPlayState: state=" + state);
         switch (state) {
-            case JustVideoView.STATE_PREPARING:
-            case JustVideoView.STATE_BUFFERING_START:
+            case JustVideoPlayer.STATE_PREPARING:
+            case JustVideoPlayer.STATE_BUFFERING_START:
                 progressBar.setVisibility(VISIBLE);
                 break;
-            case JustVideoView.STATE_PREPARED:
+            case JustVideoPlayer.STATE_PREPARED:
                 bottom.setDuration(getDuration());
-            case JustVideoView.STATE_BUFFERING_END:
+            case JustVideoPlayer.STATE_BUFFERING_END:
                 progressBar.setVisibility(GONE);
                 break;
-            case JustVideoView.STATE_ERROR:
+            case JustVideoPlayer.STATE_ERROR:
                 break;
-            case JustVideoView.STATE_PAUSE:
+            case JustVideoPlayer.STATE_PAUSE:
                 removeCallbacks(progressRunnable);
                 break;
-            case JustVideoView.STATE_PLAYING:
+            case JustVideoPlayer.STATE_PLAYING:
                 post(progressRunnable);
                 setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
                 progressBar.setVisibility(GONE);
                 animTitleBottom();
                 break;
-            case JustVideoView.STATE_COMPLETION:
+            case JustVideoPlayer.STATE_COMPLETION:
                 startAgain.setVisibility(VISIBLE);
                 break;
         }
@@ -126,13 +126,22 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     }
 
     @Override
+    public void setPlayerState(int state) {
+        if (state == STATE_FULL) {
+            setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        } else {
+            setLayoutParams(new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+        }
+    }
+
+    @Override
     public void setBuffering(int percent) {
 //        super.setBuffering(percent);
         bottom.setBuffering(percent);
         if (progressBarDismiss.isShown()) {
             progressBarDismiss.setSecondaryProgress(percent);
         }
-
     }
 
     @Override
@@ -158,7 +167,6 @@ public class JustBasePlayController extends BasePlayController implements Bottom
     @Override
     public void onCurrentChange(long current) {
 //        super.onCurrentChange(current);
-        Log.d(TAG, "onCurrentChange: current=" + current);
         if (getDuration() != 0) {
             if (title.getTranslationY() == 0) {
                 bottom.updateProgress(current, (int) (current * 100 / getDuration()));
@@ -173,7 +181,11 @@ public class JustBasePlayController extends BasePlayController implements Bottom
 
     @Override
     public void toFull(boolean full) {
-
+        if (full) {
+            toFull();
+        } else {
+            toNotFull();
+        }
     }
 
 

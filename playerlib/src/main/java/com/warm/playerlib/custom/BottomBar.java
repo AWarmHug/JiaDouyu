@@ -35,7 +35,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     private boolean fulling = false;
 
     private ImageButton bt_play, bt_full;
-    private TextView tv_cur,tv_dur;
+    private TextView tv_cur, tv_dur;
     private SeekBar sb_progress;
 
     private OnBottomOperationListener onBottomOperationListener;
@@ -62,12 +62,12 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
 
     private void initView(Context context, AttributeSet attrs, int defStyle) {
 
-        inflate(context, R.layout.bar_bottom, this);
+         inflate(context, R.layout.bar_bottom, this);
 
         bt_play = (ImageButton) findViewById(R.id.bt_play);
         bt_play.setOnClickListener(this);
         tv_cur = (TextView) findViewById(R.id.tv_cur);
-        tv_dur= (TextView) findViewById(R.id.tv_dur);
+        tv_dur = (TextView) findViewById(R.id.tv_dur);
         sb_progress = (SeekBar) findViewById(R.id.sb_progress);
         sb_progress.setOnSeekBarChangeListener(this);
         sb_progress.setSecondaryProgress(0);
@@ -80,21 +80,20 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
     /**
      * dismiss只显示一个seekbar
      */
-    public void dismiss(){
+    public void dismiss() {
 
     }
 
     /**
      * 其他东西都显示出来
      */
-    public void show(){
-
+    public void show() {
 
 
     }
 
 
-    public void setDuration(long duration){
+    public void setDuration(long duration) {
         tv_dur.setText(stringForTime(duration));
     }
 
@@ -112,7 +111,6 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
             return mFormatter.format("%02d:%02d", minutes, seconds).toString();
         }
     }
-
 
 
     @Override
@@ -133,7 +131,7 @@ public class BottomBar extends FrameLayout implements SeekBar.OnSeekBarChangeLis
 
     }
 
-    public void initValue(){
+    public void initValue() {
         updateProgress(0, 0);
         setDuration(0);
 

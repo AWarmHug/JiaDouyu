@@ -8,7 +8,7 @@ import android.view.TextureView;
 /**
  * 作者：warm
  * 时间：2017-12-18 16:48
- * 描述：装载到{@link JustVideoView}中，所以需要设置MATCH_PARENT
+ * 描述：装载到{@link JustVideoPlayer}中，所以需要设置MATCH_PARENT
  */
 
 public class JustTextureView extends TextureView {
@@ -31,6 +31,14 @@ public class JustTextureView extends TextureView {
         super(context, attrs, defStyleAttr);
     }
 
+    @Override
+    public void setRotation(float rotation) {
+        if (rotation != getRotation()) {
+            super.setRotation(rotation);
+            requestLayout();
+        }
+    }
+
     public void setSize(int videoWidth, int videoHeight) {
         this.mVideoWidth = videoWidth;
         this.mVideoHeight = videoHeight;
@@ -49,37 +57,36 @@ public class JustTextureView extends TextureView {
         Log.d(TAG, String.format("onMeasure: width=%d,height=%d", width, height));
         //宽度是否比高度长，长的那边始终长，所以需要判断，比如4：3，如果宽度长，那么宽4高3，否则高4宽3，
         boolean isWidthLong = mVideoWidth > mVideoHeight;
-        float scale = isWidthLong ? (float) width / mVideoWidth : (float) height / mVideoHeight;
 
         switch (scaleType) {
-            case JustVideoView.SCALE_4_3:
+            case JustVideoPlayer.SCALE_4_3:
                 //设置一边铺满，另一半按比例
                 if (isWidthLong) {
-                    width = (int) (mVideoWidth * scale);
                     height = width * 3 / 4;
                 } else {
-                    height = (int) (mVideoHeight * scale);
                     width = height * 3 / 4;
                 }
                 break;
-            case JustVideoView.SCALE_16_9:
+            case JustVideoPlayer.SCALE_16_9:
                 if (isWidthLong) {
-                    width = (int) (mVideoWidth * scale);
                     height = width * 9 / 16;
                 } else {
-                    height = (int) (mVideoHeight * scale);
                     width = height * 9 / 16;
                 }
                 break;
-            case JustVideoView.SCALE_WRAP_CONTENT:
+            case JustVideoPlayer.SCALE_WRAP_CONTENT:
                 width = mVideoWidth;
                 height = mVideoHeight;
                 break;
-            case JustVideoView.SCALE_MATCH_PARENT:
+            case JustVideoPlayer.SCALE_MATCH_PARENT:
                 //计算宽高，保证其中一个铺满屏幕，另一方按比例
             default:
-                width = (int) (scale * mVideoWidth);
-                height = (int) (scale * mVideoHeight);
+                float scale = isWidthLong ? (float) width / mVideoWidth : (float) height / mVideoHeight;
+                if (isWidthLong){
+                    height = (int) (scale * mVideoHeight);
+                }else {
+                    width = (int) (scale * mVideoWidth);
+                }
                 break;
         }
         setMeasuredDimension(width, height);
