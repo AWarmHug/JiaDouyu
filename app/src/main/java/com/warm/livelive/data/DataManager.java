@@ -1,0 +1,43 @@
+package com.warm.livelive.data;
+
+
+import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.SubChannel;
+import com.warm.livelive.data.http.HttpHelper;
+import com.warm.livelive.data.http.HttpHelperImpl;
+
+import java.util.List;
+
+import io.reactivex.Observable;
+
+/**
+ * 作者：warm
+ * 时间：2017-11-20 10:50
+ * 描述：
+ */
+
+public class DataManager implements HttpHelper {
+
+    private HttpHelperImpl mHttpHelper;
+    public static final DataManager INSTANCE = new DataManager();
+
+    public static DataManager newInstance() {
+        return INSTANCE;
+    }
+
+    private DataManager() {
+        this.mHttpHelper = HttpHelperImpl.newInstance();
+
+
+    }
+
+    @Override
+    public Observable<List<SubChannel>> getSubChannel(String shortName) {
+        return mHttpHelper.getSubChannel(shortName);
+    }
+
+    @Override
+    public Observable<List<LiveRoom>> getLiveRooms(String tagId, int page) {
+        return mHttpHelper.getLiveRooms(tagId, page);
+    }
+}

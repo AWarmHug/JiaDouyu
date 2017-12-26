@@ -38,6 +38,9 @@ dependencies {
     compile "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxjavaVersion"
     compile "io.reactivex.rxjava2:rxandroid:$rootProject.ext.rxandroidVersion"
     compile "com.tbruyelle.rxpermissions2:rxpermissions:$rootProject.ext.rxpermissionsVersion"
+
+    compile "com.jakewharton.rxbinding2:rxbinding:$rootProject.ext.rxbindingVersion"
+
     //retrofit
     compile "com.squareup.retrofit2:retrofit:$rootProject.ext.retrofitVersion"
     compile "com.squareup.retrofit2:adapter-rxjava2:$rootProject.ext.retrofitVersion"
@@ -49,4 +52,6 @@ dependencies {
     //weight
     compile "com.github.ksoichiro:android-observablescrollview:$rootProject.ext.observablescrollviewVersion"
     compile project(':playerlib')
+    compile project(':utilslib')
+
 }

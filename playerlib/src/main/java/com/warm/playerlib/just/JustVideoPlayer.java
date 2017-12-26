@@ -63,17 +63,6 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     public static final int STATE_NET_ERROR = -2;
 
     /**
-     * 视频缓冲中
-     */
-    public static final int STATE_BUFFERING_START = 1;
-
-    /**
-     * 视频缓冲结束
-     */
-    public static final int STATE_BUFFERING_END = 2;
-
-
-    /**
      * 准备中的状态
      */
     public static final int STATE_PREPARING = 3;
@@ -96,6 +85,20 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
      * 播放完成
      */
     public static final int STATE_COMPLETION = 8;
+
+
+
+
+    /**
+     * 视频缓冲中
+     */
+    public static final int BUFFERING_START = 1;
+
+    /**
+     * 视频缓冲结束
+     */
+    public static final int BUFFERING_END = 2;
+
 
 
     private int mState = STATE_IDLE;
@@ -156,7 +159,7 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
     private void addTextureView() {
         if (mTextureView != null) {
-            removeView(mTextureView);
+            mContainer.removeView(mTextureView);
         }
         mSurfaceTexture = null;
         mTextureView = new JustTextureView(getContext());
@@ -249,6 +252,7 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     }
 
 
+
     public void resume() {
         if (!isPlaying() && mState == STATE_PAUSE && !userPause) {
             start();
@@ -277,9 +281,10 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
     @Override
     public void seekTo(long seekTo) {
-        Log.d(TAG, "seekTo: " + seekTo + "d=" + mMediaPlayer.getDuration());
-        if (mMediaPlayer != null)
+        if (mMediaPlayer != null) {
+            Log.d(TAG, "seekTo: " + seekTo + "d=" + mMediaPlayer.getDuration());
             mMediaPlayer.seekTo(seekTo);
+        }
 
     }
 
@@ -345,10 +350,12 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     }
 
     @Override
-    public void startAgain() {
-        if (mState == STATE_COMPLETION) {
+    public void replay() {
+        if (!isPlaying()&&mState == STATE_COMPLETION) {
             resetPlayer();
-            setSourceAndPrepareAndStart();
+            mState=STATE_IDLE;
+            setControllerState();
+            start();
         }
     }
 
@@ -436,12 +443,12 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             Log.d(TAG, "onInfo: what=" + what + "extra=" + extra + "name=" + iMediaPlayer.getMediaInfo());
             switch (what) {
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    mState = STATE_BUFFERING_START;
-                    setControllerState();
+                    if (mController!=null)
+                    mController.onBufferState(BUFFERING_START);
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    mState = STATE_BUFFERING_END;
-                    setControllerState();
+                    if (mController!=null)
+                    mController.onBufferState(BUFFERING_END);
                     break;
             }
 

@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
         final JustBasePlayController controller = new JustBasePlayController(this);
         videoView.setDataSource(LIVE_URL)
-                .setAutoRotation()
+//                .setAutoRotation()
                 .addController(controller);
 
         button.setOnClickListener(new View.OnClickListener() {

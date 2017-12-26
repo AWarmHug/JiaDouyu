@@ -2,6 +2,7 @@ package com.warm.playerlib.just;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
@@ -111,7 +112,7 @@ public abstract class BasePlayController extends FrameLayout {
     }
 
     public void startAgain() {
-        mPlayer.startAgain();
+        mPlayer.replay();
     }
 
 
@@ -139,6 +140,10 @@ public abstract class BasePlayController extends FrameLayout {
      * @param state {@link JustVideoPlayer#STATE_COMPLETION}等等
      */
     public abstract void setPlayState(int state);
+
+    public void onBufferState(int state){
+
+    }
 
 
     public final long getDuration() {
@@ -189,10 +194,8 @@ public abstract class BasePlayController extends FrameLayout {
                 } else if (distanceX < 0) {
 
                 }
-                System.out.print("****************" + distanceX);
+                Log.d("****************", "onScroll: " + distanceX);
                 //让videoView的播放位置移动到手势拖动后的位置(*15知识为了缩小滑动比例)
-                mPlayer.seekTo((int) (mPlayer.getCurrentPosition() - distanceX * seekSpeed));
-
             } else {
 
             }
@@ -237,7 +240,7 @@ public abstract class BasePlayController extends FrameLayout {
 
         void setScaleType(int scaleType);
 
-        void startAgain();
+        void replay();
     }
 
 

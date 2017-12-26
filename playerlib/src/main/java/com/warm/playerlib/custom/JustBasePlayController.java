@@ -80,13 +80,11 @@ public class JustBasePlayController extends BasePlayController implements Bottom
         Log.d(TAG, "setPlayState: state=" + state);
         switch (state) {
             case JustVideoPlayer.STATE_PREPARING:
-            case JustVideoPlayer.STATE_BUFFERING_START:
                 progressBar.setVisibility(VISIBLE);
                 break;
             case JustVideoPlayer.STATE_PREPARED:
-                bottom.setDuration(getDuration());
-            case JustVideoPlayer.STATE_BUFFERING_END:
                 progressBar.setVisibility(GONE);
+                bottom.setDuration(getDuration());
                 break;
             case JustVideoPlayer.STATE_ERROR:
                 break;
@@ -104,6 +102,19 @@ public class JustBasePlayController extends BasePlayController implements Bottom
                 break;
         }
         bottom.setPlayState(state == JustVideoPlayer.STATE_PLAYING);
+    }
+
+    @Override
+    public void onBufferState(int state) {
+        switch (state){
+            case JustVideoPlayer.BUFFERING_START:
+                progressBar.setVisibility(VISIBLE);
+                break;
+            case JustVideoPlayer.BUFFERING_END:
+                progressBar.setVisibility(GONE);
+                break;
+        }
+
     }
 
     private void animTitleBottom() {
