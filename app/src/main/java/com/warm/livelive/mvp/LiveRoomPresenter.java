@@ -1,6 +1,7 @@
 package com.warm.livelive.mvp;
 
 import com.warm.livelive.base.RxPresenter;
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.utils.rx.CustomObserver;
 import com.warm.livelive.utils.rx.RxUtils;
@@ -30,4 +31,21 @@ public class LiveRoomPresenter extends RxPresenter<LiveRoomContract.View>
                     }
                 });
     }
+
+    @Override
+    public void getLiveHlsUrl(final String roomId) {
+        mDataManager
+                .getHlsUrl(roomId)
+                .compose(RxUtils.<HlsUrl>ioToMain(mView))
+                .subscribe(new CustomObserver<HlsUrl>(mCompositeDisposable, mView) {
+                    @Override
+                    public void onNext(@NonNull HlsUrl hlsUrl) {
+                        hlsUrl.setRoomId(roomId);
+                        mView.getLiveHlsUrl(hlsUrl);
+                    }
+                });
+
+    }
+
+
 }

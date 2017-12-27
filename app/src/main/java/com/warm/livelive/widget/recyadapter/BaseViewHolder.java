@@ -24,14 +24,14 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         ButterKnife.bind(this, itemView);
     }
 
-    public void setItemClickListener(final OnItemClickListener onItemTouchListener) {
+    public void setItemClickListener(final OnItemClickListener onItemTouchListener, final int headerNum) {
         if (onItemTouchListener != null) {
 
             RxView.clicks(itemView).throttleFirst(1, TimeUnit.SECONDS)
                     .subscribe(new Consumer<Object>() {
                         @Override
                         public void accept(@NonNull Object o) throws Exception {
-                            onItemTouchListener.itemClick(getAdapterPosition());
+                            onItemTouchListener.itemClick(getAdapterPosition()-headerNum);
                         }
                     });
         }

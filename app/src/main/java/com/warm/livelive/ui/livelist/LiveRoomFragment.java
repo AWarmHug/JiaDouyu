@@ -1,17 +1,22 @@
 package com.warm.livelive.ui.livelist;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
+import android.util.Log;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyMvpFragment;
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.mvp.LiveRoomContract;
 import com.warm.livelive.mvp.LiveRoomPresenter;
+import com.warm.livelive.ui.PlayerActivity;
 import com.warm.livelive.widget.recyadapter.GridItemDecoration;
 import com.warm.livelive.widget.recyadapter.LoadRecycleView;
+import com.warm.livelive.widget.recyadapter.OnItemClickListener;
 
 import java.util.List;
 
@@ -69,7 +74,7 @@ public class LiveRoomFragment extends LazyMvpFragment<LiveRoomPresenter> impleme
     @Override
     public void getLiveRooms(List<LiveRoom> liveRooms) {
         if (mListAdapter==null){
-            mListAdapter=new RoomsListAdapter(liveRooms);
+            mListAdapter=new RoomsListAdapter(liveRooms,mSubChannel);
             recycleRooms.setAdapter(mListAdapter);
 
             final GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
@@ -82,13 +87,30 @@ public class LiveRoomFragment extends LazyMvpFragment<LiveRoomPresenter> impleme
                 }
             });
             recycleRooms.setLayoutManager(gridLayoutManager);
-            recycleRooms.addItemDecoration(new GridItemDecoration(8,2));
+            recycleRooms.addItemDecoration(new GridItemDecoration(getResources().getDimensionPixelOffset(R.dimen.grid_space),2));
 
         }else {
 
         }
 
+        mListAdapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void itemClick(int position) {
+                mPresenter.getLiveHlsUrl(mListAdapter.getList().get(position).getRoom_id());
 
+
+                Log.d("TAG", "itemClick: position="+position);
+
+
+            }
+        });
+    }
+
+    @Override
+    public void getLiveHlsUrl(HlsUrl hlsUrl) {
+        Intent intent=new Intent(getContext(), PlayerActivity.class);
+        intent.putExtra(PlayerActivity.NAME_PLAY_URL,hlsUrl);
+        startActivity(intent);
     }
 
 

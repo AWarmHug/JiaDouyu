@@ -42,8 +42,8 @@ public class MyAppGlideModule extends AppGlideModule {
         DiskCache.Factory  diskCacheFactory=new DiskLruCacheFactory(LiveApp.getInstance().getExternalCacheDir()+"image",diskSize);
         builder.setDiskCache(diskCacheFactory);
         RequestOptions options=new RequestOptions().centerCrop()
-//                .placeholder(R.drawable.zhanwei)
-                .error(R.mipmap.ic_launcher)
+//                .placeholder(R.drawable.pic)
+                .error(R.drawable.pic)
                 .centerCrop()
                 .encodeQuality(50)
                 .format(DecodeFormat.PREFER_RGB_565);

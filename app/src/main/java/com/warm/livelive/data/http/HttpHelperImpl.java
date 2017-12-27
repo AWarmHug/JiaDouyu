@@ -1,5 +1,6 @@
 package com.warm.livelive.data.http;
 
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.data.http.api.LiveApis;
@@ -39,5 +40,11 @@ public class HttpHelperImpl implements HttpHelper {
     @Override
     public Observable<List<LiveRoom>> getLiveRooms(String tagId, int page) {
         return mLiveApis.getLiveRooms(tagId, 20, page * 20).compose(RxUtils.<List<LiveRoom>>handleResult());
+    }
+
+    @Override
+    public Observable<HlsUrl> getHlsUrl( String roomId) {
+        String url="https://m.douyu.com/html5/live";
+        return mLiveApis.getHlsUrl(url,roomId).compose(RxUtils.<HlsUrl>handleResult());
     }
 }

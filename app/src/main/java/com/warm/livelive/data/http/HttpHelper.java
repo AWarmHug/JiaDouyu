@@ -1,5 +1,6 @@
 package com.warm.livelive.data.http;
 
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
 
@@ -17,6 +18,8 @@ public interface HttpHelper {
     Observable<List<SubChannel>> getSubChannel(String shortName);
 
     Observable<List<LiveRoom>> getLiveRooms(String tagId, int page);
+
+    Observable<HlsUrl> getHlsUrl(String roomId);
 
 
 }

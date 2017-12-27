@@ -15,15 +15,13 @@ import java.util.List;
  */
 
 public abstract class BaseAdapter<T,VH extends BaseViewHolder> extends RecyclerView.Adapter<VH> {
-
-
-    private List<T> list;
+    protected List<T> list;
 
     public List<T> getList() {
         return list;
     }
 
-    private OnItemClickListener onItemClickListener;
+    protected OnItemClickListener onItemClickListener;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
@@ -124,9 +122,7 @@ public abstract class BaseAdapter<T,VH extends BaseViewHolder> extends RecyclerV
 
     @Override
     public final void onBindViewHolder(VH holder, int position) {
-        if (onItemClickListener!=null){
-            holder.setItemClickListener(onItemClickListener);
-        }
+
         onBindItem(holder,position);
     }
 

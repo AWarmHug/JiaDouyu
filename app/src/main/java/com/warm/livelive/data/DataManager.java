@@ -1,6 +1,7 @@
 package com.warm.livelive.data;
 
 
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.data.http.HttpHelper;
@@ -27,8 +28,6 @@ public class DataManager implements HttpHelper {
 
     private DataManager() {
         this.mHttpHelper = HttpHelperImpl.newInstance();
-
-
     }
 
     @Override
@@ -39,5 +38,10 @@ public class DataManager implements HttpHelper {
     @Override
     public Observable<List<LiveRoom>> getLiveRooms(String tagId, int page) {
         return mHttpHelper.getLiveRooms(tagId, page);
+    }
+
+    @Override
+    public Observable<HlsUrl> getHlsUrl(String roomId) {
+        return mHttpHelper.getHlsUrl(roomId);
     }
 }

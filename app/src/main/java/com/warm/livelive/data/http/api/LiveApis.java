@@ -1,6 +1,7 @@
 package com.warm.livelive.data.http.api;
 
 import com.warm.livelive.data.bean.BaseBean;
+import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
 
@@ -10,6 +11,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * 作者：warm
@@ -19,10 +21,29 @@ import retrofit2.http.Query;
 
 public interface LiveApis {
 
+    /**
+     * @param shortName 游戏game、客厅游戏ktyx、手机游戏sjyx、颜值yz、科技kj、娱乐yl、文娱课堂wykt、正能量znl、
+     * @return
+     */
     @GET("getColumnDetail")
     Observable<BaseBean<List<SubChannel>>> getSubChannel(@Query("shortName") String shortName);
 
+    /**
+     * 由{@link #getSubChannel(String)}
+     *
+     * @param tagId  {@link SubChannel#tag_id}
+     * @param limit
+     * @param offset
+     * @return
+     */
     @GET("live/{tagId}")
-    Observable<BaseBean<List<LiveRoom>>> getLiveRooms(@Path("tagId") String tagId, @Query("limit") int limit,@Query("offset") int offset);
+    Observable<BaseBean<List<LiveRoom>>> getLiveRooms(@Path("tagId") String tagId, @Query("limit") int limit, @Query("offset") int offset);
+
+    @GET("searchNew")
+    Observable<BaseBean<List<LiveRoom>>> getSearchNew();
+
+    @GET
+    Observable<BaseBean<HlsUrl>> getHlsUrl(@Url String url, @Query("roomId") String roomId);
+
 
 }
