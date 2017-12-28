@@ -93,6 +93,7 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
     protected void onDestroy() {
         super.onDestroy();
         videoView.release();
+
     }
 
     @Override

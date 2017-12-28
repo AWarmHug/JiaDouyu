@@ -1,6 +1,7 @@
 package com.warm.livelive.data.socket;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 /**
  * 作者：warm
@@ -19,22 +20,21 @@ public class MsgEncoder {
 
     public MsgEncoder addItem(@NonNull String key, @NonNull Object value) {
         if (key.contains("/")) {
-            key.replaceAll("/", "@S");
+            key = key.replaceAll("/", "@S");
         }
 
         if (key.contains("@")) {
-            key.replaceAll("@", "@A");
+            key = key.replaceAll("@", "@A");
         }
         if (value instanceof String) {
             String valueStr = (String) value;
             if (valueStr.contains("/")) {
-                valueStr.replaceAll("/", "@S");
+                value = valueStr.replaceAll("/", "@S");
             }
 
             if (valueStr.contains("@")) {
-                valueStr.replaceAll("@", "@A");
+                value = valueStr.replaceAll("@", "@A");
             }
-            value = valueStr;
         }
 
         builder.append(key)
@@ -46,6 +46,7 @@ public class MsgEncoder {
 
     public String build() {
         builder.append('\0');
+        Log.d("####", "write: " + builder.toString());
         return builder.toString();
     }
 

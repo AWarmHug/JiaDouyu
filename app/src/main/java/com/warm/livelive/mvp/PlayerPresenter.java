@@ -1,7 +1,10 @@
 package com.warm.livelive.mvp;
 
+import android.util.Log;
+
 import com.warm.livelive.base.RxPresenter;
 import com.warm.livelive.data.socket.DanmuSocket;
+import com.warm.livelive.error.CustomException;
 
 /**
  * 作者：warm
@@ -10,6 +13,7 @@ import com.warm.livelive.data.socket.DanmuSocket;
  */
 
 public class PlayerPresenter extends RxPresenter<PlayerContract.View> implements PlayerContract.Presenter {
+    private static final String TAG = "PlayerPresenter";
     private DanmuSocket danmuSocket;
 
     public PlayerPresenter() {
@@ -18,9 +22,32 @@ public class PlayerPresenter extends RxPresenter<PlayerContract.View> implements
 
     @Override
     public void loadPrepare(String roomId, String groupId) {
-        danmuSocket.prepare(roomId,groupId);
+        danmuSocket.loadAndAction(roomId, groupId, new DanmuSocket.OnDanmuListener() {
+            @Override
+            public void onError(CustomException e) {
 
+            }
 
+            @Override
+            public void onLoadSuccess() {
 
+            }
+
+            @Override
+            public void onDanmu(String dan) {
+                Log.d(TAG, "onDanmu: "+ dan);
+            }
+
+            @Override
+            public void onLoadOut() {
+
+            }
+        });
+    }
+
+    @Override
+    public void detach() {
+        super.detach();
+        danmuSocket.loginOut();
     }
 }

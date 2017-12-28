@@ -18,7 +18,8 @@ import java.net.Socket;
  */
 
 public class DanmuSocket {
-    private static final String TAG = "DanmuSocket";
+    private static final String TAG = "####";
+    private static final int DEFAULT_LEN = 1024;
 
     private WorkExecutor workExecutor;
     private Douyu mDouyu;
@@ -28,93 +29,226 @@ public class DanmuSocket {
 
     private BufferedInputStream mBufferIn;
     private BufferedOutputStream mBufferOut;
+    private OnDanmuListener mOnDanmuListener;
 
-    public static DanmuSocket INSTANCE = new DanmuSocket();
+    /**
+     * 标识符，通过他来关闭线程
+     */
+    private boolean mAction;
+
+
+    public boolean isPrepare() {
+        return mAction;
+    }
+
+    public void setPrepare(boolean prepare) {
+        this.mAction = prepare;
+    }
+
+    private static DanmuSocket INSTANCE = new DanmuSocket();
 
     public static DanmuSocket getInstance() {
         return INSTANCE;
     }
 
     private DanmuSocket() {
-        mDouyu=Douyu.getInstance();
+        mDouyu = Douyu.getInstance();
         workExecutor = WorkExecutor.getInstance();
     }
 
+    private boolean checkConnect() {
+        return !(mSocket == null || !mSocket.isConnected()) || connect();
+    }
 
-    private void connect() {
+    private boolean connect() {
         try {
             mSocket = new Socket(InetAddress.getByName(host).getHostAddress(), port);
             //获取输出流（登入，登出）
             mBufferOut = new BufferedOutputStream(mSocket.getOutputStream());
             //获取输入流（用于获取弹幕）
             mBufferIn = new BufferedInputStream(mSocket.getInputStream());
+            return mSocket.isConnected();
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d(TAG, "connect: ");
+            return false;
         }
     }
 
-    public void prepare(final String roomId, String groupId){
+    public void loadAndAction(final String roomId, final String groupId, final OnDanmuListener onDanmuListener) {
+        this.mOnDanmuListener = onDanmuListener;
         workExecutor.runWorker(new Runnable() {
             @Override
             public void run() {
-                connect();
-                loadRoom(roomId);
-
+                if (checkConnect()) {
+                    mAction = true;
+                    if (loadRoom(roomId) && loadGroup(roomId, groupId)) {
+                        postUiLoadSuccess();
+                        keepLife();
+                        keepGetDanmu();
+                    } else {
+                        postUiError(new CustomException("登录失败"));
+                    }
+                } else {
+                    //连接失败提示
+                    mAction = true;
+                    postUiError(new CustomException("连接失败"));
+                }
             }
         });
+    }
 
+    private void keepLife() {
+        workExecutor.runWorkerSchedule(new Runnable() {
+            @Override
+            public void run() {
+                Log.d(TAG, "keepLife: ");
+                try {
+                    write(mDouyu.keepLife());
+//                    type@=mrkl/
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "loadRoom: ");
+                }
+            }
+        }, 45 * 1000);
+    }
 
+    public void loginOut() {
+        mAction = false;
+        workExecutor.runWorker(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    write(mDouyu.loginOut());
+                    byte[] bytes = read(new byte[DEFAULT_LEN]);
+                    MsgDecoder.decode(bytes);
+                    postUiLoadOut();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "loadRoom: ");
+                }
+            }
+        });
+    }
+
+    private void write(byte[] b) throws IOException {
+        if (mAction && mSocket != null && mSocket.isConnected()) {
+            mBufferOut.write(b);
+            mBufferOut.flush();
+        }
     }
 
 
-    public void loadRoom(String roomId) {
+    private byte[] read(byte[] bytes) throws IOException {
+        if (mAction && mSocket != null && mSocket.isConnected()) {
 
+            int len = mBufferIn.read(bytes);
+            byte[] bytes2 = new byte[len];
+            System.arraycopy(bytes, 0, bytes2, 0, len);
+
+            return bytes2;
+        } else {
+            return new byte[0];
+        }
+    }
+
+
+    private void postUiLoadOut() {
+        mOnDanmuListener.onLoadOut();
+        workExecutor.release();
+
+    }
+
+    // type@=error/code@=51
+    private void keepGetDanmu() {
         try {
-            mBufferOut.write(mDouyu.loadRoom(roomId));
-            mBufferOut.flush();
-            byte[] bytes = new byte[4096];
-            mBufferIn.read(bytes, 0, bytes.length);
-           boolean bl= parseLoginRespond(bytes);
-            Log.d(TAG, "loadRoom: "+bl);
+            while (mAction) {
+                byte[] data = read(new byte[8196]);
+
+                Log.d(TAG, "keepGetDanmu:*************** " + new String(data));
+//                Log.d(TAG, "keepGetDanmu:*************** " + MsgDecoder.decode(data));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void postUiDanmu(final String text) {
+        workExecutor.runUi(new Runnable() {
+            @Override
+            public void run() {
+                mOnDanmuListener.onDanmu(text);
+            }
+        });
+
+    }
+
+    private void postUiLoadSuccess() {
+        workExecutor.runUi(new Runnable() {
+            @Override
+            public void run() {
+                mOnDanmuListener.onLoadSuccess();
+            }
+        });
+    }
+
+    private void postUiError(final CustomException e) {
+        workExecutor.runUi(new Runnable() {
+            @Override
+            public void run() {
+                mOnDanmuListener.onError(e);
+            }
+        });
+    }
+
+
+    private boolean loadGroup(String roomId, String groupId) {
+        try {
+            write(mDouyu.loadGroup(roomId, groupId));
+            return true;
+        } catch (IOException e) {
+            Log.d(TAG, "loadRoom: ");
+            return false;
+        }
+    }
+
+
+    private boolean loadRoom(String roomId) {
+//type@=loginres/userid@=0/roomgroup@=0/pg@=0/sessionid@=0/username@=/nickname@=/live_stat@=0/is_illegal@=0/ill_ct@=/ill_ts@=0/now@=0/ps@=0/es@=0/it@=0/its@=0/npv@=0/best_dlev@=0/cur_lev@=0/nrc@=4284481613/ih@=0/sid@=72963/sahf@=0/
+        try {
+            write(mDouyu.loadRoom(roomId));
+            byte[] bytes = read(new byte[DEFAULT_LEN]);
+
+            return MsgDecoder.decode(bytes).get(0).get("type").equals("loginres");
 
         } catch (IOException e) {
             e.printStackTrace();
             Log.d(TAG, "loadRoom: ");
+            return false;
         }
     }
 
 
-    public static boolean parseLoginRespond(byte[] respond) {
-        boolean rtn = false;
+    public interface OnDanmuListener {
+        void onError(CustomException e);
 
-        //返回数据不正确（仅包含12位信息头，没有信息内容）
-        if (respond.length <= 12) {
-            return rtn;
-        }
+        void onLoadSuccess();
 
-        //解析返回信息包中的信息内容
-        String dataStr = new String(respond, 12, respond.length - 12);
-        Log.d(TAG, "parseLoginRespond: "+dataStr);
-        //针对登录返回信息进行判断
-//        if(StringUtils.contains(dataStr, "type@=loginres")){
-//            rtn = true;
-//        }
-        if (dataStr.contains("type@=loginres")) {
-            rtn = true;
-        }
-
-        //返回登录是否成功判断结果
-        return rtn;
-    }
-
-
-    interface DanmuListener{
-        void error(CustomException e);
-        void loadSuccess();
         void onDanmu(String dan);
+
+        void onLoadOut();
     }
 
-
-
+    /**
+     * 释放所有，并且关闭socket和线程
+     */
+    public void release() {
+        if (mSocket != null && mSocket.isConnected()) {
+            try {
+                mSocket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 }

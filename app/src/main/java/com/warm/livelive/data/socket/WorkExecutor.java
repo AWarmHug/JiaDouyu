@@ -5,6 +5,8 @@ import android.os.Looper;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * 作者：warm
@@ -16,6 +18,7 @@ public class WorkExecutor {
     private static WorkExecutor workExecutor = new WorkExecutor();
 
     private ExecutorService mExecutorService;
+    private ScheduledExecutorService scheduledExecutorService;
 
 
     private WorkExecutor() {
@@ -30,7 +33,13 @@ public class WorkExecutor {
         mExecutorService.execute(runnable);
     }
 
+    public void runWorkerSchedule(Runnable runnable, int time) {
+        if (scheduledExecutorService == null || scheduledExecutorService.isShutdown()) {
+            scheduledExecutorService = Executors.newScheduledThreadPool(1);
+        }
+        scheduledExecutorService.scheduleWithFixedDelay(runnable, 0, time, TimeUnit.MILLISECONDS);
 
+    }
 
 
     public void runUi(Runnable runnable) {
@@ -44,10 +53,26 @@ public class WorkExecutor {
 
 
     private void checkWorkExecutor() {
-        if (mExecutorService == null) {
+        if (mExecutorService == null || mExecutorService.isShutdown()) {
             mExecutorService = Executors.newCachedThreadPool();
         }
     }
 
 
+    public void release() {
+        if (mExecutorService != null) {
+            _release(mExecutorService);
+        }
+        if (scheduledExecutorService != null) {
+            _release(scheduledExecutorService);
+        }
+    }
+
+    private void _release(ExecutorService pool) {
+        pool.shutdown();
+        if (!pool.isTerminated()) {
+            pool.shutdownNow();
+        }
+
+    }
 }
