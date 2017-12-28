@@ -49,5 +49,6 @@ public class PlayerPresenter extends RxPresenter<PlayerContract.View> implements
     public void detach() {
         super.detach();
         danmuSocket.loginOut();
+        danmuSocket.release();
     }
 }

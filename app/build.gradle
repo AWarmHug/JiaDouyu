@@ -21,7 +21,6 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
@@ -53,5 +52,16 @@ dependencies {
     compile "com.github.ksoichiro:android-observablescrollview:$rootProject.ext.observablescrollviewVersion"
     compile project(':playerlib')
     compile project(':utilslib')
+
+
+    testCompile "junit:junit:$rootProject.ext.junitVersion"
+    testCompile "org.assertj:assertj-core:3.8.0"
+    testCompile "org.robolectric:robolectric:$rootProject.ext.robolectricVersion"
+    testCompile "org.robolectric:shadows-support-v4:3.0"
+
+    testCompile "org.powermock:powermock-module-junit4:$rootProject.ext.powermockVersion"
+    testCompile "org.powermock:powermock-module-junit4-rule:$rootProject.ext.powermockVersion"
+    testCompile "org.powermock:powermock-api-mockito2:$rootProject.ext.powermockVersion"
+    testCompile "org.powermock:powermock-classloading-xstream:$rootProject.ext.powermockVersion"
 
 }

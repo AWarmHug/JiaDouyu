@@ -12,6 +12,7 @@ import com.warm.livelive.data.DataManager;
 
 public class LiveApp extends Application {
 
+
     private static LiveApp instance;
 
     private DataManager mDataManager;

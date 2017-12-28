@@ -10,6 +10,8 @@ import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 作者：warm
@@ -19,7 +21,7 @@ import java.net.Socket;
 
 public class DanmuSocket {
     private static final String TAG = "####";
-    private static final int DEFAULT_LEN = 1024;
+    private static final int DEFAULT_LEN = 8196;
 
     private WorkExecutor workExecutor;
     private Douyu mDouyu;
@@ -57,7 +59,11 @@ public class DanmuSocket {
     }
 
     private boolean checkConnect() {
-        return !(mSocket == null || !mSocket.isConnected()) || connect();
+        if (mSocket == null || mSocket.isClosed()) {
+            return connect();
+        } else {
+            return true;
+        }
     }
 
     private boolean connect() {
@@ -133,6 +139,7 @@ public class DanmuSocket {
 
     private void write(byte[] b) throws IOException {
         if (mAction && mSocket != null && mSocket.isConnected()) {
+            Log.d(TAG, "write: " + new String(b));
             mBufferOut.write(b);
             mBufferOut.flush();
         }
@@ -142,11 +149,30 @@ public class DanmuSocket {
     private byte[] read(byte[] bytes) throws IOException {
         if (mAction && mSocket != null && mSocket.isConnected()) {
 
-            int len = mBufferIn.read(bytes);
-            byte[] bytes2 = new byte[len];
-            System.arraycopy(bytes, 0, bytes2, 0, len);
+            byte[] bytes1 = new byte[0];
+            int totalLen = 0;
+            byte[] clone = new byte[0];
+            do {
+                if (totalLen != 0) {
+                    clone = bytes1.clone();
+                }
 
-            return bytes2;
+                int len = mBufferIn.read(bytes);
+                Log.d(TAG, "read: len=" + len);
+                byte[] cc = new byte[len];
+                System.arraycopy(bytes, 0, cc, 0, len);
+
+                totalLen += len;
+                bytes1 = new byte[totalLen];
+                if (clone.length != 0) {
+                    System.arraycopy(clone, 0, bytes1, 0, clone.length);
+                }
+
+                System.arraycopy(cc, 0, bytes1, totalLen - len, len);
+                Log.d(TAG, "read: msg----" + new String(bytes1));
+            } while (bytes1[bytes1.length - 1] != '\0');
+            Log.d(TAG, "read: " + new String(bytes1));
+            return bytes1;
         } else {
             return new byte[0];
         }
@@ -163,10 +189,24 @@ public class DanmuSocket {
     private void keepGetDanmu() {
         try {
             while (mAction) {
-                byte[] data = read(new byte[8196]);
+                byte[] data = read(new byte[DEFAULT_LEN]);
+                if (new String(data).contains("type")) {
+                    List<Map<String, Object>> maps = MsgDecoder.decode(data);
+                    if (maps != null) {
+                        for (Map<String, Object> map : maps) {
+                            Object value = map.get("type");
+                            if (value != null && value.equals("chatmsg")) {
+                                StringBuilder stringBuilder=new StringBuilder();
+                                stringBuilder.append( map.get("nn"))
+                                        .append("说：")
+                                        .append(map.get("txt"));
+                                postUiDanmu(stringBuilder.toString());
+                            }
+                        }
+                    }
 
-                Log.d(TAG, "keepGetDanmu:*************** " + new String(data));
-//                Log.d(TAG, "keepGetDanmu:*************** " + MsgDecoder.decode(data));
+                }
+
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -219,7 +259,12 @@ public class DanmuSocket {
             write(mDouyu.loadRoom(roomId));
             byte[] bytes = read(new byte[DEFAULT_LEN]);
 
-            return MsgDecoder.decode(bytes).get(0).get("type").equals("loginres");
+            List<Map<String, Object>> ss = MsgDecoder.decode(bytes);
+            if (ss != null && ss.size() != 0) {
+                return ss.get(0).get("type").equals("loginres");
+            } else {
+                return false;
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

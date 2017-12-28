@@ -28,6 +28,9 @@ ext {
     glideVersion = '4.0.0'
     observablescrollviewVersion = '1.6.0'
     ijkplayerVersion = '0.8.4'
+    junitVersion = '4.12'
+    robolectricVersion = '3.5.1'
+    powermockVersion='1.7.3'
 
 }
 

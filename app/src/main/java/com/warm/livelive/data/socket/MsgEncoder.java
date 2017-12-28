@@ -1,7 +1,6 @@
 package com.warm.livelive.data.socket;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 /**
  * 作者：warm
@@ -46,7 +45,6 @@ public class MsgEncoder {
 
     public String build() {
         builder.append('\0');
-        Log.d("####", "write: " + builder.toString());
         return builder.toString();
     }
 
