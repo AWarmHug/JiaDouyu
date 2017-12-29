@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.warm.livelive.config.ApiConfig;
 import com.warm.livelive.error.CustomException;
+import com.warm.livelive.utils.ByteUtils;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -158,6 +159,12 @@ public class DanmuSocket {
                 }
 
                 int len = mBufferIn.read(bytes);
+                byte[] lens = new byte[4];
+                System.arraycopy(bytes, 0, lens, 0, 4);
+
+                int rLen = ByteUtils.toInt(lens);
+                Log.d(TAG, "read: " + rLen);
+
                 Log.d(TAG, "read: len=" + len);
                 byte[] cc = new byte[len];
                 System.arraycopy(bytes, 0, cc, 0, len);
@@ -196,8 +203,8 @@ public class DanmuSocket {
                         for (Map<String, Object> map : maps) {
                             Object value = map.get("type");
                             if (value != null && value.equals("chatmsg")) {
-                                StringBuilder stringBuilder=new StringBuilder();
-                                stringBuilder.append( map.get("nn"))
+                                StringBuilder stringBuilder = new StringBuilder();
+                                stringBuilder.append(map.get("nn"))
                                         .append("说：")
                                         .append(map.get("txt"));
                                 postUiDanmu(stringBuilder.toString());

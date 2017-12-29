@@ -1,13 +1,6 @@
 package com.warm.livelive.data.socket;
 
 import com.warm.livelive.data.bean.SendBean;
-import com.warm.livelive.utils.FormatTransfer;
-
-import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 作者：warm
@@ -16,7 +9,6 @@ import java.util.List;
  */
 
 public class Douyu {
-    public static final int CLIENT_TO_SERVER = 689;
 
 
     private static final Douyu ourInstance = new Douyu();
@@ -31,57 +23,37 @@ public class Douyu {
 
 
     public byte[] loadRoom(String roomId) {
-        return toByte(new MsgEncoder()
+        return new MsgEncoder()
                 .addItem("type", "loginreq")
                 .addItem("roomid", roomId)
-                .build());
+                .build();
     }
 
     public byte[] loadGroup(String roomId, String groupId) {
 
-        return toByte(new MsgEncoder()
+        return new MsgEncoder()
                 .addItem("type", "joingroup")
                 .addItem("rid", roomId)
                 .addItem("gid", groupId)
-                .build());
+                .build();
     }
 
     public byte[] keepLife() {
-        List<SendBean> sendBeens=new ArrayList<>();
-        sendBeens.add(new SendBean("type","mrkl"));
-        return sent(sendBeens);
+        return sent(new SendBean("type", "mrkl"));
     }
 
-    public byte[] loginOut(){
-        return toByte(new MsgEncoder()
+    public byte[] loginOut() {
+        return new MsgEncoder()
                 .addItem("type", "logout")
-                .build());
+                .build();
     }
 
-    public byte[] sent(List<SendBean> sendBeen){
-        MsgEncoder msgEncoder=new MsgEncoder();
-        for (int i = 0; i < sendBeen.size(); i++) {
-            msgEncoder.addItem(sendBeen.get(i).key,sendBeen.get(i).value)   ;
+    public byte[] sent(SendBean... sendBeen) {
+        MsgEncoder msgEncoder = new MsgEncoder();
+        for (int i = 0; i < sendBeen.length; i++) {
+            msgEncoder.addItem(sendBeen[i].key, sendBeen[i].value);
         }
-        return toByte(msgEncoder.build());
-    }
-
-
-    private byte[] toByte(String data) {
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        DataOutputStream dataOutputStream = new DataOutputStream(byteArrayOutputStream);
-        try {
-            dataOutputStream.write(FormatTransfer.toLH(data.length() + 8), 0, 4);
-            dataOutputStream.write(FormatTransfer.toLH(data.length() + 8), 0, 4);
-            dataOutputStream.write(FormatTransfer.toLH(CLIENT_TO_SERVER), 0, 2);
-            dataOutputStream.write(0);
-            dataOutputStream.write(0);
-            dataOutputStream.writeBytes(data);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return byteArrayOutputStream.toByteArray();
+        return msgEncoder.build();
     }
 
 
