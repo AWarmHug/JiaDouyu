@@ -31,8 +31,8 @@ public class DataManager implements HttpHelper {
     }
 
     @Override
-    public Observable<List<SubChannel>> getSubChannel(String shortName) {
-        return mHttpHelper.getSubChannel(shortName);
+    public Observable<List<SubChannel>> getSubChannel(String tag) {
+        return mHttpHelper.getSubChannel(tag);
     }
 
     @Override

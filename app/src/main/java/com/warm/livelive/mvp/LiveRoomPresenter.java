@@ -44,7 +44,6 @@ public class LiveRoomPresenter extends RxPresenter<LiveRoomContract.View>
                         mView.getLiveHlsUrl(hlsUrl);
                     }
                 });
-
     }
 
 

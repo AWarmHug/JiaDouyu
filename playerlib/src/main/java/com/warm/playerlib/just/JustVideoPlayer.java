@@ -18,6 +18,12 @@ import com.warm.playerlib.DisplayUtils;
 
 import java.io.IOException;
 
+import master.flame.danmaku.controller.DrawHandler;
+import master.flame.danmaku.danmaku.model.BaseDanmaku;
+import master.flame.danmaku.danmaku.model.DanmakuTimer;
+import master.flame.danmaku.danmaku.model.android.DanmakuContext;
+import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
+import master.flame.danmaku.ui.widget.DanmakuView;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
@@ -29,6 +35,13 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 public class JustVideoPlayer extends FrameLayout implements BasePlayController.PlayControl {
     private static final String TAG = "JustVideoView";
+    /**
+     * 弹幕相关
+     */
+    private DanmakuView mDanmakuView;
+    private DanmakuContext mDanmaContext;
+    private BaseDanmakuParser mParser;
+
     private IMediaPlayer mMediaPlayer;//ijkPlayer
     private JustTextureView mTextureView;
     private FrameLayout mContainer;
@@ -87,8 +100,6 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     public static final int STATE_COMPLETION = 8;
 
 
-
-
     /**
      * 视频缓冲中
      */
@@ -98,7 +109,6 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
      * 视频缓冲结束
      */
     public static final int BUFFERING_END = 2;
-
 
 
     private int mState = STATE_IDLE;
@@ -155,6 +165,44 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             mMediaPlayer.setOnVideoSizeChangedListener(onVideoSizeChangedListener);
         }
         addTextureView();
+        addDanmaView();
+    }
+
+    private void addDanmaView() {
+        if (mDanmaContext != null && mParser != null) {
+            if (mDanmakuView != null) {
+                removeView(mDanmakuView);
+            }
+
+            mDanmakuView = new DanmakuView(getContext());
+            mDanmakuView.setCallback(new DrawHandler.Callback() {
+                @Override
+                public void updateTimer(DanmakuTimer timer) {
+                }
+
+                @Override
+                public void drawingFinished() {
+
+                }
+
+                @Override
+                public void danmakuShown(BaseDanmaku danmaku) {
+//                    Log.d("DFM", "danmakuShown(): text=" + danmaku.text);
+                }
+
+                @Override
+                public void prepared() {
+                    mDanmakuView.start();
+                }
+            });
+
+            mDanmakuView.prepare(mParser, mDanmaContext);
+            mDanmakuView.showFPS(true);
+            mDanmakuView.enableDanmakuDrawingCache(true);
+        }
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+        mContainer.addView(mDanmakuView, 1, params);
+
     }
 
     private void addTextureView() {
@@ -249,13 +297,18 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             setControllerState();
             userPause = false;
         }
+        if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+            mDanmakuView.pause();
+        }
     }
-
 
 
     public void resume() {
         if (!isPlaying() && mState == STATE_PAUSE && !userPause) {
             start();
+        }
+        if (mDanmakuView != null && mDanmakuView.isPrepared() && mDanmakuView.isPaused()) {
+            mDanmakuView.resume();
         }
     }
 
@@ -277,6 +330,12 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             mOrientationEventListener.disable();
         }
         removeView(mTextureView);
+
+        if (mDanmakuView != null) {
+            // dont forget release!
+            mDanmakuView.release();
+            mDanmakuView = null;
+        }
     }
 
     @Override
@@ -351,9 +410,9 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
     @Override
     public void replay() {
-        if (!isPlaying()&&mState == STATE_COMPLETION) {
+        if (!isPlaying() && mState == STATE_COMPLETION) {
             resetPlayer();
-            mState=STATE_IDLE;
+            mState = STATE_IDLE;
             setControllerState();
             start();
         }
@@ -443,12 +502,12 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             Log.d(TAG, "onInfo: what=" + what + "extra=" + extra + "name=" + iMediaPlayer.getMediaInfo());
             switch (what) {
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_START:
-                    if (mController!=null)
-                    mController.onBufferState(BUFFERING_START);
+                    if (mController != null)
+                        mController.onBufferState(BUFFERING_START);
                     break;
                 case IMediaPlayer.MEDIA_INFO_BUFFERING_END:
-                    if (mController!=null)
-                    mController.onBufferState(BUFFERING_END);
+                    if (mController != null)
+                        mController.onBufferState(BUFFERING_END);
                     break;
             }
 
@@ -493,10 +552,18 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     };
 
 
+    public void addDanma(BaseDanmaku danmaku) {
+        if (mDanmakuView!=null){
+            mDanmakuView.addDanmaku(danmaku);
+        }
+    }
+
+
     public JustVideoPlayer setDataSource(String urlPath) {
         this.urlPath = urlPath;
         return this;
     }
+
 
     public JustVideoPlayer setAutoRotation() {
         this.autoRotation = true;
@@ -538,6 +605,12 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             }
 
         };
+        return this;
+    }
+
+    public JustVideoPlayer setDanma(DanmakuContext context, BaseDanmakuParser parser) {
+        this.mDanmaContext = context;
+        this.mParser = parser;
         return this;
     }
 

@@ -47,8 +47,8 @@ public class RetrofitHelper {
         Cache cache = new Cache(new File(LiveApp.getInstance().getExternalCacheDir(),"cache_http"), 1024 * 1024 * 10);
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
-                .cache(cache)
-                .addNetworkInterceptor(new CacheInterceptor())
+//                .cache(cache)
+//                .addNetworkInterceptor(new CacheInterceptor())
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS)

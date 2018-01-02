@@ -149,35 +149,35 @@ public class DanmuSocket {
 
     private byte[] read(byte[] bytes) throws IOException {
         if (mAction && mSocket != null && mSocket.isConnected()) {
-
             byte[] bytes1 = new byte[0];
             int totalLen = 0;
             byte[] clone = new byte[0];
-            do {
-                if (totalLen != 0) {
-                    clone = bytes1.clone();
-                }
+            int len = mBufferIn.read(bytes);
+            if (len > 12) {
+                do {
+                    if (totalLen != 0) {
+                        clone = bytes1.clone();
+                    }
+                    byte[] lens = new byte[4];
+                    System.arraycopy(bytes, 0, lens, 0, 4);
 
-                int len = mBufferIn.read(bytes);
-                byte[] lens = new byte[4];
-                System.arraycopy(bytes, 0, lens, 0, 4);
+                    int rLen = ByteUtils.toInt(lens);
+                    Log.d(TAG, "read: " + rLen);
 
-                int rLen = ByteUtils.toInt(lens);
-                Log.d(TAG, "read: " + rLen);
+                    Log.d(TAG, "read: len=" + len);
+                    byte[] cc = new byte[len];
+                    System.arraycopy(bytes, 0, cc, 0, len);
 
-                Log.d(TAG, "read: len=" + len);
-                byte[] cc = new byte[len];
-                System.arraycopy(bytes, 0, cc, 0, len);
+                    totalLen += len;
+                    bytes1 = new byte[totalLen];
+                    if (clone.length != 0) {
+                        System.arraycopy(clone, 0, bytes1, 0, clone.length);
+                    }
 
-                totalLen += len;
-                bytes1 = new byte[totalLen];
-                if (clone.length != 0) {
-                    System.arraycopy(clone, 0, bytes1, 0, clone.length);
-                }
-
-                System.arraycopy(cc, 0, bytes1, totalLen - len, len);
-                Log.d(TAG, "read: msg----" + new String(bytes1));
-            } while (bytes1[bytes1.length - 1] != '\0');
+                    System.arraycopy(cc, 0, bytes1, totalLen - len, len);
+                    Log.d(TAG, "read: msg----" + new String(bytes1));
+                } while (bytes1[bytes1.length - 1] != '\0');
+            }
             Log.d(TAG, "read: " + new String(bytes1));
             return bytes1;
         } else {

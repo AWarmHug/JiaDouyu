@@ -31,7 +31,7 @@ ext {
     junitVersion = '4.12'
     robolectricVersion = '3.5.1'
     powermockVersion='1.7.3'
-
+    danmakuVersion='0.9.16'
 }
 
 
