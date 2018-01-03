@@ -171,7 +171,7 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
     private void addDanmaView() {
         if (mDanmaContext != null && mParser != null) {
             if (mDanmakuView != null) {
-                removeView(mDanmakuView);
+                mContainer.removeView(mDanmakuView);
             }
 
             mDanmakuView = new DanmakuView(getContext());
@@ -197,10 +197,9 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
             });
 
             mDanmakuView.prepare(mParser, mDanmaContext);
-            mDanmakuView.showFPS(true);
             mDanmakuView.enableDanmakuDrawingCache(true);
         }
-        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, Gravity.CENTER);
+        LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
         mContainer.addView(mDanmakuView, 1, params);
 
     }
@@ -553,7 +552,10 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
 
     public void addDanma(BaseDanmaku danmaku) {
-        if (mDanmakuView!=null){
+        if (mDanmakuView!=null&&mDanmakuView.isPrepared()){
+            if (danmaku.isLive){
+                danmaku.setTime(mDanmakuView.getCurrentTime());
+            }
             mDanmakuView.addDanmaku(danmaku);
         }
     }

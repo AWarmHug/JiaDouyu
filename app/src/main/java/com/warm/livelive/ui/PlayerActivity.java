@@ -86,7 +86,8 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
                 if (i == 4) {
                     i = 0;
                 }
-                videoView.addDanma(createDanmaku(true,"弹幕"+i));
+                String danma="弹幕"+i;
+                videoView.addDanma(createDanmaku(true,danma));
             }
         });
 //        mPresenter.loadPrepare(hlsUrl.getRoomId(), "-9999");

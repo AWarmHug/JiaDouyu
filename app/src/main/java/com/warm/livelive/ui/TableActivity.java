@@ -37,6 +37,7 @@ import butterknife.BindView;
 public class TableActivity extends BaseMvpActivity<TablePresenter> implements TableContract.View, NavigationView.OnNavigationItemSelectedListener {
 
 
+    private String mTag;
     private LivePagerAdapter mPagerAdapter;
 
     @Override
@@ -69,16 +70,18 @@ public class TableActivity extends BaseMvpActivity<TablePresenter> implements Ta
         drawer.addDrawerListener(new DrawerLayout.SimpleDrawerListener() {
             @Override
             public void onDrawerClosed(View drawerView) {
-                @TableContract.Tag
-                String tag = (String) drawerView.getTag();
-                mPresenter.getSubChannel(tag);
+                if (drawerView.getTag()!=null&&!mTag.equals(drawerView.getTag())) {
+                    mTag = (String) drawerView.getTag();
+                    mPresenter.getSubChannel(mTag);
+                }
             }
         });
 
 
+        mTag=TableContract.GAME;
         nvMenu.setCheckedItem(R.id.game);
         tb.setTitle("电脑游戏");
-        mPresenter.getSubChannel(TableContract.GAME);
+        mPresenter.getSubChannel(mTag);
 
     }
 
