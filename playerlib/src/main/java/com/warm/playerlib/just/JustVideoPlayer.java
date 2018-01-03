@@ -552,8 +552,8 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
 
     public void addDanma(BaseDanmaku danmaku) {
-        if (mDanmakuView!=null&&mDanmakuView.isPrepared()){
-            if (danmaku.isLive){
+        if (mDanmakuView != null && mDanmakuView.isPrepared()) {
+            if (danmaku.isLive) {
                 danmaku.setTime(mDanmakuView.getCurrentTime());
             }
             mDanmakuView.addDanmaku(danmaku);
