@@ -18,6 +18,7 @@ import java.util.Map;
  * 作者：warm
  * 时间：2017-12-27 09:54
  * 描述：
+ * 使用Netty实现Socket部分
  */
 
 public class DanmuSocket {
