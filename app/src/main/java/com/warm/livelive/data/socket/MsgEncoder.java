@@ -68,6 +68,10 @@ public class MsgEncoder {
                 .append("/");
         return this;
     }
+    @Override
+    public String toString() {
+        return builder.toString();
+    }
 
     public byte[] build() {
         byte[] source = builder.toString().getBytes(StandardCharsets.UTF_8);

@@ -90,7 +90,7 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
                 videoView.addDanma(createDanmaku(true,danma));
             }
         });
-//        mPresenter.loadPrepare(hlsUrl.getRoomId(), "-9999");
+        mPresenter.loadPrepare(hlsUrl.getRoomId(), "-9999");
     }
 
 

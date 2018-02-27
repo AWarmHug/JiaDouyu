@@ -83,6 +83,7 @@ public class TableActivity extends BaseMvpActivity<TablePresenter> implements Ta
         tb.setTitle("电脑游戏");
         mPresenter.getSubChannel(mTag);
 
+
     }
 
     @Override

@@ -12,8 +12,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
-        android:name=".LiveApp"
-        >
+        android:name=".LiveApp">
         <activity
             android:name=".ui.PlayerActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
@@ -25,6 +24,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <service android:name=".data.socket.netty.PushService">
+
+        </service>
     </application>
 
 </manifest>

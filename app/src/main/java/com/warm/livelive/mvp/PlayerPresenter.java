@@ -1,10 +1,8 @@
 package com.warm.livelive.mvp;
 
-import android.util.Log;
-
+import com.warm.livelive.LiveApp;
 import com.warm.livelive.base.RxPresenter;
-import com.warm.livelive.data.socket.DanmuSocket;
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.data.socket.netty.Douyu;
 
 /**
  * 作者：warm
@@ -14,35 +12,14 @@ import com.warm.livelive.error.CustomException;
 
 public class PlayerPresenter extends RxPresenter<PlayerContract.View> implements PlayerContract.Presenter {
     private static final String TAG = "PlayerPresenter";
-    private DanmuSocket danmuSocket;
+
 
     public PlayerPresenter() {
-        danmuSocket=DanmuSocket.getInstance();
     }
 
     @Override
     public void loadPrepare(String roomId, String groupId) {
-        danmuSocket.loadAndAction(roomId, groupId, new DanmuSocket.OnDanmuListener() {
-            @Override
-            public void onError(CustomException e) {
-
-            }
-
-            @Override
-            public void onLoadSuccess() {
-
-            }
-
-            @Override
-            public void onDanmu(String dan) {
-                Log.d(TAG, "onDanmu: "+ dan);
-            }
-
-            @Override
-            public void onLoadOut() {
-
-            }
-        });
+        LiveApp.getInstance().getPushService().send(Douyu.getInstance().loadRoom(roomId));
     }
 
     @Override
