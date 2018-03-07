@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="AppTheme.FitStateBar">
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
+    <style name="AppTheme.Dialog.Progress" parent="Theme.AppCompat.Dialog">
+
+        <item name="android:windowEnterAnimation">@anim/my_abc_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/my_abc_popup_exit</item>
+        <item name="android:windowBackground">@color/black_half</item>
+        <item name="android:textColor">@color/white</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">false</item>
+
+    </style>
+
+    <style name="AppTheme.Dialog.Transparent" parent="android:Theme.Dialog">
+
+        <!--设置全屏，去除stateBar-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+    </style>
+
+
+</resources>

@@ -1,11 +1,210 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
+        <item name="android:windowBackground">@color/white_bg</item>
+        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:textViewStyle">@style/AppTheme.TextView</item>
+        <item name="android:editTextStyle">@style/AppTheme.EditText</item>
+        <item name="android:checkboxStyle">@style/AppTheme.CheckBox</item>
+        <item name="android:radioButtonStyle">@style/AppTheme.RadioButton</item>
     </style>
+
+
+    <style name="AppTheme.FitStateBar" />
+
+    <style name="AppTheme.FitStateBar.Splash">
+
+    </style>
+
+
+
+
+    <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:minHeight">48dp</item>
+        <item name="maxButtonHeight">45dp</item>
+        <item name="contentInsetStartWithNavigation">0dp</item>
+        <item name="titleTextAppearance">@style/AppTheme.TextAppearance.ToolBar</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark" />
+
+    <style name="AppTheme.Overflow" parent="@style/Widget.AppCompat.PopupMenu.Overflow">
+        <!-- 是否覆盖锚点，默认为true，即盖住Toolbar -->
+        <item name="overlapAnchor">true</item>
+        <item name="android:dropDownWidth">80dp</item>
+        <!-- 弹出层背景颜色 -->
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:popupAnimationStyle">@style/Animation.AppCompat.Dialog</item>
+        <!-- 弹出层垂直方向上的偏移，即在竖直方向上距离Toolbar的距离，值为负则会盖住Toolbar -->
+        <item name="android:dropDownVerticalOffset">5dp</item>
+        <!-- 弹出层水平方向上的偏移，即距离屏幕左边的距离，负值会导致右边出现空隙 -->
+        <item name="android:dropDownHorizontalOffset">0dp</item>
+        <!-- 设置弹出菜单文字颜色 -->
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+
+    <style name="AppTheme.TextView" parent="@android:style/Widget.TextView">
+        <item name="android:textAppearance">@style/AppTheme.TextAppearance</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.TextView.Click">
+        <item name="android:background">@drawable/ripple_bg_transparent</item>
+    </style>
+
+
+    <style name="AppTheme.TextView.Click.Buss">
+
+    </style>
+
+
+    <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
+        <item name="android:background">@drawable/bg_enabled</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+
+    <style name="AppTheme.Dialog">
+
+    </style>
+
+    <style name="AppTheme.Animation.Dialog" parent="Animation.AppCompat.Dialog"/>
+
+
+    <style name="AppTheme.Dialog.Progress" parent="Theme.AppCompat.Dialog">
+
+        <item name="android:windowEnterAnimation">@anim/my_abc_popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/my_abc_popup_exit</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:colorBackground">@color/transparent</item>
+        <item name="android:textColor">@color/white</item>
+
+    </style>
+
+
+
+    <style name="AppTheme.Dialog.Transparent" parent="@android:style/Theme.Dialog">
+
+        <!--设置全屏，去除stateBar-->
+        <!--<item name="android:windowFullscreen">true</item>-->
+        <item name="android:background">@android:color/transparent</item>
+        <!-- 背景透明 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 浮于Activity之上 -->
+        <item name="android:windowIsFloating">true</item>
+        <!-- 边框 -->
+        <item name="android:windowFrame">@null</item>
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+        <!-- 半透明 -->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowCloseOnTouchOutside">true</item>
+
+
+    </style>
+
+    <style name="AppTheme.Dialog.Transparent.Red">
+
+    </style>
+
+
+    <style name="AppTheme.Spinner" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:textAppearance">@style/AppTheme.TextAppearance.Body</item>
+        <item name="android:spinnerMode">dropdown</item>
+        <item name="android:paddingLeft">4dp</item>
+        <item name="android:paddingRight">4dp</item>
+    </style>
+
+
+    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorHeight">2dp</item>
+        <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Tab</item>
+        <item name="tabIndicatorColor">@color/colorPrimary</item>
+        <item name="tabSelectedTextColor">@color/colorPrimary</item>
+        <item name="android:background">@color/white</item>
+    </style>
+
+
+    <style name="AppTheme.TextAppearance" parent="TextAppearance.AppCompat">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+
+    <style name="AppTheme.TextAppearance.Title" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Body" parent="TextAppearance.AppCompat.Body1">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.ToolBar" parent="TextAppearance.AppCompat.Title">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppTheme.TextAppearance.Tab" parent="TextAppearance.Design.Tab">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/text_dark</item>
+
+    </style>
+
+
+    <style name="AppTheme.EditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColorHint">@color/text_dark_light</item>
+        <item name="android:textColor">@color/text_dark</item>
+    </style>
+
+    <style name="AppTheme.EditText.NoBack">
+        <item name="android:background">@null</item>
+    </style>
+
+
+    <style name="AppTheme.DatePicker" parent="@android:style/Widget.DatePicker">
+
+    </style>
+
+    <style name="AppTheme.TimePicker" parent="@android:style/Theme.Holo.Light">
+
+    </style>
+
+
+    <style name="AppTheme.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
+
+    </style>
+
+    <style name="AppTheme.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
+
+    </style>
+
+    <style name="AppTheme.RadioButton.NoButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">8dp</item>
+    </style>
+
+    <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingLeft">8dp</item>
+    </style>
+
 
 </resources>

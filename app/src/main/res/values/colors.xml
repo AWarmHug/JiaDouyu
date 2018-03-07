@@ -1,6 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#497DFA</color>
+    <color name="colorPrimaryDark">#494ffa</color>
+    <color name="colorAccent">#497DFA</color>
+
+    <color name="colorPrimaryInverse">#8c497dfa</color>
+
+
+    <color name="white">#ffffffff</color>
+
+    <color name="white_bg">#e6ebee</color>
+
+    <color name="dialog_icon">#acc0cf</color>
+
+    <color name="dialog_icon_half">#8ea8c0d0</color>
+
+    <color name="grey_count">#e6ebee</color>
+
+    <color name="grey">#ffdedede</color>
+    <color name="grey_half">#7fdedede</color>
+    <color name="grey_dark">#cbcccd</color>
+
+
+    <color name="red">#ff2d3a</color>
+    <color name="red_dark">#ffcd3a3a</color>
+    <color name="red_light">#ffd1d4</color>
+
+
+    <color name="green">#2ba900</color>
+    <color name="green_dark">#ff6d9b00</color>
+
+    <color name="text_dark">#555555</color>
+
+    <color name="text_dark_light">#777777</color>
+
+    <color name="text_light">#999999</color>
+
+
+    <!--橘红-->
+    <color name="reddish_orange">#ff882d</color>
+
+    <!--紫色-->
+    <color name="purple">#8300ef</color>
+
+
+    <color name="black">#2d2d2d</color>
+    <color name="black_half">#88000000</color>
+    <color name="black_30">#4b000000</color>
+
+
+
+
+    <color name="transparent">#00000000</color>
+
+    <color name="rippleColor">#46000000</color>
+    <color name="line">#EEEEEE</color>
+
+
+    <color name="wechat">#00c46d</color>
+    <color name="alipay">#008cf9</color>
+
+    <color name="alipay2">#7fadf7</color>
+
+    <color name="blue_white">#6d97fb</color>
+
+
+
+
+
 </resources>

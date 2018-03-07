@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <!--游戏game、客厅游戏ktyx、手机游戏sjyx、颜值yz、科技kj、娱乐yl、文娱课堂wykt、正能量znl、-->
+        <item
+            android:id="@+id/game"
+            android:checked="true"
+            android:icon="@drawable/ic_vec_computer_game"
+            android:title="电脑游戏" />
+        <item
+            android:id="@+id/sjyx"
+            android:icon="@drawable/ic_vec_phone_game"
+            android:title="手机游戏" />
+        <item
+            android:id="@+id/ktyx"
+            android:icon="@drawable/ic_vec_host_game"
+            android:title="主机游戏" />
+        <item
+            android:id="@+id/kj"
+            android:icon="@drawable/ic_vec_it"
+            android:title="科技" />
+        <item
+            android:id="@+id/yz"
+            android:icon="@drawable/ic_vec_girl"
+            android:title="颜值" />
+        <item
+            android:id="@+id/yl"
+            android:icon="@drawable/ic_vec_fun"
+            android:title="娱乐" />
+        <item
+            android:id="@+id/znl"
+            android:icon="@drawable/ic_vec_favour"
+            android:title="正能量" />
+    </group>
+
+</menu>
