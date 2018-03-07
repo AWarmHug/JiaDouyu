@@ -3,7 +3,9 @@ package com.warm.livelive.data.http;
 import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
+import com.warm.livelive.data.bean.TabCate;
 import com.warm.livelive.data.http.api.LiveApis;
+import com.warm.livelive.data.http.api.apiv2.Api;
 import com.warm.livelive.data.http.retrofit.RetrofitHelper;
 import com.warm.livelive.utils.rx.RxUtils;
 
@@ -26,10 +28,17 @@ public class HttpHelperImpl implements HttpHelper {
     }
 
     private LiveApis mLiveApis;
+    private Api mApi;
 
 
     public HttpHelperImpl() {
         mLiveApis = RetrofitHelper.provideApi(LiveApis.class);
+        mApi=RetrofitHelper.provideApiV2(Api.class);
+    }
+
+    @Override
+    public Observable<List<TabCate>> getTabCate() {
+        return mApi.getTabCate().compose(RxUtils.<TabCate>handleListResult());
     }
 
     @Override

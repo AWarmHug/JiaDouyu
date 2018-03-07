@@ -148,4 +148,11 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
     public int layoutResID() {
         return R.layout.activity_player;
     }
+
+    @Override
+    public void getDanmu(String danmu) {
+        if (videoView.isPlaying()){
+            videoView.addDanma(createDanmaku(true,danmu));
+        }
+    }
 }

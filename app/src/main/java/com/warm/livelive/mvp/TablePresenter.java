@@ -2,6 +2,7 @@ package com.warm.livelive.mvp;
 
 import com.warm.livelive.base.RxPresenter;
 import com.warm.livelive.data.bean.SubChannel;
+import com.warm.livelive.data.bean.TabCate;
 import com.warm.livelive.utils.rx.CustomObserver;
 import com.warm.livelive.utils.rx.RxUtils;
 
@@ -18,7 +19,19 @@ import java.util.List;
 public class TablePresenter extends RxPresenter<TableContract.View> implements TableContract.Presenter {
 
     @Override
-    public void getSubChannel(@TableContract.Tag final String tag) {
+    public void getTabCate() {
+        mDataManager.getTabCate()
+                .compose(RxUtils.<List<TabCate>>ioToMain(mView))
+                .subscribe(new CustomObserver<List<TabCate>>(mCompositeDisposable, mView) {
+                    @Override
+                    public void onNext(List<TabCate> tabCates) {
+                        mView.getTabCate(tabCates);
+                    }
+                });
+    }
+
+    @Override
+    public void getSubChannel(final String tag) {
         mDataManager.getSubChannel(tag)
                 .compose(RxUtils.<List<SubChannel>>ioToMain(mView))
                 .subscribe(new CustomObserver<List<SubChannel>>(mCompositeDisposable, mView) {

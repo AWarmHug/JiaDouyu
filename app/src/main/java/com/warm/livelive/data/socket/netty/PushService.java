@@ -7,7 +7,10 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.warm.livelive.error.CustomException;
+import com.warm.livelive.event.Danmu;
 import com.warm.livelive.utils.rx.RxUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
@@ -47,7 +50,8 @@ public class PushService extends Service {
 
                             @Override
                             public void onDanmu(String type, String msg) {
-
+//                                Log.d("Netty", "onDanmu: " + msg);
+                                EventBus.getDefault().post(new Danmu(msg));
                             }
                         });
                     }
@@ -55,13 +59,11 @@ public class PushService extends Service {
                 .compose(RxUtils.ioToMain())
                 .subscribe();
 
-
         return binder;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
 
         return super.onStartCommand(intent, flags, startId);
     }

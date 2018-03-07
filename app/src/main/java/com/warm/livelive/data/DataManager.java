@@ -4,6 +4,7 @@ package com.warm.livelive.data;
 import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
 import com.warm.livelive.data.bean.SubChannel;
+import com.warm.livelive.data.bean.TabCate;
 import com.warm.livelive.data.http.HttpHelper;
 import com.warm.livelive.data.http.HttpHelperImpl;
 
@@ -28,6 +29,11 @@ public class DataManager implements HttpHelper {
 
     private DataManager() {
         this.mHttpHelper = HttpHelperImpl.newInstance();
+    }
+
+    @Override
+    public Observable<List<TabCate>> getTabCate() {
+        return mHttpHelper.getTabCate();
     }
 
     @Override

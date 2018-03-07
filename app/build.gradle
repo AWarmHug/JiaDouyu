@@ -10,6 +10,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [eventBusIndex: 'com.warm.livelive.MyEventBusIndex']
+            }
+        }
     }
     buildTypes {
         release {
@@ -50,6 +56,9 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:$rootProject.ext.glideVersion"
     //weight
     compile "com.github.ksoichiro:android-observablescrollview:$rootProject.ext.observablescrollviewVersion"
+    compile 'org.greenrobot:eventbus:3.1.1'
+    annotationProcessor 'org.greenrobot:eventbus-annotation-processor:3.1.1'
+
     compile project(':playerlib')
     compile project(':utilslib')
 

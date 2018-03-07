@@ -1,13 +1,10 @@
 package com.warm.livelive.mvp;
 
-import android.support.annotation.StringDef;
-
 import com.warm.livelive.base.BaseView;
 import com.warm.livelive.base.IBasePresenter;
 import com.warm.livelive.data.bean.SubChannel;
+import com.warm.livelive.data.bean.TabCate;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -20,28 +17,19 @@ public interface TableContract {
 
     interface View extends BaseView {
 
+        void getTabCate(List<TabCate> tabCates);
+
         void getSubChannel(List<SubChannel> subChannels);
 
     }
 
     interface Presenter extends IBasePresenter<View> {
 
-        void getSubChannel(@Tag String tag);
+        void getTabCate();
+
+        void getSubChannel(String tag);
 
     }
 
-
-    public static final String GAME = "game";
-    public static final String SJYX = "sjyx";
-    public static final String KTYX = "ktyx";
-    public static final String KJ = "kj";
-    public static final String YZ = "yz";
-    public static final String YL = "yl";
-    public static final String ZNL = "znl";
-
-    @StringDef({GAME, SJYX, KTYX, KJ, YZ, YL, ZNL})
-    @Retention(RetentionPolicy.CLASS)
-    public @interface Tag {
-    }
 
 }

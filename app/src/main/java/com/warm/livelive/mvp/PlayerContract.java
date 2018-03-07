@@ -11,12 +11,13 @@ import com.warm.livelive.base.IBasePresenter;
 
 public interface PlayerContract {
     interface View extends BaseView{
-
+        void getDanmu(String danmu);
     }
 
     interface Presenter extends IBasePresenter<View> {
 
         void loadPrepare(String roomId,String groupId);
+
 
     }
 }

@@ -23,7 +23,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitHelper {
     private static OkHttpClient okHttpClient;
-    private static Retrofit retrofit;
+    private static Retrofit retrofit,retrofitV2;
 
     public static void init() {
         if (okHttpClient == null) {
@@ -37,6 +37,13 @@ public class RetrofitHelper {
             synchronized (RetrofitHelper.class) {
                 if (retrofit == null) {
                     retrofit = provideRetrofit(okHttpClient);
+                }
+            }
+        }
+        if (retrofitV2==null){
+            synchronized (RetrofitHelper.class){
+                if (retrofitV2==null){
+                    retrofitV2=provideRetrofitV2(okHttpClient);
                 }
             }
         }
@@ -68,11 +75,27 @@ public class RetrofitHelper {
                 .build();
     }
 
+    public static Retrofit provideRetrofitV2(OkHttpClient client) {
+        return new Retrofit.Builder()
+                .baseUrl(ApiConfig.DOUYU_APIV2)
+                .client(client)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .build();
+    }
+
     public static <T> T provideApi(Class<T> clazz) {
         if (retrofit == null) {
             init();
         }
         return retrofit.create(clazz);
+    }
+
+    public static <T> T provideApiV2(Class<T> clazz) {
+        if (retrofitV2 == null) {
+            init();
+        }
+        return retrofitV2.create(clazz);
     }
 
 

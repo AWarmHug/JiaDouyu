@@ -31,7 +31,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
         super.userEventTriggered(ctx, evt);
         if (evt instanceof IdleStateEvent) {
            long now= System.currentTimeMillis();
-            Log.d("Netty", "userEventTriggered: "+now);
+//            Log.d("Netty", "userEventTriggered: "+now);
             IdleStateEvent e = (IdleStateEvent) evt;
             switch (e.state()) {
                 case WRITER_IDLE:
@@ -55,7 +55,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-        Log.d("Netty", "exceptionCaught: ");
+//        Log.d("Netty", "exceptionCaught: ");
     }
 
 
@@ -63,6 +63,9 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
         Log.d("Netty", "channelRead: "+msg);
-
+        Message message=new Message((String) msg);
+        if (message.getMap().get("type")!=null&&message.getMap().get("txt")!=null){
+            mListener.onDanmu(message.getMap().get("type"),message.getMap().get("txt"));
+        }
     }
 }
