@@ -11,7 +11,7 @@ import io.netty.handler.timeout.IdleStateEvent;
  * 时间：2018-02-27 08:52
  * 描述：
  */
-public class NettyClientHandler extends ChannelInboundHandlerAdapter{
+public class NettyClientHandler extends ChannelInboundHandlerAdapter {
 
     private OnHandlerListener mListener;
 
@@ -30,7 +30,7 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
         super.userEventTriggered(ctx, evt);
         if (evt instanceof IdleStateEvent) {
-           long now= System.currentTimeMillis();
+            long now = System.currentTimeMillis();
 //            Log.d("Netty", "userEventTriggered: "+now);
             IdleStateEvent e = (IdleStateEvent) evt;
             switch (e.state()) {
@@ -62,10 +62,13 @@ public class NettyClientHandler extends ChannelInboundHandlerAdapter{
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         super.channelRead(ctx, msg);
-        Log.d("Netty", "channelRead: "+msg);
-        Message message=new Message((String) msg);
-        if (message.getMap().get("type")!=null&&message.getMap().get("txt")!=null){
-            mListener.onDanmu(message.getMap().get("type"),message.getMap().get("txt"));
-        }
+        Log.d("Netty", "channelRead: " + msg);
+        String ss = (String) msg;
+       if (ss.contains("chatmsg")) {
+           Message message = new Message(ss);
+           if (message.getMap().get("type") != null && message.getMap().get("txt") != null) {
+               mListener.onDanmu(message.getMap().get("type"), message.getMap().get("txt"));
+           }
+       }
     }
 }
