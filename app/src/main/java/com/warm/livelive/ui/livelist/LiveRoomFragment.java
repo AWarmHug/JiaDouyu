@@ -8,8 +8,8 @@ import android.util.Log;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyMvpFragment;
-import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.mvp.LiveRoomContract;
 import com.warm.livelive.mvp.LiveRoomPresenter;
@@ -96,7 +96,7 @@ public class LiveRoomFragment extends LazyMvpFragment<LiveRoomPresenter> impleme
         mListAdapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void itemClick(int position) {
-                mPresenter.getLiveHlsUrl(mListAdapter.getList().get(position).getRoom_id());
+                mPresenter.getLiveRtmpUrl(mListAdapter.getList().get(position).getRoom_id());
 
 
                 Log.d("TAG", "itemClick: position="+position);
@@ -107,9 +107,9 @@ public class LiveRoomFragment extends LazyMvpFragment<LiveRoomPresenter> impleme
     }
 
     @Override
-    public void getLiveHlsUrl(HlsUrl hlsUrl) {
+    public void getLiveRtmpUrl(RtmpUrl rtmpUrl) {
         Intent intent=new Intent(getContext(), PlayerActivity.class);
-        intent.putExtra(PlayerActivity.NAME_PLAY_URL,hlsUrl);
+        intent.putExtra(PlayerActivity.NAME_PLAY_URL,rtmpUrl);
         startActivity(intent);
     }
 

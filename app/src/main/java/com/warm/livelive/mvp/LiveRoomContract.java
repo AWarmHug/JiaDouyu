@@ -1,9 +1,9 @@
 package com.warm.livelive.mvp;
 
-import com.warm.livelive.base.IBasePresenter;
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.data.bean.HlsUrl;
+import com.warm.livelive.base.IBasePresenter;
 import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.RtmpUrl;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface LiveRoomContract {
 
     interface View extends BaseView{
         void getLiveRooms(List<LiveRoom> liveRooms);
-        void getLiveHlsUrl(HlsUrl hlsUrl);
+        void getLiveRtmpUrl(RtmpUrl rtmpUrl);
 
 
     }
@@ -26,7 +26,7 @@ public interface LiveRoomContract {
 
         void getLiveRooms(String tagId,int page);
 
-        void getLiveHlsUrl(String roomId);
+        void getLiveRtmpUrl(String roomId);
 
     }
 

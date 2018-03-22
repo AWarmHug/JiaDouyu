@@ -1,8 +1,10 @@
 package com.warm.livelive.mvp;
 
+import android.util.Log;
+
 import com.warm.livelive.base.RxPresenter;
-import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.utils.rx.CustomObserver;
 import com.warm.livelive.utils.rx.RxUtils;
 
@@ -33,15 +35,16 @@ public class LiveRoomPresenter extends RxPresenter<LiveRoomContract.View>
     }
 
     @Override
-    public void getLiveHlsUrl(final String roomId) {
+    public void getLiveRtmpUrl(final String roomId) {
         mDataManager
-                .getHlsUrl(roomId)
-                .compose(RxUtils.<HlsUrl>ioToMain(mView))
-                .subscribe(new CustomObserver<HlsUrl>(mCompositeDisposable, mView) {
+                .getRtmpUrl(roomId)
+                .compose(RxUtils.<RtmpUrl>ioToMain(mView))
+                .subscribe(new CustomObserver<RtmpUrl>(mCompositeDisposable, mView) {
                     @Override
-                    public void onNext(@NonNull HlsUrl hlsUrl) {
-                        hlsUrl.setRoomId(roomId);
-                        mView.getLiveHlsUrl(hlsUrl);
+                    public void onNext(@NonNull RtmpUrl rtmpUrl) {
+                        Log.d("&&&&&&", "onNext: "+rtmpUrl.toString());
+//                        hlsUrl.setRoomId(roomId);
+                        mView.getLiveRtmpUrl(rtmpUrl);
                     }
                 });
     }

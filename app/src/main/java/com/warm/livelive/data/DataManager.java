@@ -3,6 +3,7 @@ package com.warm.livelive.data;
 
 import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.data.bean.TabCate;
 import com.warm.livelive.data.http.HttpHelper;
@@ -49,5 +50,10 @@ public class DataManager implements HttpHelper {
     @Override
     public Observable<HlsUrl> getHlsUrl(String roomId) {
         return mHttpHelper.getHlsUrl(roomId);
+    }
+
+    @Override
+    public Observable<RtmpUrl> getRtmpUrl(String roomId) {
+        return mHttpHelper.getRtmpUrl(roomId);
     }
 }

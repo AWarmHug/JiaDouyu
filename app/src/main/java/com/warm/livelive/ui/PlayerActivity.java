@@ -7,7 +7,7 @@ import android.widget.Button;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseMvpActivity;
-import com.warm.livelive.data.bean.HlsUrl;
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.mvp.PlayerContract;
 import com.warm.livelive.mvp.PlayerPresenter;
 import com.warm.playerlib.custom.JustBasePlayController;
@@ -33,7 +33,7 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
     private Button button;
     private List<Integer> scaleType;
     private int i;
-    private HlsUrl hlsUrl;
+    private RtmpUrl rtmpUrl;
 
     private DanmakuContext mDanmaContext;
 
@@ -68,7 +68,8 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
 
 
         final JustBasePlayController controller = new JustBasePlayController(this);
-        videoView.setDataSource(hlsUrl.getHls_url())
+
+        videoView.setDataSource(rtmpUrl.getRtmp_url()+"/"+rtmpUrl.getRtmp_live())
 //                .setAutoRotation()
                 .setDanma(mDanmaContext, new BaseDanmakuParser() {
                     @Override
@@ -90,7 +91,8 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
                 videoView.addDanma(createDanmaku(true,danma));
             }
         });
-        mPresenter.loadPrepare(hlsUrl.getRoomId(), "-9999");
+
+        mPresenter.loadPrepare(String.valueOf(rtmpUrl.getRoom_id()), "-9999");
     }
 
 
@@ -100,7 +102,7 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
     }
 
     private void initData() {
-        hlsUrl = getIntent().getParcelableExtra(NAME_PLAY_URL);
+        rtmpUrl = getIntent().getParcelableExtra(NAME_PLAY_URL);
     }
 
     @Override

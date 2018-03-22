@@ -2,6 +2,7 @@ package com.warm.livelive.data.http;
 
 import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.data.bean.LiveRoom;
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.data.bean.SubChannel;
 import com.warm.livelive.data.bean.TabCate;
 
@@ -24,6 +25,9 @@ public interface HttpHelper {
     Observable<List<LiveRoom>> getLiveRooms(String tagId, int page);
 
     Observable<HlsUrl> getHlsUrl(String roomId);
+
+    Observable<RtmpUrl> getRtmpUrl(String roomId);
+
 
 
 }
