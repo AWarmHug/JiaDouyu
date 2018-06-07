@@ -11,12 +11,12 @@
         android:layout_height="match_parent" />
 
 
-    <com.warm.playerlib.custom.TitleBar
+    <com.warm.playerlib.custom.video.TitleBar
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="40dp">
 
-    </com.warm.playerlib.custom.TitleBar>
+    </com.warm.playerlib.custom.video.TitleBar>
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -38,13 +38,13 @@
         tools:visibility="visible" />
 
 
-    <com.warm.playerlib.custom.BottomBar
+    <com.warm.playerlib.custom.video.BottomBar
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_gravity="bottom">
 
-    </com.warm.playerlib.custom.BottomBar>
+    </com.warm.playerlib.custom.video.BottomBar>
 
 
     <ProgressBar
@@ -56,8 +56,7 @@
         android:max="100"
         android:progressDrawable="@drawable/seek_drawable"
         android:visibility="gone"
-        tools:visibility="visible"
-        />
+        tools:visibility="visible" />
 
 
 </FrameLayout>

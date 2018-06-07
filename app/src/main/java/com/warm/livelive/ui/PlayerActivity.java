@@ -2,16 +2,14 @@ package com.warm.livelive.ui;
 
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseMvpActivity;
 import com.warm.livelive.data.bean.HlsUrl;
 import com.warm.livelive.mvp.PlayerContract;
 import com.warm.livelive.mvp.PlayerPresenter;
-import com.warm.playerlib.custom.JustBasePlayController;
-import com.warm.playerlib.just.JustVideoPlayer;
+import com.warm.playerlib.custom.live.LivePlayController;
+import com.warm.playerlib.player.JustVideoPlayer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,7 +28,6 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
 
     public static final String NAME_PLAY_URL = "PLAY_URL";
     private JustVideoPlayer videoView;
-    private Button button;
     private List<Integer> scaleType;
     private int i;
     private HlsUrl hlsUrl;
@@ -43,7 +40,6 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
         initData();
 
         videoView = (JustVideoPlayer) findViewById(R.id.videoView);
-        button = (Button) findViewById(R.id.button);
 
         scaleType = new ArrayList<>();
         scaleType.add(JustVideoPlayer.SCALE_WRAP_CONTENT);
@@ -67,7 +63,7 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
                 .preventOverlapping(overlappingEnablePair).setDanmakuMargin(40);
 
 
-        final JustBasePlayController controller = new JustBasePlayController(this);
+        final LivePlayController controller = new LivePlayController(this);
         videoView.setDataSource(hlsUrl.getHls_url())
 //                .setAutoRotation()
                 .setDanma(mDanmaContext, new BaseDanmakuParser() {
@@ -78,18 +74,6 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
                 })
                 .addController(controller);
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                controller.setScaleType(scaleType.get(i));
-                i++;
-                if (i == 4) {
-                    i = 0;
-                }
-                String danma="弹幕"+i;
-                videoView.addDanma(createDanmaku(true,danma));
-            }
-        });
         mPresenter.loadPrepare(hlsUrl.getRoomId(), "-9999");
     }
 
@@ -127,7 +111,6 @@ public class PlayerActivity extends BaseMvpActivity<PlayerPresenter> implements 
     protected void onDestroy() {
         super.onDestroy();
         videoView.release();
-
     }
 
 

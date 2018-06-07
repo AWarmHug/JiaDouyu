@@ -1,4 +1,4 @@
-package com.warm.playerlib.just;
+package com.warm.playerlib.player;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -10,9 +10,8 @@ import android.widget.FrameLayout;
 /**
  * 作者：warm
  * 时间：2017-12-18 10:02
- * 描述：
+ * 描述：Controller的基类,封装了各种操作子类直接调用
  */
-
 public abstract class BasePlayController extends FrameLayout {
 
 
@@ -57,6 +56,7 @@ public abstract class BasePlayController extends FrameLayout {
 
     protected abstract int getLayoutRes();
 
+    protected abstract boolean isPostProgressRunnable();
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
@@ -77,14 +77,17 @@ public abstract class BasePlayController extends FrameLayout {
 
     public final void start() {
         mPlayer.start();
-        post(progressRunnable);
-
+        if (isPostProgressRunnable()) {
+            post(progressRunnable);
+        }
     }
 
 
     public final void pauseUser() {
         mPlayer.pauseUser();
-        removeCallbacks(progressRunnable);
+        if (isPostProgressRunnable()) {
+            removeCallbacks(progressRunnable);
+        }
     }
 
     /**
@@ -133,6 +136,14 @@ public abstract class BasePlayController extends FrameLayout {
         mPlayer.toNotFull();
     }
 
+    public void switchFull() {
+        if (isFull()) {
+            toNotFull();
+        } else {
+            toFull();
+        }
+    }
+
     /**
      * 当前播放View的状态
      * //用于设置各种状态的ui。
@@ -141,7 +152,7 @@ public abstract class BasePlayController extends FrameLayout {
      */
     public abstract void setPlayState(int state);
 
-    public void onBufferState(int state){
+    public void onBufferState(int state) {
 
     }
 
@@ -217,30 +228,6 @@ public abstract class BasePlayController extends FrameLayout {
         if (visibility == VISIBLE) {
             post(progressRunnable);
         }
-    }
-
-    public interface PlayControl {
-        boolean isPlaying();
-
-        void start();
-
-        void pauseUser();
-
-        void seekTo(long seekTo);
-
-        boolean isFull();
-
-        void toFull();
-
-        void toNotFull();
-
-        long getCurrentPosition();
-
-        long getDuration();
-
-        void setScaleType(int scaleType);
-
-        void replay();
     }
 
 

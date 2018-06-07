@@ -1,4 +1,4 @@
-package com.warm.playerlib.custom;
+package com.warm.playerlib.custom.video;
 
 import android.content.Context;
 import android.util.AttributeSet;

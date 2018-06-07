@@ -1,4 +1,4 @@
-package com.warm.playerlib.custom;
+package com.warm.playerlib.custom.video;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -39,7 +39,6 @@ public class TitleBar extends LinearLayout {
 
     public void setTitle(String title) {
         tv_title.setText(title);
-
     }
 
     public void setTotalTime(int m) {

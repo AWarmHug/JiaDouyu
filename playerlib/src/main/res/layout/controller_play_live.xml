@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@color/black_50"
+        android:drawableLeft="@drawable/ic_vec_back"
+        android:drawablePadding="16dp"
+        android:drawableTint="@color/white"
+        android:gravity="center_vertical"
+        android:paddingLeft="16dp"
+        android:textColor="@color/white"
+        tools:text="这是标题" />
+
+
+    <ImageButton
+        android:id="@+id/bt_lock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="@color/transparent"
+        android:padding="12dp"
+        android:src="@drawable/ic_vec_lock" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/bt_toFull"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|end"
+        android:background="@color/transparent"
+        android:padding="12dp"
+        android:src="@drawable/ic_vec_tofull" />
+
+</FrameLayout>

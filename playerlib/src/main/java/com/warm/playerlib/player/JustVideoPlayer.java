@@ -1,4 +1,4 @@
-package com.warm.playerlib.just;
+package com.warm.playerlib.player;
 
 import android.app.Activity;
 import android.content.Context;
@@ -33,7 +33,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
  * 描述：
  */
 
-public class JustVideoPlayer extends FrameLayout implements BasePlayController.PlayControl {
+public class JustVideoPlayer extends FrameLayout implements PlayControl {
     private static final String TAG = "JustVideoView";
     /**
      * 弹幕相关
@@ -618,7 +618,9 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
 
 
     public void addController(BasePlayController playController) {
-        removeView(mController);
+        if (mController!=null) {
+            removeView(mController);
+        }
         playController.setControl(this);
         this.mController = playController;
         LayoutParams params = new LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -626,6 +628,7 @@ public class JustVideoPlayer extends FrameLayout implements BasePlayController.P
         if (autoRotation && mOrientationEventListener != null && mOrientationEventListener.canDetectOrientation()) {
             mOrientationEventListener.enable();
         }
+        start();
     }
 
 

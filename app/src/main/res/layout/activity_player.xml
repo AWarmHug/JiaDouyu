@@ -7,16 +7,9 @@
     android:orientation="vertical"
     tools:context="com.warm.livelive.ui.PlayerActivity">
 
-    <com.warm.playerlib.just.JustVideoPlayer
+    <com.warm.playerlib.player.JustVideoPlayer
         android:id="@+id/videoView"
         android:layout_width="match_parent"
         android:layout_height="240dp" />
-
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        />
 
 </RelativeLayout>

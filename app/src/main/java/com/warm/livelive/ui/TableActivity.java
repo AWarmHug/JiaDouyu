@@ -1,5 +1,6 @@
 package com.warm.livelive.ui;
 
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -95,6 +96,8 @@ public class TableActivity extends BaseMvpActivity<TablePresenter> implements Ta
                 RadioButton rb = new RadioButton(this);
                 rb.setId(i);
                 rb.setText(tabCates.get(i).getCate_name());
+                rb.setButtonDrawable(new ColorDrawable(ContextCompat.getColor(this,R.color.transparent)));
+                rb.setBackgroundTintList(ContextCompat.getColorStateList(this,R.color.navi_item_checked));
                 RadioGroup.LayoutParams lp = new RadioGroup.LayoutParams(RadioGroup.LayoutParams.MATCH_PARENT, RadioGroup.LayoutParams.WRAP_CONTENT);
                 rb.setLayoutParams(lp);
                 group.addView(rb);

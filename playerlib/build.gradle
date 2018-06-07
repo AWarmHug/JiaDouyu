@@ -9,9 +9,6 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
-
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
     }
     buildTypes {
         release {
@@ -27,13 +24,9 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
-    compile "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
-    testCompile 'junit:junit:4.12'
-    compile "tv.danmaku.ijk.media:ijkplayer-java:$rootProject.ext.ijkplayerVersion"
-    compile "com.github.ctiao:DanmakuFlameMaster:$rootProject.ext.danmakuVersion"
-    compile "com.github.ctiao:ndkbitmap-armv7a:$rootProject.ext.danmakuVersion"
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    api "com.android.support:appcompat-v7:$rootProject.ext.supportVersion"
+    api "tv.danmaku.ijk.media:ijkplayer-java:$rootProject.ext.ijkplayerVersion"
+    api "com.github.ctiao:DanmakuFlameMaster:$rootProject.ext.danmakuVersion"
+    api "com.github.ctiao:ndkbitmap-armv7a:$rootProject.ext.danmakuVersion"
 }

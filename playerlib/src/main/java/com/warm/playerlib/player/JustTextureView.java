@@ -1,4 +1,4 @@
-package com.warm.playerlib.just;
+package com.warm.playerlib.player;
 
 import android.content.Context;
 import android.util.AttributeSet;

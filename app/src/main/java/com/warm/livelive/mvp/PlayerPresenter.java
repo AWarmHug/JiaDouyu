@@ -31,7 +31,6 @@ public class PlayerPresenter extends RxPresenter<PlayerContract.View> implements
     @Subscribe
     public void onDanmuEvent(Danmu danmu) {
         mView.getDanmu(danmu.getDanmu());
-
     }
 
     @Override
