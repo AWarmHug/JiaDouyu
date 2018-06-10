@@ -1,5 +1,7 @@
 package com.warm.livelive.data.socket.netty;
 
+import com.warm.livelive.douyu.data.socket.netty.Message;
+
 import org.junit.Before;
 import org.junit.Test;
 

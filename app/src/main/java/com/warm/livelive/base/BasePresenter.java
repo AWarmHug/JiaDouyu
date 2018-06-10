@@ -2,7 +2,7 @@ package com.warm.livelive.base;
 
 
 import com.warm.livelive.LiveApp;
-import com.warm.livelive.data.DataManager;
+import com.warm.livelive.douyu.data.DataManager;
 
 /**
  * 作者：warm

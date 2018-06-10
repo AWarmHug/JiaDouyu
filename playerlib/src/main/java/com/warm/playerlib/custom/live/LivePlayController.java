@@ -1,5 +1,6 @@
 package com.warm.playerlib.custom.live;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.warm.playerlib.R;
 import com.warm.playerlib.player.BasePlayController;
@@ -49,6 +51,8 @@ public class LivePlayController extends BasePlayController implements View.OnCli
         mpBar = findViewById(R.id.progressBar);
         btToFull = findViewById(R.id.bt_toFull);
 
+        tvTitle.setOnClickListener(this);
+        btLock.setOnClickListener(this);
         btToFull.setOnClickListener(this);
     }
 
@@ -122,6 +126,12 @@ public class LivePlayController extends BasePlayController implements View.OnCli
         int i = v.getId();
         if (i == R.id.bt_toFull) {
             switchFull();
+        }else if (i==R.id.bt_lock){
+            Toast.makeText(getContext(), "暂未实现", Toast.LENGTH_SHORT).show();
+        }else if (i==R.id.tv_title){
+            if (getContext() instanceof Activity){
+                ((Activity) getContext()).onBackPressed();
+            }
         }
     }
 }

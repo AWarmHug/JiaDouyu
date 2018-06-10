@@ -6,8 +6,8 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 
-import com.warm.livelive.data.DataManager;
-import com.warm.livelive.data.socket.netty.PushService;
+import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.douyu.data.socket.netty.PushService;
 
 /**
  * 作者：warm

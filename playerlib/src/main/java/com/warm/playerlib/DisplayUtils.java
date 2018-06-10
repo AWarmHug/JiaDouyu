@@ -18,9 +18,6 @@ public class DisplayUtils {
 
     public static void hideBar(Activity activity) {
         ViewGroup viewGroup = (ViewGroup) activity.findViewById(android.R.id.content);
-//        for (int i=0;i<viewGroup.getChildCount();i++) {
-//            viewGroup.getChildAt(i).setVisibility(View.GONE);
-//        }
         FragmentActivity fragmentActivity = (FragmentActivity) activity;
         fragmentActivity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -30,9 +27,6 @@ public class DisplayUtils {
 
     public static void showBar(Activity activity) {
         ViewGroup viewGroup = (ViewGroup) activity.findViewById(android.R.id.content);
-//        for (int i=0;i<viewGroup.getChildCount();i++) {
-//            viewGroup.getChildAt(i).setVisibility(View.GONE);
-//        }
         FragmentActivity fragmentActivity = (FragmentActivity) activity;
         fragmentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
         fragmentActivity.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);

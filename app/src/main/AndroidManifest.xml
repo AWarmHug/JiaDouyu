@@ -13,18 +13,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:name=".LiveApp">
-        <activity
-            android:name=".ui.PlayerActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
-        </activity>
-        <activity android:name=".ui.TableActivity">
+        <activity android:name=".boxapp.BoxActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <service android:name=".data.socket.netty.PushService">
+        <activity
+            android:name=".douyu.ui.PlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize">
+        </activity>
+        <activity android:name=".douyu.ui.TableActivity">
+
+        </activity>
+        <service android:name=".douyu.data.socket.netty.PushService">
 
         </service>
     </application>

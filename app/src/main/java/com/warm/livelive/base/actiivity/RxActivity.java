@@ -4,7 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 
 import com.warm.livelive.LiveApp;
-import com.warm.livelive.data.DataManager;
+import com.warm.livelive.douyu.data.DataManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

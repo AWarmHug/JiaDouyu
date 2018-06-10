@@ -2,7 +2,7 @@ package com.warm.livelive.utils.rx;
 
 
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.data.bean.BaseBean;
+import com.warm.livelive.douyu.data.bean.BaseBean;
 import com.warm.livelive.error.CustomException;
 
 import java.util.ArrayList;

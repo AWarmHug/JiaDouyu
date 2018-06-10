@@ -20,8 +20,8 @@ ext {
     targetSdkVersion = 27
     supportVersion = '27.1.1'
     butterknifeVersion = '8.8.1'
-    rxjavaVersion = '2.1.0'
-    rxandroidVersion = '2.0.1'
+    rxjavaVersion = '2.1.14'
+    rxandroidVersion = '2.0.2'
     rxpermissionsVersion = '0.9.5'
     rxbindingVersion = '2.0.0'
     retrofitVersion = '2.3.0'

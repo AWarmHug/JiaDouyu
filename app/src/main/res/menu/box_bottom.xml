@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_douyu"
+        android:checked="true"
+        android:icon="@drawable/ic_vec_douyu"
+        android:title="斗鱼" />
+    <item
+        android:id="@+id/menu_bilibili"
+        android:icon="@drawable/ic_vec_bilibili"
+        android:title="B站" />
+    <item
+        android:id="@+id/menu_huya"
+        android:icon="@drawable/ic_vec_bilibili"
+        android:title="虎牙" />
+</menu>

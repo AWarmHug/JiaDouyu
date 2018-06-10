@@ -8,7 +8,7 @@ import android.view.View;
 
 import com.warm.livelive.LiveApp;
 import com.warm.livelive.R;
-import com.warm.livelive.data.DataManager;
+import com.warm.livelive.douyu.data.DataManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;

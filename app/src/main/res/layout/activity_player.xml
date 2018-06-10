@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.warm.livelive.ui.PlayerActivity">
+    tools:context="com.warm.livelive.douyu.ui.PlayerActivity">
 
     <com.warm.playerlib.player.JustVideoPlayer
         android:id="@+id/videoView"
