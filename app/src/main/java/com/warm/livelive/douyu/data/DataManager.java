@@ -1,6 +1,7 @@
 package com.warm.livelive.douyu.data;
 
 
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.Activity;
 import com.warm.livelive.douyu.data.bean.douyu.Cate3;
 import com.warm.livelive.douyu.data.bean.douyu.Component;
@@ -18,10 +19,12 @@ import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
 import com.warm.livelive.douyu.data.http.api.apiv2.LiveApis;
 import com.warm.livelive.douyu.data.http.api.capi.CApis;
 import com.warm.livelive.douyu.data.http.retrofit.RetrofitHelper;
+import com.warm.livelive.utils.Md5Util;
 import com.warm.livelive.utils.rx.RxUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import io.reactivex.Observable;
 
@@ -64,11 +67,22 @@ public class DataManager {
         return mCApis.getHlsUrl(url, roomId).compose(RxUtils.handleResult());
     }
 
+    public Observable<RtmpUrl> getRtmpUrl(String roomId) {
+        String url2 = " https://playclient.douyucdn.cn/lapi/live/appGetPlayer/stream/" + roomId + "?token=&rate=-1&cdn=&txdw=0&hevc=0&cptl=0101&csign=9741dc5a78c5a1ad16c30e06906ae9c1&client_sys=android";
+        String api_url = "http://www.douyutv.com/api/v1/";
+        String args = String.format(Locale.CHINA, "room/%s?aid=wp&client_sys=wp&time=%d", roomId, System.currentTimeMillis());
+        String auth_md5 = (args + "zNzMV1y4EMxOHS6I5WKm");
+        String auth_str = Md5Util.strToMd5Low32(auth_md5);
+        String url3 = String.format("%s%s&auth=%s", api_url, args, auth_str);
+
+        return mLiveApis.getRtmpUrl(url3).compose(RxUtils.<RtmpUrl>handleResult());
+    }
+
     public Observable<List<TabCate1>> getTabCate1List() {
         return mLiveApis.getTabCate1List().compose(RxUtils.handleListResult());
     }
 
-    public Observable<List<TabCate2>> getTabCate2List( int tab_id){
+    public Observable<List<TabCate2>> getTabCate2List(int tab_id) {
         return mLiveApis.getTabCate2List(tab_id).compose(RxUtils.handleListResult());
     }
 
@@ -142,8 +156,8 @@ public class DataManager {
                 .compose(RxUtils.handleResult());
     }
 
-    public Observable<List<LiveRoomItem>> getSportLiveRoom(int offset, int limit){
-        return mCApis.getSportLiveRoom(offset,limit,System.currentTimeMillis()/1000)
+    public Observable<List<LiveRoomItem>> getSportLiveRoom(int offset, int limit) {
+        return mCApis.getSportLiveRoom(offset, limit, System.currentTimeMillis() / 1000)
                 .compose(RxUtils.handleListResult());
     }
 

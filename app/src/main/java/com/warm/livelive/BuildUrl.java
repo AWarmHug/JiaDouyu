@@ -1,5 +1,7 @@
 package com.warm.livelive;
 
+import com.warm.livelive.utils.Md5Util;
+
 import java.util.HashMap;
 
 /**
@@ -45,7 +47,7 @@ public class BuildUrl {
         int time = (int) (System.currentTimeMillis()/1000);
         String signContent = "lapi/live/thirdPart/getPlay/" + roomId + "?aid=pcclient&rate=0&time="
                 + time + "9TUk5fjjUjg9qIMH3sdnh";
-        String sign = Md5.strToMd5Low32(signContent);
+        String sign = Md5Util.strToMd5Low32(signContent);
 
         HashMap<String, String> map = new HashMap<>();
         map.put("auth", sign);

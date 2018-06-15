@@ -1,5 +1,6 @@
 package com.warm.livelive.douyu.data.http.api.apiv2;
 
+import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.ActivityList;
 import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
 import com.warm.livelive.douyu.data.bean.douyu.Component;
@@ -18,6 +19,7 @@ import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 
 /**
  * 作者：warm
@@ -32,6 +34,9 @@ public interface LiveApis {
      */
     @GET("live/TabCate/custom?client_sys=android")
     Observable<BaseBean<List<TabCate>>> getTabCate();
+
+    @GET
+    Observable<BaseBean<RtmpUrl>> getRtmpUrl(@Url String url);
 
 
     @GET("live/Cate/getTabCate1List")

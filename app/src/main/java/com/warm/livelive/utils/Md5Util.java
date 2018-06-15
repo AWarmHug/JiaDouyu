@@ -1,4 +1,4 @@
-package com.warm.livelive;
+package com.warm.livelive.utils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
  * Created by 小萌神_0 on 2016/5/28.
  *
  */
-public class Md5 {
+public class Md5Util {
     public static String strToMd5Low32(String str) {
         StringBuilder builder = new StringBuilder();
         try {
