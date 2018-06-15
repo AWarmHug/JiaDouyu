@@ -8,6 +8,8 @@ import android.os.IBinder;
 
 import com.warm.livelive.douyu.data.DataManager;
 import com.warm.livelive.douyu.data.socket.netty.PushService;
+import com.warm.livelive.utils.imageloader.GlideImageLoader;
+import com.warm.livelive.utils.imageloader.ImageLoader;
 
 /**
  * 作者：warm
@@ -23,6 +25,9 @@ public class LiveApp extends Application {
     private DataManager mDataManager;
 
     private PushService pushService;
+
+    private ImageLoader mImageLoader;
+
 
     private ServiceConnection conn = new ServiceConnection() {
 
@@ -43,6 +48,7 @@ public class LiveApp extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        mImageLoader = new GlideImageLoader();
         mDataManager = DataManager.newInstance();
         Intent intent = new Intent(this, PushService.class);
         bindService(intent, conn, BIND_AUTO_CREATE);
@@ -59,5 +65,9 @@ public class LiveApp extends Application {
 
     public DataManager getDataManager() {
         return mDataManager;
+    }
+
+    public ImageLoader getImageLoader() {
+        return mImageLoader;
     }
 }

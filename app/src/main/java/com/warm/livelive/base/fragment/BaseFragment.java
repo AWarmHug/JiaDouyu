@@ -1,24 +1,22 @@
 package com.warm.livelive.base.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.warm.livelive.R;
 import com.warm.livelive.base.BaseView;
 import com.warm.livelive.base.actiivity.BaseActivity;
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.error.KnownException;
+import com.warm.livelive.utils.CheckUtil;
+import com.warm.livelive.widget.load.DouyuLoadView;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -26,11 +24,13 @@ import butterknife.Unbinder;
 /**
  * 作者: 51hs_android
  * 时间: 2017/3/10
- * 简介: Fragment的基类，其他Fragment不要直接继承, ViewPager上的fragment继承{@link LazyFragment} 其他fragment继承RxFragment
+ * 简介: Fragment的基类，其他Fragment不要直接继承, ViewPager上的fragment继承{@link LazyRxFragment} 其他fragment继承RxFragment
  */
 public abstract class BaseFragment extends Fragment implements BaseView {
 
     private Unbinder binder;
+    private ViewGroup mViewGroup;
+    private DouyuLoadView mLoadView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,51 +47,39 @@ public abstract class BaseFragment extends Fragment implements BaseView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binder = ButterKnife.bind(this, view);
-    }
-
-
-    private ProgressDialog getPDialog() {
-        return ((BaseActivity) getActivity()).getPDialog();
-    }
-
-    @Override
-    public void onShowLoad() {
-        if (getActivity() instanceof BaseActivity) {
-
-            if (!getPDialog().isShowing()) {
-                getPDialog().show();
-            }
-
+        if (view instanceof ViewGroup){
+            mViewGroup= (ViewGroup) view;
+            mLoadView=new DouyuLoadView(view.getContext());
+            mViewGroup.addView(mLoadView);
+            mLoadView.setVisibility(View.GONE);
         }
     }
 
+
     @Override
-    public void onDismissLoad() {
-        if (getPDialog().isShowing()) {
-            getPDialog().dismiss();
+    public void emptyLoad() {
+        CheckUtil.checkNotNull(mViewGroup);
+
+    }
+
+    @Override
+    public void dismissEmptyLoad() {
+
+    }
+
+
+    @Override
+    public void toast(@NonNull final KnownException error) {
+        if (getBVActivity() != null) {
+            getBVActivity().toast(error);
         }
     }
 
-    @Override
-    public void onTakeException(@NonNull final CustomException error) {
-
-        Snackbar.make(getView() == null ? getActivity().getWindow().getDecorView() : getView()
-                , error.getMessage()
-                , Snackbar.LENGTH_LONG)
-                .setAction(error.getActionName() == null ? getString(R.string.i_know) : error.getActionName()
-                        , new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (error.getListener() != null) {
-                                    error.getListener().errorAction();
-                                }
-                            }
-                        })
-                .show();
-
+    public void toast(@NonNull final String error) {
+        if (getBVActivity() != null) {
+            getBVActivity().toast(error);
+        }
     }
-
-
 
 
     @Override
@@ -99,12 +87,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
         return getContext();
     }
 
+    @Nullable
     @Override
     public BaseActivity getBVActivity() {
-        if (getActivity() instanceof BaseActivity) {
+        if (getActivity() != null && getActivity() instanceof BaseActivity) {
             return (BaseActivity) getActivity();
         } else {
-            throw new RuntimeException("fragment 需要放到BaseActivity上");
+            return null;
         }
     }
 
@@ -113,23 +102,24 @@ public abstract class BaseFragment extends Fragment implements BaseView {
      */
     public int getStateBarHeight() {
 
-        return ((BaseActivity) getActivity()).getStateBarHeight();
+        if (getBVActivity() != null) {
+            return getBVActivity().getStateBarHeight();
+        }else {
+            return 0;
+        }
+
     }
 
     public void onBackPressed() {
-        getActivity().onBackPressed();
+        if (getBVActivity() != null) {
+            getBVActivity().onBackPressed();
+        }
     }
 
     @ColorInt
     public int getColor(@ColorRes int colorRes) {
         return ContextCompat.getColor(getContext(), colorRes);
     }
-
-    public boolean isEmpty(@Nullable CharSequence str) {
-        return TextUtils.isEmpty(str);
-    }
-
-
 
 
     @Override

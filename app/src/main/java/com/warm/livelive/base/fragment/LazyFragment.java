@@ -7,10 +7,9 @@ import android.view.View;
 /**
  * 作者: 51hs_android
  * 时间: 2017/2/22
- * 简介:
+ * 简介: 只能在ViewPager下使用
  */
-
-public abstract class LazyFragment extends RxFragment{
+public abstract class LazyFragment extends BaseFragment{
 
     /**
      * 判断是不是一次可见,
@@ -44,10 +43,6 @@ public abstract class LazyFragment extends RxFragment{
         isInflate = true;
     }
 
-    @Override
-    public final void setTouchBack(View view) {
-//        super.setTouchBack(itemView);
-    }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -90,11 +85,6 @@ public abstract class LazyFragment extends RxFragment{
     }
 
     /**
-     * 用户不可见时.
-     */
-    protected abstract void doInVisible();
-
-    /**
      * 第一次加载出来,我们可以进行数据加载
      */
     protected abstract void doFirstVisible();
@@ -103,6 +93,12 @@ public abstract class LazyFragment extends RxFragment{
      * 用户可见时,但不是第一次可见,就是回到从其他页面回到当前页面时.
      */
     protected abstract void doVisible();
+
+    /**
+     * 用户不可见时.
+     */
+    protected abstract void doInVisible();
+
 
     @Override
     public void onDestroyView() {

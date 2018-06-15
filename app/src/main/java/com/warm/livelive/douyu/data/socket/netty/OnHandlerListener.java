@@ -1,6 +1,6 @@
 package com.warm.livelive.douyu.data.socket.netty;
 
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.error.KnownException;
 
 /**
  * 作者：warm
@@ -8,7 +8,7 @@ import com.warm.livelive.error.CustomException;
  * 描述：
  */
 public interface OnHandlerListener {
-    void onError(CustomException e);
+    void onError(KnownException e);
 
 
     void onDanmu(String type, String msg);

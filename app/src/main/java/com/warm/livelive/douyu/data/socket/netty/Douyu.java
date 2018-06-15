@@ -1,6 +1,6 @@
 package com.warm.livelive.douyu.data.socket.netty;
 
-import com.warm.livelive.douyu.data.bean.SendBean;
+import com.warm.livelive.douyu.data.bean.douyu.SendBean;
 import com.warm.livelive.douyu.data.socket.nativesocek.MsgEncoder;
 
 /**

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#497DFA</color>
-    <color name="colorPrimaryDark">#494ffa</color>
-    <color name="colorAccent">#497DFA</color>
+    <color name="colorPrimary">#1787fb</color>
+    <color name="colorPrimaryDark">#1787fb</color>
+    <color name="colorAccent">#1b6fc6</color>
 
     <color name="colorPrimaryInverse">#8c497dfa</color>
 
@@ -30,7 +30,7 @@
     <color name="green">#2ba900</color>
     <color name="green_dark">#ff6d9b00</color>
 
-    <color name="text_dark">#555555</color>
+    <color name="text_dark">#333333</color>
 
     <color name="text_dark_light">#777777</color>
 

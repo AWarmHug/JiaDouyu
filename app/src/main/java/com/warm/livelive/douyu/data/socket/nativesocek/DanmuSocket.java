@@ -3,8 +3,8 @@ package com.warm.livelive.douyu.data.socket.nativesocek;
 import android.util.Log;
 
 import com.warm.livelive.douyu.config.DouyuConfig;
-import com.warm.livelive.error.CustomException;
-import com.warm.livelive.utils.ByteUtils;
+import com.warm.livelive.error.KnownException;
+import com.warm.livelive.utils.ByteUtil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -94,12 +94,12 @@ public class DanmuSocket {
                         keepLife();
                         keepGetDanmu();
                     } else {
-                        postUiError(new CustomException("登录失败"));
+                        postUiError(new KnownException("登录失败"));
                     }
                 } else {
                     //连接失败提示
                     mAction = true;
-                    postUiError(new CustomException("连接失败"));
+                    postUiError(new KnownException("连接失败"));
                 }
             }
         });
@@ -162,7 +162,7 @@ public class DanmuSocket {
                     byte[] lens = new byte[4];
                     System.arraycopy(bytes, 0, lens, 0, 4);
 
-                    int rLen = ByteUtils.toInt(lens);
+                    int rLen = ByteUtil.toInt(lens);
                     Log.d(TAG, "read: " + rLen);
 
                     Log.d(TAG, "read: len=" + len);
@@ -240,7 +240,7 @@ public class DanmuSocket {
         });
     }
 
-    private void postUiError(final CustomException e) {
+    private void postUiError(final KnownException e) {
         workExecutor.runUi(new Runnable() {
             @Override
             public void run() {
@@ -283,7 +283,7 @@ public class DanmuSocket {
 
 
     public interface OnDanmuListener {
-        void onError(CustomException e);
+        void onError(KnownException e);
 
         void onLoadSuccess();
 

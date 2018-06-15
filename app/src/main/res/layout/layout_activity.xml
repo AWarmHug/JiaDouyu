@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="12dp"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="12dp">
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:drawableLeft="@drawable/ic_vec_activity_small"
+        android:drawablePadding="8dp"
+        android:text="活动"
+        android:textColor="@color/text_dark"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_toLeftOf="@+id/bt_action"
+        android:layout_toRightOf="@+id/tv"
+        android:singleLine="true"
+        android:textColor="@color/text_dark"
+        android:textSize="14sp"
+        tools:text="王者荣耀季后赛巅峰对决王者荣耀季后赛巅峰对决" />
+
+    <TextView
+        android:id="@+id/info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/title"
+        android:layout_below="@+id/title"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_toLeftOf="@+id/bt_action"
+        android:textColor="@color/text_dark"
+        android:textSize="12sp"
+        tools:text="王者荣耀季后赛巅峰对决" />
+
+    <Button
+        android:id="@+id/bt_action"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:textSize="12sp"
+        tools:text="预订" />
+
+</RelativeLayout>

@@ -3,7 +3,7 @@ package com.warm.livelive.douyu.data.http.retrofit;
 import android.util.Log;
 
 import com.warm.livelive.LiveApp;
-import com.warm.livelive.utils.NetworkUtils;
+import com.warm.livelive.utils.NetworkUtil;
 
 import java.io.IOException;
 
@@ -32,7 +32,7 @@ public class CacheInterceptor implements Interceptor {
 
         Request request = chain.request();
 
-        if (NetworkUtils.isConnected(LiveApp.getInstance())) {
+        if (NetworkUtil.isConnected(LiveApp.getInstance())) {
             //有网络时只从网络获取
             request = request.newBuilder()
 //                    .header("User-Agent","YIXIProject/1.2 ( picsize=iphone6+ ; android 6.0; Scale/2.625)")
@@ -52,7 +52,7 @@ public class CacheInterceptor implements Interceptor {
         Response response = chain.proceed(request);
 
 
-        if (NetworkUtils.isConnected(LiveApp.getInstance())) {
+        if (NetworkUtil.isConnected(LiveApp.getInstance())) {
             response = response.newBuilder()
                     .removeHeader("Pragma")
                     .header("Cache-Control", "public ,max-age=" + maxAge)

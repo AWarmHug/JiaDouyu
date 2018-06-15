@@ -2,7 +2,7 @@ package com.warm.livelive.douyu.data.socket.nativesocek;
 
 import android.support.annotation.NonNull;
 
-import com.warm.livelive.utils.ByteUtils;
+import com.warm.livelive.utils.ByteUtil;
 
 import java.nio.charset.StandardCharsets;
 
@@ -17,15 +17,15 @@ import java.nio.charset.StandardCharsets;
  * byte[] total = new byte[length];
  * <p>
  * //头部1
- * System.arraycopy(ByteUtils.toBytes(length), 0, total, 0, 4);
+ * System.arraycopy(ByteUtil.toBytes(length), 0, total, 0, 4);
  * //头部2
- * System.arraycopy(ByteUtils.toBytes(length), 0, total, 4, 4);
+ * System.arraycopy(ByteUtil.toBytes(length), 0, total, 4, 4);
  * //消息类型
- * System.arraycopy(ByteUtils.toBytes(CLIENT_TO_SERVER), 0, total, 8, 2);
+ * System.arraycopy(ByteUtil.toBytes(CLIENT_TO_SERVER), 0, total, 8, 2);
  * // 0
- * System.arraycopy(ByteUtils.toBytes(0), 0, total, 10, 1);
+ * System.arraycopy(ByteUtil.toBytes(0), 0, total, 10, 1);
  * // 0
- * System.arraycopy(ByteUtils.toBytes(0), 0, total, 11, 1);
+ * System.arraycopy(ByteUtil.toBytes(0), 0, total, 11, 1);
  * //source
  * System.arraycopy(source, 0, total, 12, source.length);
  * byte tail = '\0';
@@ -81,15 +81,15 @@ public class MsgEncoder {
         byte[] total = new byte[length];
 
         //头部1
-        System.arraycopy(ByteUtils.toBytes(length-4), 0, total, 0, 4);
+        System.arraycopy(ByteUtil.toBytes(length-4), 0, total, 0, 4);
         //头部2
-        System.arraycopy(ByteUtils.toBytes(length-4), 0, total, 4, 4);
+        System.arraycopy(ByteUtil.toBytes(length-4), 0, total, 4, 4);
         //消息类型
-        System.arraycopy(ByteUtils.toBytes(CLIENT_TO_SERVER), 0, total, 8, 2);
+        System.arraycopy(ByteUtil.toBytes(CLIENT_TO_SERVER), 0, total, 8, 2);
         // 0
-        System.arraycopy(ByteUtils.toBytes(0), 0, total, 10, 1);
+        System.arraycopy(ByteUtil.toBytes(0), 0, total, 10, 1);
         // 0
-        System.arraycopy(ByteUtils.toBytes(0), 0, total, 11, 1);
+        System.arraycopy(ByteUtil.toBytes(0), 0, total, 11, 1);
         //source
         System.arraycopy(source, 0, total, 12, source.length);
         byte tail = '\0';

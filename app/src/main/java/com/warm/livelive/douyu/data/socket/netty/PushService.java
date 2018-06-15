@@ -6,7 +6,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.error.KnownException;
 import com.warm.livelive.event.Danmu;
 import com.warm.livelive.utils.rx.RxUtils;
 
@@ -44,7 +44,7 @@ public class PushService extends Service {
                     public void subscribe(ObservableEmitter<Object> e) throws Exception {
                         NettyClient.getInstance().startConnect(new OnHandlerListener() {
                             @Override
-                            public void onError(CustomException e) {
+                            public void onError(KnownException e) {
 
                             }
 

@@ -14,7 +14,7 @@ import android.view.TextureView;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
-import com.warm.playerlib.DisplayUtils;
+import com.warm.playerlib.BarUtils;
 
 import java.io.IOException;
 
@@ -358,7 +358,7 @@ public class JustVideoPlayer extends FrameLayout implements PlayControl {
     }
 
     private void _toFull() {
-        DisplayUtils.hideBar((Activity) getContext());
+        BarUtils.hideBar((Activity) getContext());
         //全屏时，需要把播放器容器中的内容放到Activity的content中
         this.removeView(mContainer);
         Activity activity = ((Activity) getContext());
@@ -375,7 +375,7 @@ public class JustVideoPlayer extends FrameLayout implements PlayControl {
     }
 
     private void _toNotFull() {
-        DisplayUtils.showBar((Activity) getContext());
+        BarUtils.showBar((Activity) getContext());
         Activity activity = ((Activity) getContext());
         ViewGroup frame = (ViewGroup) activity.findViewById(android.R.id.content);
         frame.removeView(mContainer);

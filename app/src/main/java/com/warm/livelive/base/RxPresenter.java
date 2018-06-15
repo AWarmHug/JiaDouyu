@@ -9,7 +9,7 @@ import io.reactivex.disposables.Disposable;
  * 描述：
  */
 
-public class RxPresenter<V extends BaseView> extends BasePresenter<V> {
+public abstract class RxPresenter<V> implements BasePresenter<V> {
     /**
      * 管理所有添加进来的Disposable；
      */
@@ -17,19 +17,13 @@ public class RxPresenter<V extends BaseView> extends BasePresenter<V> {
 
 
     protected void addDisposable(Disposable disposable) {
-        if (mCompositeDisposable == null) {
-            mCompositeDisposable = new CompositeDisposable();
-        }
         mCompositeDisposable.add(disposable);
     }
 
 
     @Override
     public void detach() {
-        super.detach();
-        if (mCompositeDisposable != null) {
-            mCompositeDisposable.clear();
-        }
+        mCompositeDisposable.clear();
     }
 
 

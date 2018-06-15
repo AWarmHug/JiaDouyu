@@ -2,8 +2,8 @@ package com.warm.livelive.utils.rx;
 
 
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.douyu.data.bean.BaseBean;
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
+import com.warm.livelive.error.KnownException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +48,13 @@ public class RxUtils {
                             .doOnSubscribe(new Consumer<Disposable>() {
                                 @Override
                                 public void accept(@NonNull Disposable disposable) throws Exception {
-                                    view.onShowLoad();
+                                    view.emptyLoad();
                                 }
                             })
                             .doOnComplete(new Action() {
                                 @Override
                                 public void run() throws Exception {
-                                    view.onDismissLoad();
+                                    view.dismissEmptyLoad();
                                 }
                             });
                 } else {
@@ -105,9 +105,9 @@ public class RxUtils {
                     e.onNext(b.getData());
                     e.onComplete();
                 } else if (b.getError() == 0 && b.getData() == null) {
-                    e.onError(new CustomException(CustomException.NO_DATA, "加载成功，暂时没有数据"));
+                    e.onError(new KnownException(KnownException.NO_DATA, "加载成功，暂时没有数据"));
                 } else {
-                    e.onError(new CustomException(b.getError(), (String) b.getData()));
+                    e.onError(new KnownException(b.getError(), (String) b.getData()));
                 }
             }
         });
@@ -148,7 +148,7 @@ public class RxUtils {
                     e.onNext(new ArrayList<T>());
                     e.onComplete();
                 } else {
-                    e.onError(new CustomException(b.getError()));
+                    e.onError(new KnownException(b.getError()));
                 }
             }
         });

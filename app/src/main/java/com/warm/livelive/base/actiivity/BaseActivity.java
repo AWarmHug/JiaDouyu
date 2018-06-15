@@ -16,11 +16,10 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.view.KeyEvent;
-import android.view.View;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.error.KnownException;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -90,7 +89,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     }
 
     @Override
-    public void onShowLoad() {
+    public void emptyLoad() {
         if (!getPDialog().isShowing()) {
             getPDialog().show();
         }
@@ -98,28 +97,35 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
 
     @Override
-    public final void onDismissLoad() {
+    public final void dismissEmptyLoad() {
         if (getPDialog().isShowing()) {
             getPDialog().dismiss();
         }
     }
 
 
-    public void onTakeException(@NonNull final CustomException error) {
-        Snackbar.make(findViewById(R.id.toolbar) == null ? getWindow().getDecorView() : findViewById(R.id.toolbar)
+    public void toast(@NonNull final KnownException error) {
+        toastMsg(error);
+    }
+
+    public void toast(@NonNull final String error) {
+        toastMsg(new KnownException(error));
+    }
+
+    private void toastMsg(@NonNull KnownException error) {
+        Snackbar.make(findViewById(R.id.tb) == null ? getWindow().getDecorView() : findViewById(R.id.tb)
                 , error.getMessage()
                 , Snackbar.LENGTH_LONG)
                 .setAction(error.getActionName() == null ? getString(R.string.i_know) : error.getActionName()
-                        , new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if (error.getListener() != null) {
-                                    error.getListener().errorAction();
-                                }
+                        , v -> {
+                            if (error.getListener() != null) {
+                                error.getListener().errorAction();
                             }
                         })
                 .show();
     }
+
+
 
 
     @Override

@@ -4,11 +4,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseActivity;
+import com.warm.livelive.douyu.ui.DouyuFragment;
 
 import butterknife.BindView;
 
@@ -23,6 +27,7 @@ public class BoxActivity extends BaseActivity implements ViewPager.OnPageChangeL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mPager.setAdapter(new Adapter(getSupportFragmentManager()));
         mPager.addOnPageChangeListener(this);
         mBottom.setOnNavigationItemSelectedListener(this);
     }
@@ -67,5 +72,30 @@ public class BoxActivity extends BaseActivity implements ViewPager.OnPageChangeL
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+
+    class Adapter extends FragmentStatePagerAdapter {
+        String[] title = {"斗鱼", "斗鱼", "斗鱼"};
+
+        public Adapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return DouyuFragment.newInstance();
+        }
+
+        @Override
+        public int getCount() {
+            return title.length;
+        }
+
+        @Nullable
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return title[position];
+        }
     }
 }

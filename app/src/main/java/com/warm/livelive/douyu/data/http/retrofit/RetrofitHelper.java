@@ -53,9 +53,13 @@ public class RetrofitHelper {
         //设置Http缓存
         Cache cache = new Cache(new File(LiveApp.getInstance().getExternalCacheDir(),"cache_http"), 1024 * 1024 * 10);
 
+
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
 //                .cache(cache)
 //                .addNetworkInterceptor(new CacheInterceptor())
+                .addInterceptor(new CommonInterceptor())
+                .sslSocketFactory(SSLManager.createSSLSocketFactory(),new SSLManager.TrustAllManager())
+                .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier())
                 .retryOnConnectionFailure(true)
                 .connectTimeout(15, TimeUnit.SECONDS)
                 .writeTimeout(15, TimeUnit.SECONDS)

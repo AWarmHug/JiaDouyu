@@ -1,33 +1,13 @@
 package com.warm.livelive.base;
 
-
-import com.warm.livelive.LiveApp;
-import com.warm.livelive.douyu.data.DataManager;
-
 /**
  * 作者：warm
- * 时间：2017-12-09 09:54
+ * 时间：2018-06-14 14:48
  * 描述：
  */
+public interface BasePresenter<V> {
 
-public class BasePresenter<V extends BaseView> implements IBasePresenter<V> {
-    protected DataManager mDataManager;
+    void attach(V view);
 
-    protected V mView;
-
-
-    @Override
-    public void attach(V view) {
-        this.mView = view;
-        mDataManager = LiveApp.getInstance().getDataManager();
-    }
-
-    @Override
-    public void detach() {
-        this.mView = null;
-    }
-
-    public V getView() {
-        return mView;
-    }
+    void detach();
 }

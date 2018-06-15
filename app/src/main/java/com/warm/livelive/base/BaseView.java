@@ -4,7 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 
-import com.warm.livelive.error.CustomException;
+import com.warm.livelive.error.KnownException;
 
 
 /**
@@ -13,11 +13,13 @@ import com.warm.livelive.error.CustomException;
 
 public interface BaseView {
 
-    void onShowLoad();
+    void emptyLoad();
 
-    void onDismissLoad();
+    void dismissEmptyLoad();
 
-    void onTakeException(@NonNull CustomException error);
+    void toast(@NonNull KnownException error);
+
+    void toast(@NonNull String msg);
 
     Context getBVContext();
 

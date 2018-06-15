@@ -8,7 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="toolbarStyle">@style/AppTheme.Toolbar</item>
         <item name="android:windowBackground">@color/white_bg</item>
-        <item name="buttonStyle">@style/AppTheme.Button</item>
+        <item name="android:buttonStyle">@style/AppTheme.Button</item>
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
         <item name="android:editTextStyle">@style/AppTheme.EditText</item>
         <item name="android:checkboxStyle">@style/AppTheme.CheckBox</item>
@@ -21,9 +21,6 @@
     <style name="AppTheme.FitStateBar.Splash">
 
     </style>
-
-
-
 
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
@@ -70,16 +67,21 @@
     <style name="AppTheme.Button" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_enabled</item>
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">16sp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">24dip</item>
+        <item name="android:minWidth">40dip</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">4dp</item>
     </style>
-
 
 
     <style name="AppTheme.Dialog">
 
     </style>
 
-    <style name="AppTheme.Animation.Dialog" parent="Animation.AppCompat.Dialog"/>
+    <style name="AppTheme.Animation.Dialog" parent="Animation.AppCompat.Dialog" />
 
 
     <style name="AppTheme.Dialog.Progress" parent="Theme.AppCompat.Dialog">
@@ -92,7 +94,6 @@
         <item name="android:textColor">@color/white</item>
 
     </style>
-
 
 
     <style name="AppTheme.Dialog.Transparent" parent="@android:style/Theme.Dialog">
@@ -134,9 +135,8 @@
     <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Tab</item>
-        <item name="tabIndicatorColor">@color/colorPrimary</item>
-        <item name="tabSelectedTextColor">@color/colorPrimary</item>
-        <item name="android:background">@color/white</item>
+        <item name="tabIndicatorColor">?attr/colorPrimary</item>
+        <item name="tabSelectedTextColor">?attr/colorPrimary</item>
     </style>
 
 
@@ -162,7 +162,7 @@
     </style>
 
     <style name="AppTheme.TextAppearance.Tab" parent="TextAppearance.Design.Tab">
-        <item name="android:textSize">18sp</item>
+        <item name="android:textSize">16sp</item>
         <item name="android:textColor">@color/text_dark</item>
 
     </style>
@@ -204,6 +204,15 @@
     <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textSize">16sp</item>
         <item name="android:paddingLeft">8dp</item>
+    </style>
+
+    <style name="ViewPagerIndicator" parent="android:Widget">
+        <item name="indicatorBackground">@drawable/viewpager_indicator</item>
+        <item name="indicatorHeight">2dp</item>
+        <item name="indicatorWidth">2dp</item>
+        <item name="indicatorSelectedHeight">2dp</item>
+        <item name="indicatorSelectedWidth">2dp</item>
+        <item name="indicatorSpace">4dp</item>
     </style>
 
 
