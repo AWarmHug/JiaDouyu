@@ -10,9 +10,9 @@ import io.netty.handler.timeout.IdleStateHandler;
  * 描述：
  */
 public class DanmuChannelInitializer extends ChannelInitializer<SocketChannel> {
-    private OnHandlerListener mListener;
+    private OnLoadListener mListener;
 
-    public DanmuChannelInitializer(OnHandlerListener mListener) {
+    public DanmuChannelInitializer(OnLoadListener mListener) {
         this.mListener = mListener;
     }
 

@@ -38,7 +38,7 @@ public class ActivityLayout extends ViewFlipper {
     }
 
     public void setActivity(List<Activity> activities, OnItemClickListener onItemClickListener) {
-        if (activities != null && activities.size() !=0) {
+        if (activities != null && activities.size() != 0) {
             for (int i = 0; i < activities.size(); i++) {
                 ItemLayout item = new ItemLayout(getContext());
                 int finalI = i;
@@ -47,6 +47,8 @@ public class ActivityLayout extends ViewFlipper {
                 });
                 addView(item);
             }
+            setAnimateFirstView(false);
+            setAutoStart(activities.size() > 1);
         }
     }
 
@@ -92,7 +94,7 @@ public class ActivityLayout extends ViewFlipper {
             int start = sb.indexOf("开始");
             int end = sb.length();
             SpannableString ss = new SpannableString(sb);
-            ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.colorPrimary)), start+2, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(new ForegroundColorSpan(ContextCompat.getColor(getContext(), R.color.colorPrimary)), start + 2, end, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
             info.setText(ss);
             btAction.setOnClickListener(clickListener);
         }

@@ -78,7 +78,7 @@
 
 10. 获取进入直播间等级显示信息
 
-   https://apiv2.douyucdn.cn/Live/Noble/getNobleAllWelcomeEffectList?client_sys=android
+  https://apiv2.douyucdn.cn/Live/Noble/getNobleAllWelcomeEffectList?client_sys=android
 
 11. 获取今日搜索热点
 
@@ -92,4 +92,36 @@
 
     https://apiv2.douyucdn.cn/live/Cate/getTabCate2List?tab_id=3&client_sys=android
 
+    
+
+14. 获取动态
+
+    https://mapi-yuba.douyu.com/wb/v3/catefeed/270?page=1
+
+    该域名下都需要client
+
+    dy-device-id: c49d9187c0c739fedd9e63a830505111
+    phone_model: MI 5
+    client: android *必备
+    version: 340
+    phone_system: 7.0
+    timestamp: 1529054573
+    Accept: application/vnd.mapi-yuba.douyu.com.4.0+json
+    auth: 1d29e54ebe676393eace593743eef2b9
+    Token: 
+    Content-Type: application/x-www-form-urlencoded; charset=utf-8
+    Host: mapi-yuba.douyu.com
+    Connection: Keep-Alive
+    Accept-Encoding: gzip
+    User-Agent: okhttp/3.9.1
+
+15. 获取动态详情
+
+    https://mapi-yuba.douyu.com/post/replies/624926731528712194?page=1&floor=0&pagesize=20
+
+16. video 分类
+
+    https://apiv2.douyucdn.cn/Video/cate/getVideoAllCate?client_sys=android
+
 Cookie:acf_did=c49d9187c0c739fedd9e63a830505111
+

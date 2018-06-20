@@ -7,9 +7,10 @@
     <color name="colorPrimaryInverse">#8c497dfa</color>
 
 
+
     <color name="white">#ffffffff</color>
 
-    <color name="white_bg">#e6ebee</color>
+    <color name="white_bg">#fafafa</color>
 
     <color name="dialog_icon">#acc0cf</color>
 

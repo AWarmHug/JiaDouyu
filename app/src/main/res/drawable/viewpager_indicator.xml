@@ -5,9 +5,9 @@
             <solid android:color="?attr/colorPrimary" />
         </shape>
     </item>
-    <item>
-        <shape android:shape="oval">
-            <solid android:color="?attr/colorAccent" />
+    <item android:state_selected="false">
+        <shape android:shape="oval" >
+            <solid android:color="@color/dark_text" />
         </shape>
     </item>
 </selector>

@@ -1,8 +1,10 @@
 package com.warm.livelive.douyu.data.socket.netty;
 
+import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.warm.livelive.douyu.config.DouyuConfig;
+import com.warm.livelive.error.KnownException;
+import com.warm.livelive.utils.CheckUtil;
 
 import java.net.InetSocketAddress;
 
@@ -29,7 +31,6 @@ public class NettyClient {
     private Bootstrap mBootstrap;
     private NioEventLoopGroup group;
     private SocketChannel socketChannel;
-    private OnHandlerListener mListener;
 
 
     private NettyClient() {
@@ -37,60 +38,61 @@ public class NettyClient {
         group = new NioEventLoopGroup();
         mBootstrap.channel(NioSocketChannel.class)
                 .option(ChannelOption.SO_KEEPALIVE, true)
-                .group(group)
-                .remoteAddress(new InetSocketAddress(DouyuConfig.DANMU_HOST, DouyuConfig.DANMU_PORT));
+                .group(group);
     }
 
-    public void startConnect(OnHandlerListener listener) {
-        this.mListener = listener;
-
-        if (socketChannel==null||!socketChannel.isOpen()){
-            Log.d("Netty", "连接开始...");
-
-            if (!connect()) {
-                Log.d("Netty", "连接失败");
-            }else {
-                socketChannel.writeAndFlush(Douyu.getInstance().keepLife());
-                Log.d("Netty", "连接成功");
-
-            }
-        }
-
+    public void startConnect(InetSocketAddress inetSocketAddress, @NonNull OnLoadListener loadListener) {
+        CheckUtil.checkNotNull(inetSocketAddress);
+        CheckUtil.checkNotNull(loadListener);
+        connect(inetSocketAddress, loadListener);
     }
 
-    private boolean connect() {
+    private void connect(InetSocketAddress inetSocketAddress, OnLoadListener listener) {
         boolean success;
+        listener.onLoading();
         try {
-            ChannelFuture future = mBootstrap.handler(new DanmuChannelInitializer(mListener))
-                    .connect(new InetSocketAddress(DouyuConfig.DANMU_HOST, DouyuConfig.DANMU_PORT))
+            ChannelFuture future = mBootstrap
+                    .handler(new DanmuChannelInitializer(listener))
+                    .connect(inetSocketAddress)
                     .sync();
             if (future.isSuccess()) {
                 socketChannel = (SocketChannel) future.channel();
-                Log.d("Netty", "connect: 可以连接");
+                success = socketChannel.isOpen();
+            } else {
+                success = false;
             }
         } catch (InterruptedException e) {
-            return false;
+            success = false;
         }
-
-
-        success = socketChannel.isOpen();
-
-        return success;
-
+        if (success) {
+            Log.d("netty", "连接成功");
+            send(Douyu.getInstance().keepLife());
+            listener.onSuccess();
+        } else {
+            Log.d("netty", "连接失败");
+            listener.onError(new KnownException("连接失败"));
+        }
     }
 
     public void send(String msg) {
-//        if (socketChannel != null && socketChannel.isOpen()) {
-        ChannelFuture channelFuture = null;
+        CheckUtil.checkNotNull(socketChannel);
+        ChannelFuture channelFuture;
         channelFuture = socketChannel.writeAndFlush(msg);
         channelFuture.addListener(new GenericFutureListener<ChannelFuture>() {
             @Override
-            public void operationComplete(ChannelFuture channelFuture) throws Exception {
+            public void operationComplete(ChannelFuture channelFuture) {
                 if (!channelFuture.isSuccess()) {
                     channelFuture.channel().close();
                 }
             }
         });
-        //        }
     }
+
+    public void endConnect() {
+        if (socketChannel != null) {
+            socketChannel.close();
+        }
+    }
+
+
 }

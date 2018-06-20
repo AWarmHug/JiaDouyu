@@ -21,12 +21,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".douyu.ui.PlayerActivity"
+            android:name=".douyu.ui.PlayActivity"
             android:configChanges="keyboardHidden|orientation|screenSize">
         </activity>
-        <activity android:name=".douyu.ui.TableActivity">
 
-        </activity>
         <service android:name=".douyu.data.socket.netty.PushService">
 
         </service>

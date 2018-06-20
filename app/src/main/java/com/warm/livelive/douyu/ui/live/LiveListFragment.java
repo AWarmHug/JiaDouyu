@@ -7,9 +7,10 @@ import android.support.v7.widget.GridLayoutManager;
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyFragment;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemContract;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemPresenter;
+import com.warm.livelive.douyu.mvp.LiveTabItemContract;
+import com.warm.livelive.douyu.mvp.LiveTabItemPresenter;
 import com.warm.livelive.douyu.ui.live.adapter.LiveAllListAdapter;
+import com.warm.livelive.error.KnownException;
 import com.warm.livelive.utils.DisplayUtil;
 import com.warm.livelive.widget.recycleview2.LoadRecyclerView;
 import com.warm.livelive.widget.recycleview2.decoration.GridItemDecoration;
@@ -110,5 +111,10 @@ public class LiveListFragment extends LazyFragment implements LiveTabItemContrac
         offset += LIMIT;
         mList.setLoadMoreAble(true);
         mAllListAdapter.loadSuccess("加载成功");
+    }
+
+    @Override
+    public void showError(KnownException exception) {
+
     }
 }

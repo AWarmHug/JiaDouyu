@@ -1,13 +1,13 @@
 package com.warm.livelive.douyu.data;
 
 
-import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.Activity;
 import com.warm.livelive.douyu.data.bean.douyu.Cate3;
 import com.warm.livelive.douyu.data.bean.douyu.Component;
 import com.warm.livelive.douyu.data.bean.douyu.HlsUrl;
 import com.warm.livelive.douyu.data.bean.douyu.LiveRoom;
 import com.warm.livelive.douyu.data.bean.douyu.Promotion;
+import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.Slide;
 import com.warm.livelive.douyu.data.bean.douyu.SubChannel;
 import com.warm.livelive.douyu.data.bean.douyu.TabCate;
@@ -41,7 +41,7 @@ public class DataManager {
     private CApis mCApis;
     private LiveApis mLiveApis;
 
-    public static DataManager newInstance() {
+    public static DataManager getInstance() {
         return INSTANCE;
     }
 
@@ -67,10 +67,10 @@ public class DataManager {
         return mCApis.getHlsUrl(url, roomId).compose(RxUtils.handleResult());
     }
 
-    public Observable<RtmpUrl> getRtmpUrl(String roomId) {
-        String url2 = " https://playclient.douyucdn.cn/lapi/live/appGetPlayer/stream/" + roomId + "?token=&rate=-1&cdn=&txdw=0&hevc=0&cptl=0101&csign=9741dc5a78c5a1ad16c30e06906ae9c1&client_sys=android";
+    public Observable<RtmpUrl> getRtmpUrl(int roomId) {
+//        String url2 = " https://playclient.douyucdn.cn/lapi/live/appGetPlayer/stream/" + roomId + "?token=&rate=-1&cdn=&txdw=0&hevc=0&cptl=0101&csign=9741dc5a78c5a1ad16c30e06906ae9c1&client_sys=android";
         String api_url = "http://www.douyutv.com/api/v1/";
-        String args = String.format(Locale.CHINA, "room/%s?aid=wp&client_sys=wp&time=%d", roomId, System.currentTimeMillis());
+        String args = String.format(Locale.CHINA, "room/%d?aid=wp&client_sys=wp&time=%d", roomId, System.currentTimeMillis());
         String auth_md5 = (args + "zNzMV1y4EMxOHS6I5WKm");
         String auth_str = Md5Util.strToMd5Low32(auth_md5);
         String url3 = String.format("%s%s&auth=%s", api_url, args, auth_str);
@@ -83,7 +83,14 @@ public class DataManager {
     }
 
     public Observable<List<TabCate2>> getTabCate2List(int tab_id) {
-        return mLiveApis.getTabCate2List(tab_id).compose(RxUtils.handleListResult());
+        return mLiveApis.getTabCate2List(tab_id).compose(RxUtils.handleResult())
+                .map(tabCate2List -> {
+                    if (tabCate2List.getCate2_list() != null) {
+                        return tabCate2List.getCate2_list();
+                    } else {
+                        return new ArrayList<>();
+                    }
+                });
     }
 
 

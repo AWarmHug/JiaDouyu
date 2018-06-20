@@ -207,11 +207,11 @@
     </style>
 
     <style name="ViewPagerIndicator" parent="android:Widget">
-        <item name="indicatorBackground">@drawable/viewpager_indicator</item>
-        <item name="indicatorHeight">2dp</item>
-        <item name="indicatorWidth">2dp</item>
-        <item name="indicatorSelectedHeight">2dp</item>
-        <item name="indicatorSelectedWidth">2dp</item>
+        <item name="indicatorSrc">@drawable/viewpager_indicator</item>
+        <item name="indicatorHeight">4dp</item>
+        <item name="indicatorWidth">4dp</item>
+        <item name="indicatorSelectedHeight">4dp</item>
+        <item name="indicatorSelectedWidth">4dp</item>
         <item name="indicatorSpace">4dp</item>
     </style>
 

@@ -10,28 +10,33 @@ import android.support.annotation.Nullable;
 public class CheckUtil {
 
     public static void checkState(boolean expression) {
-        if(!expression) {
+        if (!expression) {
             throw new IllegalStateException();
         }
     }
 
     public static void checkState(boolean expression, @Nullable Object errorMessage) {
-        if(!expression) {
+        if (!expression) {
             throw new IllegalStateException(String.valueOf(errorMessage));
         }
     }
 
 
     public static <T> T checkNotNull(T reference) {
-        if(reference == null) {
+        if (reference == null) {
             throw new NullPointerException();
         } else {
             return reference;
         }
     }
 
+    public static boolean isNull(Object reference) {
+
+        return reference == null;
+    }
+
     public static <T> T checkNotNull(T reference, @Nullable Object errorMessage) {
-        if(reference == null) {
+        if (reference == null) {
             throw new NullPointerException(String.valueOf(errorMessage));
         } else {
             return reference;

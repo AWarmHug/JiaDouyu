@@ -1,14 +1,14 @@
 package com.warm.livelive.douyu.data.http.api.apiv2;
 
-import com.warm.livelive.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.ActivityList;
 import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
 import com.warm.livelive.douyu.data.bean.douyu.Component;
 import com.warm.livelive.douyu.data.bean.douyu.Promotion;
+import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.douyu.SlideList;
 import com.warm.livelive.douyu.data.bean.douyu.TabCate;
 import com.warm.livelive.douyu.data.bean.douyu.TabCate1;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate2;
+import com.warm.livelive.douyu.data.bean.douyu.TabCate2List;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1List;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate2ByCate1;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomList;
@@ -17,6 +17,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
@@ -35,16 +36,21 @@ public interface LiveApis {
     @GET("live/TabCate/custom?client_sys=android")
     Observable<BaseBean<List<TabCate>>> getTabCate();
 
-    @GET
-    Observable<BaseBean<RtmpUrl>> getRtmpUrl(@Url String url);
-
 
     @GET("live/Cate/getTabCate1List")
     Observable<BaseBean<List<TabCate1>>> getTabCate1List();
 
+    ///new
+
+    @Headers({
+            "user-agent: Mozilla/5.0 (iPad; CPU OS 8_1_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B466 Safari/600.1.4"
+    })
+    @GET
+    Observable<BaseBean<RtmpUrl>> getRtmpUrl(@Url String url);
+
     //    https://apiv2.douyucdn.cn/live/Cate/getTabCate2List?tab_id=3&client_sys=android
     @GET("live/Cate/getTabCate2List")
-    Observable<BaseBean<List<TabCate2>>> getTabCate2List(@Query("tab_id") int tab_id);
+    Observable<BaseBean<TabCate2List>> getTabCate2List(@Query("tab_id") int tab_id);
 
 
     @GET("live/cate/getLiveCate1List")
@@ -56,7 +62,6 @@ public interface LiveApis {
     //https://apiv2.douyucdn.cn/live/cate/getLiveCate2ByCate1?cate1_id=1&limit=12&offset=12&client_sys=android
     @GET("live/cate/getLiveCate2ByCate1")
     Observable<BaseBean<LiveCate2ByCate1>> getLiveCate2ByCate1(@Query("cate1_id") int cate1_id, @Query("limit") int limit, @Query("offset") int offset);
-
 
 
     //https://apiv2.douyucdn.cn/gv2api/rkc/roomlist/0_0/0/20/android?client_sys=android
@@ -74,6 +79,7 @@ public interface LiveApis {
 
     @GET("live/Slide/getSlideLists")
     Observable<BaseBean<SlideList>> getSlideLists(@Query("cate_id") int cate_id, @Query("app_ver") String app_ver);
+
     //    https://apiv2.douyucdn.cn/Live/Subactivity/getActivityList?cid2=181&client_sys=android
     @GET("Live/Subactivity/getActivityList")
     Observable<BaseBean<ActivityList>> getActivityList(@Query("cid2") int cid2);

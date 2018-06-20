@@ -13,8 +13,9 @@ import com.warm.livelive.douyu.data.bean.douyu.Component;
 import com.warm.livelive.douyu.data.bean.douyu.Promotion;
 import com.warm.livelive.douyu.data.bean.douyu.Slide;
 import com.warm.livelive.douyu.data.bean.douyu.TabCate1;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemContract;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemPresenter;
+import com.warm.livelive.douyu.data.bean.douyu.TabCate2;
+import com.warm.livelive.douyu.mvp.LiveTabItemContract;
+import com.warm.livelive.douyu.mvp.LiveTabItemPresenter;
 import com.warm.livelive.widget.ActivityLayout;
 import com.warm.livelive.widget.OnItemClickListener;
 import com.warm.livelive.widget.PromotionLayout;
@@ -77,7 +78,7 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
     @Override
     protected void doFirstVisible() {
         if (tabCate1.getLevel() == 2) {
-            mPresenter.getAllComponentList(tabCate1.getCate_id());
+//            mPresenter.getAllComponentList(tabCate1.getCate_id());
             mPresenter.getPromo(tabCate1.getCate_id());
         }
         if (tabCate1.getCate_id() == 181) {
@@ -127,16 +128,69 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
     }
 
     @Override
+    public void showTabCate2List(List<TabCate2> tabCate2s) {
+        if (tabCate2s.size() != 0) {
+            tab.setVisibility(View.VISIBLE);
+            for (TabCate2 tabCate2 : tabCate2s) {
+                tab.addTab(tab.newTab().setText(tabCate2.getCate2_name()));
+            }
+            tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
+        }
+        getChildFragmentManager().beginTransaction()
+                .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
+                .commit();
+    }
+
+    @Override
     public void showThreeCate(List<Cate3> cate3s) {
-        if (cate3s != null && cate3s.size() != 0) {
+        if (cate3s.size() != 0) {
             tab.setVisibility(View.VISIBLE);
             for (Cate3 cate3 : cate3s) {
                 tab.addTab(tab.newTab().setText(cate3.getName()));
             }
-            //设置listfragment
             getChildFragmentManager().beginTransaction()
-                    .add(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
+                    .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
                     .commit();
+            tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    if (tab.getPosition() == 0) {
+                        getChildFragmentManager().beginTransaction()
+                                .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
+                                .commit();
+                    } else {
+                        //设置listfragment
+                        getChildFragmentManager().beginTransaction()
+                                .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel() + 1, cate3s.get(tab.getPosition()).getCate_id()))
+                                .commit();
+                    }
+                }
+
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {
+
+                }
+
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {
+
+                }
+            });
         }
     }
 

@@ -3,12 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/bar"
         android:layout_width="56dp"
-        android:layout_height="56dp" />
+        android:layout_height="56dp"
+        app:indicatorName="LineSpinFadeLoaderIndicator"
+        app:indicatorColor="@color/dark_text"/>
 
     <TextView
         android:id="@+id/tv"

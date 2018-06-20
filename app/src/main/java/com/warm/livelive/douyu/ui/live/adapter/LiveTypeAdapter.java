@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.warm.livelive.R;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
 import com.warm.livelive.utils.DisplayUtil;
+import com.warm.livelive.widget.viewpager.ViewPagerIndicator;
 
 import java.util.List;
 
@@ -55,14 +56,11 @@ public class LiveTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private void onBindItem(ItemViewHolder holder, int position) {
         holder.cateName.setText(liveCate1s.get(position).getCate_name());
-
         int line = getLine(position);
-
         resetLayoutParams(holder, line);
-
         TypePagerAdapter adapter = new TypePagerAdapter(mFragmentManager, liveCate1s.get(position));
-
         holder.pager.setAdapter(adapter);
+        holder.indicator.setupWithViewPager(holder.pager);
     }
 
     private int getLine(int position) {
@@ -74,10 +72,13 @@ public class LiveTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     private void resetLayoutParams(ItemViewHolder holder, int line) {
+        int targetHeight = DisplayUtil.dp2px(holder.itemView.getContext(), line * 96);
         ViewGroup.LayoutParams lp = holder.pager.getLayoutParams();
-        lp.width = ViewPager.LayoutParams.MATCH_PARENT;
-        lp.height = DisplayUtil.dp2px(holder.itemView.getContext(), line * 96);
-        holder.pager.setLayoutParams(lp);
+        if (lp.height != targetHeight) {
+            lp.width = ViewPager.LayoutParams.MATCH_PARENT;
+            lp.height = targetHeight;
+            holder.pager.setLayoutParams(lp);
+        }
     }
 
 
@@ -96,11 +97,13 @@ public class LiveTypeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView cateName;
         ViewPager pager;
+        ViewPagerIndicator indicator;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             cateName = itemView.findViewById(R.id.cate_name);
             pager = itemView.findViewById(R.id.pager);
+            indicator = itemView.findViewById(R.id.indicator);
             pager.setId(pageNum);
             pageNum++;
         }

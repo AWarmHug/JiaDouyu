@@ -22,6 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 
 public class RetrofitHelper {
+
     private static OkHttpClient okHttpClient;
     private static Retrofit retrofit,retrofitV2;
 
@@ -57,7 +58,7 @@ public class RetrofitHelper {
         OkHttpClient.Builder builder = new OkHttpClient.Builder()
 //                .cache(cache)
 //                .addNetworkInterceptor(new CacheInterceptor())
-                .addInterceptor(new CommonInterceptor())
+                .addInterceptor(new DouyuCommonInterceptor())
                 .sslSocketFactory(SSLManager.createSSLSocketFactory(),new SSLManager.TrustAllManager())
                 .hostnameVerifier(new SSLManager.TrustAllHostnameVerifier())
                 .retryOnConnectionFailure(true)

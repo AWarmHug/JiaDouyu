@@ -22,7 +22,6 @@ public class ByteUtils {
             byte b = bytes[i];
             bytes[i] = bytes[rightIndex];
             bytes[rightIndex] = b;
-
             i++;
             rightIndex--;
         }

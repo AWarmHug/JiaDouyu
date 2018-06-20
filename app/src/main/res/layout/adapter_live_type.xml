@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,8 +19,24 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="200dp">
 
     </android.support.v4.view.ViewPager>
+
+    <com.warm.livelive.widget.viewpager.ViewPagerIndicator
+        android:id="@+id/indicator"
+        android:layout_width="match_parent"
+        android:layout_height="12dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:indicatorSrc="@drawable/viewpager_indicator"
+        app:indicatorHeight="8dp"
+        app:indicatorSelectedHeight="8dp"
+        app:indicatorSelectedWidth="8dp"
+        app:indicatorSpace="8dp"
+        app:indicatorWidth="8dp">
+
+    </com.warm.livelive.widget.viewpager.ViewPagerIndicator>
 
 </LinearLayout>

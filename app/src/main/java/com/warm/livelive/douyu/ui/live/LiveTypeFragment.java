@@ -7,8 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyFragment;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
-import com.warm.livelive.douyu.mvp.live.LiveTypeContract;
-import com.warm.livelive.douyu.mvp.live.LiveTypePresenter;
+import com.warm.livelive.douyu.mvp.LiveTypeContract;
+import com.warm.livelive.douyu.mvp.LiveTypePresenter;
 import com.warm.livelive.douyu.ui.live.adapter.LiveTypeAdapter;
 import com.warm.livelive.widget.recycleview2.LoadRecyclerView;
 

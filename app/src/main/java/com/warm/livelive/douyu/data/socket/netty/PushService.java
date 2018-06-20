@@ -6,16 +6,6 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
-import com.warm.livelive.error.KnownException;
-import com.warm.livelive.event.Danmu;
-import com.warm.livelive.utils.rx.RxUtils;
-
-import org.greenrobot.eventbus.EventBus;
-
-import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
-
 /**
  * 作者：warm
  * 时间：2018-02-26 16:41
@@ -38,27 +28,6 @@ public class PushService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Observable
-                .create(new ObservableOnSubscribe<Object>() {
-                    @Override
-                    public void subscribe(ObservableEmitter<Object> e) throws Exception {
-                        NettyClient.getInstance().startConnect(new OnHandlerListener() {
-                            @Override
-                            public void onError(KnownException e) {
-
-                            }
-
-                            @Override
-                            public void onDanmu(String type, String msg) {
-//                                Log.d("Netty", "onDanmu: " + msg);
-                                EventBus.getDefault().post(new Danmu(msg));
-                            }
-                        });
-                    }
-                })
-                .compose(RxUtils.ioToMain())
-                .subscribe();
-
         return binder;
     }
 

@@ -1,13 +1,14 @@
 package com.warm.livelive.douyu.data.bean.douyu.live;
 
-import java.util.List;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 /**
  * 作者：warm
  * 时间：2018-06-13 12:19
  * 描述：
  */
-public class LiveRoomItem {
+public class LiveRoomItem implements Parcelable {
     /**
      * room_id : 288016
      * room_name : LPL夏季赛 6月12日 重播
@@ -97,8 +98,6 @@ public class LiveRoomItem {
     private int has_al;
     private String icon_url;
     private int nly;
-    private List<List<?>> icdata;
-    private List<?> anchor_label;
 
     public int getRoom_id() {
         return room_id;
@@ -435,20 +434,114 @@ public class LiveRoomItem {
     public void setNly(int nly) {
         this.nly = nly;
     }
-
-    public List<List<?>> getIcdata() {
-        return icdata;
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
-    public void setIcdata(List<List<?>> icdata) {
-        this.icdata = icdata;
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.room_id);
+        dest.writeString(this.room_name);
+        dest.writeString(this.nickname);
+        dest.writeInt(this.cate_id);
+        dest.writeString(this.cate2_name);
+        dest.writeString(this.room_src);
+        dest.writeInt(this.is_vertical);
+        dest.writeString(this.vertical_src);
+        dest.writeInt(this.online_num);
+        dest.writeInt(this.hn);
+        dest.writeInt(this.show_status);
+        dest.writeInt(this.bid_id);
+        dest.writeString(this.bidToken);
+        dest.writeInt(this.rpos);
+        dest.writeInt(this.rankType);
+        dest.writeInt(this.recomType);
+        dest.writeString(this.show_id);
+        dest.writeInt(this.iho);
+        dest.writeInt(this.guild_id);
+        dest.writeInt(this.topid);
+        dest.writeInt(this.chanid);
+        dest.writeInt(this.nrt);
+        dest.writeInt(this.wt);
+        dest.writeString(this.jump_url);
+        dest.writeInt(this.client_sys);
+        dest.writeInt(this.is_noble_rec);
+        dest.writeInt(this.noble_rec_user_id);
+        dest.writeString(this.noble_rec_nickname);
+        dest.writeString(this.anchor_city);
+        dest.writeInt(this.rmf1);
+        dest.writeInt(this.rmf2);
+        dest.writeInt(this.rmf3);
+        dest.writeInt(this.rmf5);
+        dest.writeInt(this.rmf6);
+        dest.writeInt(this.rmf7);
+        dest.writeInt(this.rmf8);
+        dest.writeInt(this.ofc);
+        dest.writeInt(this.lhl);
+        dest.writeInt(this.chgd);
+        dest.writeInt(this.has_al);
+        dest.writeString(this.icon_url);
+        dest.writeInt(this.nly);
     }
 
-    public List<?> getAnchor_label() {
-        return anchor_label;
+    public LiveRoomItem() {
     }
 
-    public void setAnchor_label(List<?> anchor_label) {
-        this.anchor_label = anchor_label;
+    protected LiveRoomItem(Parcel in) {
+        this.room_id = in.readInt();
+        this.room_name = in.readString();
+        this.nickname = in.readString();
+        this.cate_id = in.readInt();
+        this.cate2_name = in.readString();
+        this.room_src = in.readString();
+        this.is_vertical = in.readInt();
+        this.vertical_src = in.readString();
+        this.online_num = in.readInt();
+        this.hn = in.readInt();
+        this.show_status = in.readInt();
+        this.bid_id = in.readInt();
+        this.bidToken = in.readString();
+        this.rpos = in.readInt();
+        this.rankType = in.readInt();
+        this.recomType = in.readInt();
+        this.show_id = in.readString();
+        this.iho = in.readInt();
+        this.guild_id = in.readInt();
+        this.topid = in.readInt();
+        this.chanid = in.readInt();
+        this.nrt = in.readInt();
+        this.wt = in.readInt();
+        this.jump_url = in.readString();
+        this.client_sys = in.readInt();
+        this.is_noble_rec = in.readInt();
+        this.noble_rec_user_id = in.readInt();
+        this.noble_rec_nickname = in.readString();
+        this.anchor_city = in.readString();
+        this.rmf1 = in.readInt();
+        this.rmf2 = in.readInt();
+        this.rmf3 = in.readInt();
+        this.rmf5 = in.readInt();
+        this.rmf6 = in.readInt();
+        this.rmf7 = in.readInt();
+        this.rmf8 = in.readInt();
+        this.ofc = in.readInt();
+        this.lhl = in.readInt();
+        this.chgd = in.readInt();
+        this.has_al = in.readInt();
+        this.icon_url = in.readString();
+        this.nly = in.readInt();
     }
+
+    public static final Parcelable.Creator<LiveRoomItem> CREATOR = new Parcelable.Creator<LiveRoomItem>() {
+        @Override
+        public LiveRoomItem createFromParcel(Parcel source) {
+            return new LiveRoomItem(source);
+        }
+
+        @Override
+        public LiveRoomItem[] newArray(int size) {
+            return new LiveRoomItem[size];
+        }
+    };
 }

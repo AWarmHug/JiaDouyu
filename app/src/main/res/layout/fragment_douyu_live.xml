@@ -17,6 +17,8 @@
         app:tabTextColor="@color/text_dark"
         app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabIndicatorHeight="2dp"
+        app:tabIndicatorStretch="0.8"
+        app:tabIndicatorShape="roundRect"
         app:tabMode="scrollable">
 
     </com.warm.tablayout.TabLayout>

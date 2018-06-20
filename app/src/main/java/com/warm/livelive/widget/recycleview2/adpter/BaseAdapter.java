@@ -16,7 +16,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
     protected List<T> mDatas;
 
 
-    public List<T> getmDatas() {
+    public List<T> getDatas() {
         return mDatas;
     }
 
@@ -100,7 +100,7 @@ public abstract class BaseAdapter<T, VH extends RecyclerView.ViewHolder> extends
     }
 
     public void refreshAll() {
-        refreshAll(getmDatas());
+        refreshAll(getDatas());
     }
 
     public void refreshAll(List<T> tList) {

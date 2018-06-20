@@ -1,7 +1,6 @@
 package com.warm.livelive.utils.rx;
 
 
-import com.warm.livelive.base.BaseView;
 import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
 import com.warm.livelive.error.KnownException;
 
@@ -15,9 +14,6 @@ import io.reactivex.ObservableSource;
 import io.reactivex.ObservableTransformer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.annotations.NonNull;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
-import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 
@@ -30,38 +26,21 @@ import io.reactivex.schedulers.Schedulers;
 public class RxUtils {
 
 
-    public static <T> ObservableTransformer<T, T> ioToMain() {
-        return ioToMain(null);
-    }
+
 
 
     /**
      * 处理线程调度,在加载开始和成功时，会自动进行加载动画，用于操作时试用，比如点击某个按钮进行操作，
      */
-    public static <T> ObservableTransformer<T, T> ioToMain(final BaseView view) {
+    public static <T> ObservableTransformer<T, T> ioToMain() {
         return new ObservableTransformer<T, T>() {
             @Override
             public ObservableSource<T> apply(@NonNull Observable<T> upstream) {
-                if (view != null) {
-                    return upstream.subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .doOnSubscribe(new Consumer<Disposable>() {
-                                @Override
-                                public void accept(@NonNull Disposable disposable) throws Exception {
-                                    view.emptyLoad();
-                                }
-                            })
-                            .doOnComplete(new Action() {
-                                @Override
-                                public void run() throws Exception {
-                                    view.dismissEmptyLoad();
-                                }
-                            });
-                } else {
+
                     return upstream
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread());
-                }
+
             }
         };
     }

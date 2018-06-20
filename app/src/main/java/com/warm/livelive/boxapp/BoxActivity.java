@@ -12,7 +12,8 @@ import android.view.MenuItem;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseActivity;
-import com.warm.livelive.douyu.ui.DouyuFragment;
+import com.warm.livelive.douyu.ui.live.DouyuLiveFragment;
+import com.warm.livelive.eyepetizer.ui.EyeFragment;
 
 import butterknife.BindView;
 
@@ -76,7 +77,7 @@ public class BoxActivity extends BaseActivity implements ViewPager.OnPageChangeL
 
 
     class Adapter extends FragmentStatePagerAdapter {
-        String[] title = {"斗鱼", "斗鱼", "斗鱼"};
+        String[] title = {"斗鱼", "开眼", "斗鱼"};
 
         public Adapter(FragmentManager fm) {
             super(fm);
@@ -84,7 +85,13 @@ public class BoxActivity extends BaseActivity implements ViewPager.OnPageChangeL
 
         @Override
         public Fragment getItem(int position) {
-            return DouyuFragment.newInstance();
+            if (position==0) {
+                return DouyuLiveFragment.newInstance();
+            }else if (position==1){
+                return EyeFragment.newInstance();
+            }else {
+                return EyeFragment.newInstance();
+            }
         }
 
         @Override

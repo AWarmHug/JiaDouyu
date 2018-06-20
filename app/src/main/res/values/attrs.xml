@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="ViewPagerIndicator">
-        <attr name="indicatorBackground" format="reference" />
+        <attr name="indicatorSrc" format="reference" />
         <attr name="indicatorHeight" format="dimension|reference" />
         <attr name="indicatorWidth" format="dimension|reference" />
         <attr name="indicatorSelectedHeight" format="dimension|reference" />

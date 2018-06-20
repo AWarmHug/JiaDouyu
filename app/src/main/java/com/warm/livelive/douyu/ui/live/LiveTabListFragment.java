@@ -2,14 +2,17 @@ package com.warm.livelive.douyu.ui.live;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.BaseFragment;
 import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemContract;
-import com.warm.livelive.douyu.mvp.live.LiveTabItemPresenter;
+import com.warm.livelive.douyu.mvp.LiveTabItemContract;
+import com.warm.livelive.douyu.mvp.LiveTabItemPresenter;
+import com.warm.livelive.douyu.ui.PlayActivity;
 import com.warm.livelive.douyu.ui.live.adapter.LiveAllListAdapter;
+import com.warm.livelive.error.KnownException;
 import com.warm.livelive.utils.DisplayUtil;
 import com.warm.livelive.widget.recycleview2.LoadRecyclerView;
 import com.warm.livelive.widget.recycleview2.decoration.GridItemDecoration;
@@ -25,6 +28,8 @@ import butterknife.BindView;
  */
 public class LiveTabListFragment extends BaseFragment implements LiveTabItemContract.ListView {
 
+    @BindView(R.id.refresh)
+    SwipeRefreshLayout mRefresh;
     @BindView(R.id.list)
     LoadRecyclerView mList;
 
@@ -69,6 +74,10 @@ public class LiveTabListFragment extends BaseFragment implements LiveTabItemCont
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mAllListAdapter = new LiveAllListAdapter(this);
+        mAllListAdapter.setOnItemClickListener(position -> {
+            startActivity(PlayActivity.goPlay(getBVContext(),mAllListAdapter.getDatas().get(position)));
+
+        });
         mList.setAdapter(mAllListAdapter);
         GridLayoutManager grid = new GridLayoutManager(getBVContext(), SPAN_COUNT);
         grid.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
@@ -80,10 +89,24 @@ public class LiveTabListFragment extends BaseFragment implements LiveTabItemCont
         mList.setLayoutManager(grid);
         mList.addItemDecoration(new GridItemDecoration(DisplayUtil.dp2px(getBVContext(), 4), SPAN_COUNT));
         mList.setOnLoadMoreListener(() -> {
-            mPresenter.getRoomList(level, cate_id, offset, LIMIT);
+            loadData();
         });
         mPresenter.getRoomList(level, cate_id, offset, LIMIT);
+        mRefresh.setOnRefreshListener(() -> {
+            loadData(0);
+        });
     }
+
+    private void loadData() {
+        mAllListAdapter.loadBegan("正在加载,请稍后");
+        mPresenter.getRoomList(level, cate_id, offset, LIMIT);
+    }
+
+    private void loadData(int offset) {
+        this.offset = offset;
+        loadData();
+    }
+
 
     @Override
     public int layoutResId() {
@@ -97,8 +120,23 @@ public class LiveTabListFragment extends BaseFragment implements LiveTabItemCont
         } else {
             mAllListAdapter.insertRange(liveRoomItems);
         }
-        offset += LIMIT;
+        if (liveRoomItems.size() == LIMIT) {
+            offset += LIMIT;
+            mList.setLoadMoreAble(true);
+            mAllListAdapter.loadSuccess("加载成功");
+        } else {
+            mAllListAdapter.loadSuccess("全部加载完成");
+        }
+
+        mRefresh.setRefreshing(false);
+    }
+
+    @Override
+    public void showError(KnownException exception) {
         mList.setLoadMoreAble(true);
-        mAllListAdapter.loadSuccess("加载成功");
+        mAllListAdapter.loadFail(exception.getMessage(), v -> {
+            loadData();
+        });
+        mRefresh.setRefreshing(false);
     }
 }
