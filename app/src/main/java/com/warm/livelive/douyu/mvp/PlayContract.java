@@ -2,8 +2,8 @@ package com.warm.livelive.douyu.mvp;
 
 import com.warm.livelive.base.BasePresenter;
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.RtmpUrl;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 
 /**
  * 作者：warm

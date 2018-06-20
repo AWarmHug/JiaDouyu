@@ -1,21 +1,21 @@
 package com.warm.livelive.douyu.data;
 
 
-import com.warm.livelive.douyu.data.bean.douyu.Activity;
-import com.warm.livelive.douyu.data.bean.douyu.Cate3;
-import com.warm.livelive.douyu.data.bean.douyu.Component;
-import com.warm.livelive.douyu.data.bean.douyu.HlsUrl;
-import com.warm.livelive.douyu.data.bean.douyu.LiveRoom;
-import com.warm.livelive.douyu.data.bean.douyu.Promotion;
-import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.douyu.Slide;
-import com.warm.livelive.douyu.data.bean.douyu.SubChannel;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate1;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate2;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate2;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.Activity;
+import com.warm.livelive.douyu.data.bean.Cate3;
+import com.warm.livelive.douyu.data.bean.Component;
+import com.warm.livelive.douyu.data.bean.HlsUrl;
+import com.warm.livelive.douyu.data.bean.LiveRoom;
+import com.warm.livelive.douyu.data.bean.Promotion;
+import com.warm.livelive.douyu.data.bean.RtmpUrl;
+import com.warm.livelive.douyu.data.bean.Slide;
+import com.warm.livelive.douyu.data.bean.SubChannel;
+import com.warm.livelive.douyu.data.bean.TabCate;
+import com.warm.livelive.douyu.data.bean.TabCate1;
+import com.warm.livelive.douyu.data.bean.TabCate2;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveCate2;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.douyu.data.http.api.apiv2.LiveApis;
 import com.warm.livelive.douyu.data.http.api.capi.CApis;
 import com.warm.livelive.douyu.data.http.retrofit.RetrofitHelper;

@@ -3,8 +3,8 @@ package com.warm.livelive.douyu.mvp;
 import com.warm.livelive.LiveApp;
 import com.warm.livelive.base.RxPresenter;
 import com.warm.livelive.douyu.data.DataManager;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate2;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveCate2;
 import com.warm.livelive.utils.rx.ThrowableConsumer;
 
 import java.util.ArrayList;

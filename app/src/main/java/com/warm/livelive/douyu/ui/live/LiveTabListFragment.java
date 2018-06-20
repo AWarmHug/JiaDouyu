@@ -7,7 +7,7 @@ import android.support.v7.widget.GridLayoutManager;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.BaseFragment;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.douyu.mvp.LiveTabItemContract;
 import com.warm.livelive.douyu.mvp.LiveTabItemPresenter;
 import com.warm.livelive.douyu.ui.PlayActivity;
@@ -107,12 +107,6 @@ public class LiveTabListFragment extends BaseFragment implements LiveTabItemCont
         loadData();
     }
 
-
-    @Override
-    public int layoutResId() {
-        return R.layout.fragment_live_all;
-    }
-
     @Override
     public void showRoomList(List<LiveRoomItem> liveRoomItems) {
         if (offset == 0) {
@@ -139,4 +133,10 @@ public class LiveTabListFragment extends BaseFragment implements LiveTabItemCont
         });
         mRefresh.setRefreshing(false);
     }
+
+    @Override
+    public int layoutResId() {
+        return R.layout.fragment_live_all;
+    }
+
 }

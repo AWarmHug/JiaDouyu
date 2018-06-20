@@ -2,13 +2,13 @@ package com.warm.livelive.douyu.mvp;
 
 import com.warm.livelive.base.BasePresenter;
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.douyu.data.bean.douyu.Activity;
-import com.warm.livelive.douyu.data.bean.douyu.Cate3;
-import com.warm.livelive.douyu.data.bean.douyu.Component;
-import com.warm.livelive.douyu.data.bean.douyu.Promotion;
-import com.warm.livelive.douyu.data.bean.douyu.Slide;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate2;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.Activity;
+import com.warm.livelive.douyu.data.bean.Cate3;
+import com.warm.livelive.douyu.data.bean.Component;
+import com.warm.livelive.douyu.data.bean.Promotion;
+import com.warm.livelive.douyu.data.bean.Slide;
+import com.warm.livelive.douyu.data.bean.TabCate2;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.error.KnownException;
 
 import java.util.List;

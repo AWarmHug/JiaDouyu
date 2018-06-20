@@ -8,8 +8,8 @@ import android.support.v4.util.ArrayMap;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseActivity;
-import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.RtmpUrl;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.douyu.mvp.PlayContract;
 import com.warm.livelive.douyu.mvp.PlayPresenter;
 import com.warm.playerlib.custom.live.LivePlayController;
@@ -66,12 +66,12 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair).setDanmakuMargin(40);
         if (item!=null&&item.getIs_vertical() == 0) {
+
             mController = new LivePlayController(this);
         }else {
             // TODO: 2018/6/20 添加一个竖直的播放器
             mController = new LivePlayController(this);
         }
-
         mPresenter.playPrepare(item);
 //        mPresenter.playPrepare(String.valueOf(rtmpUrl.getRoom_id()), "-9999");
     }

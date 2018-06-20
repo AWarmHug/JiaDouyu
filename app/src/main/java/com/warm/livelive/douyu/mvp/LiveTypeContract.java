@@ -2,7 +2,7 @@ package com.warm.livelive.douyu.mvp;
 
 import com.warm.livelive.base.BasePresenter;
 import com.warm.livelive.base.BaseView;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1;
 
 import java.util.List;
 

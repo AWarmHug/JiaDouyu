@@ -1,4 +1,4 @@
-package com.warm.livelive.douyu.data.bean.douyu;
+package com.warm.livelive.douyu.data.bean;
 
 import android.os.Parcel;
 import android.os.Parcelable;

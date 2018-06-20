@@ -9,7 +9,7 @@ import android.support.v4.view.ViewPager;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyRxFragment;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate1;
+import com.warm.livelive.douyu.data.bean.TabCate1;
 import com.warm.livelive.utils.rx.ThrowableConsumer;
 import com.warm.tablayout.TabLayout;
 

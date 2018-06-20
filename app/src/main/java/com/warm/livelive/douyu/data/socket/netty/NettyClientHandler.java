@@ -55,7 +55,7 @@ class NettyClientHandler extends ChannelInboundHandlerAdapter {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         super.exceptionCaught(ctx, cause);
-//        Log.d("Netty", "exceptionCaught: ");
+        Log.d("Netty", "exceptionCaught: ");
         mListener.onError(new KnownException("弹幕获取出错"));
     }
 
@@ -65,11 +65,23 @@ class NettyClientHandler extends ChannelInboundHandlerAdapter {
         super.channelRead(ctx, msg);
         Log.d("netty", "channelRead: " + msg);
         String ss = (String) msg;
-       if (ss.contains("chatmsg")) {
-           Message message = new Message(ss);
-           if (message.getMap().get("type") != null && message.getMap().get("txt") != null) {
-               mListener.onMessage(message.getMap().get("type"), message.getMap().get("txt"));
-           }
-       }
+        if (ss.contains("chatmsg") || ss.contains("error")) {
+            Message message = new Message(ss);
+            String type = message.getMap().get("type");
+            if (type != null) {
+                switch (type) {
+                    case "chatmsg":
+                        String text;
+                        if ((text = message.getMap().get("txt")) != null)
+                            mListener.onMessage(type, text);
+                        break;
+                    case "error":
+                        String code;
+                        if ((code = message.getMap().get("code")) != null)
+                            mListener.onMessage(type, code);
+                        break;
+                }
+            }
+        }
     }
 }

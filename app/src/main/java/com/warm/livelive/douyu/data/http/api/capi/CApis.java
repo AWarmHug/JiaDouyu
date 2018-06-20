@@ -1,11 +1,11 @@
 package com.warm.livelive.douyu.data.http.api.capi;
 
-import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
-import com.warm.livelive.douyu.data.bean.douyu.Cate3;
-import com.warm.livelive.douyu.data.bean.douyu.HlsUrl;
-import com.warm.livelive.douyu.data.bean.douyu.LiveRoom;
-import com.warm.livelive.douyu.data.bean.douyu.SubChannel;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.BaseBean;
+import com.warm.livelive.douyu.data.bean.Cate3;
+import com.warm.livelive.douyu.data.bean.HlsUrl;
+import com.warm.livelive.douyu.data.bean.LiveRoom;
+import com.warm.livelive.douyu.data.bean.SubChannel;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.warm.livelive.douyu.data.socket.nativesocek;
 
-import com.warm.livelive.douyu.data.bean.douyu.SendBean;
+import com.warm.livelive.douyu.data.bean.SendBean;
 
 /**
  * 作者：warm

@@ -1,4 +1,4 @@
-package com.warm.livelive.douyu.data.bean.douyu.live;
+package com.warm.livelive.douyu.data.bean.live;
 
 import java.util.List;
 

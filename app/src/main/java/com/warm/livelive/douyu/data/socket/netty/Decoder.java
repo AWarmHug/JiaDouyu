@@ -1,5 +1,7 @@
 package com.warm.livelive.douyu.data.socket.netty;
 
+import com.warm.livelive.utils.ByteUtil;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -35,8 +37,8 @@ public class Decoder extends ByteToMessageDecoder {
             }
             in.getBytes(in.readerIndex(), size);
             in.getBytes(in.readerIndex() + 4, size2);
-            int messageSize = ByteUtils.toDouYuInt(size);
-            int messageSize2 = ByteUtils.toDouYuInt(size2);
+            int messageSize = ByteUtil.toIntSmall(size);
+            int messageSize2 = ByteUtil.toIntSmall(size2);
             if (messageSize != messageSize2) {
                 cleanBuffer(in);
                 return;

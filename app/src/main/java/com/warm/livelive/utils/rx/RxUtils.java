@@ -1,7 +1,7 @@
 package com.warm.livelive.utils.rx;
 
 
-import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
+import com.warm.livelive.douyu.data.bean.BaseBean;
 import com.warm.livelive.error.KnownException;
 
 import java.util.ArrayList;

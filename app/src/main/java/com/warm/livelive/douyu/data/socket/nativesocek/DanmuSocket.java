@@ -162,7 +162,7 @@ public class DanmuSocket {
                     byte[] lens = new byte[4];
                     System.arraycopy(bytes, 0, lens, 0, 4);
 
-                    int rLen = ByteUtil.toInt(lens);
+                    int rLen = ByteUtil.toIntSmall(lens);
                     Log.d(TAG, "read: " + rLen);
 
                     Log.d(TAG, "read: len=" + len);

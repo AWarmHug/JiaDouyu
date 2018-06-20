@@ -1,6 +1,6 @@
-package com.warm.livelive.douyu.data.bean.douyu.live;
+package com.warm.livelive.douyu.data.bean.live;
 
-import com.warm.livelive.douyu.data.bean.douyu.Ct;
+import com.warm.livelive.douyu.data.bean.Ct;
 
 import java.util.List;
 

@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.warm.livelive.LiveApp;
 import com.warm.livelive.R;
-import com.warm.livelive.douyu.data.bean.douyu.Promotion;
-import com.warm.livelive.douyu.data.bean.douyu.Slide;
+import com.warm.livelive.douyu.data.bean.Promotion;
+import com.warm.livelive.douyu.data.bean.Slide;
 import com.warm.livelive.utils.NumUtil;
 import com.warm.livelive.widget.viewpager.LoopPagerAdapter;
 

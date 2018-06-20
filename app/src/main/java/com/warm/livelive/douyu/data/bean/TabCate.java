@@ -1,4 +1,4 @@
-package com.warm.livelive.douyu.data.bean.douyu;
+package com.warm.livelive.douyu.data.bean;
 
 /**
  * 作者：warm

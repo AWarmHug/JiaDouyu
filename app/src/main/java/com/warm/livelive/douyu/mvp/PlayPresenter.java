@@ -5,8 +5,8 @@ import android.util.Log;
 import com.warm.livelive.base.RxPresenter;
 import com.warm.livelive.douyu.config.DouyuConfig;
 import com.warm.livelive.douyu.data.DataManager;
-import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.RtmpUrl;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.douyu.data.socket.netty.Douyu;
 import com.warm.livelive.douyu.data.socket.netty.NettyClient;
 import com.warm.livelive.douyu.data.socket.netty.OnLoadListener;
@@ -86,7 +86,6 @@ public class PlayPresenter extends RxPresenter<PlayContract.View> implements Pla
                             @Override
                             public void onMessage(String type, String msg) {
                                 e.onNext(new String[]{type, msg});
-                                e.onComplete();
                             }
                         });
                     }
@@ -112,7 +111,7 @@ public class PlayPresenter extends RxPresenter<PlayContract.View> implements Pla
     public void detach() {
         super.detach();
         mClient.send(Douyu.getInstance().loginOut());
-        mClient.endConnect();
+//        mClient.endConnect();
         mView = null;
     }
 }

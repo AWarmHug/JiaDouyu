@@ -9,7 +9,7 @@ package com.warm.livelive.utils;
 public class ByteUtil {
 
 
-    public static int toInt(byte[] bytes) {
+    public static int toIntSmall(byte[] bytes) {
         int num = 0;
         num |= bytes[0] & 0xff;
         num |= bytes[1] << 8;
@@ -19,7 +19,7 @@ public class ByteUtil {
     }
 
     // int转byte[] 小端，
-    public static byte[] toBytes(int num) {
+    public static byte[] toBytesSmall(int num) {
         byte[] b = new byte[4];
         b[0] = (byte) (num & 0xff);
         b[1] = (byte) (num >> 8 & 0xff);
@@ -27,6 +27,5 @@ public class ByteUtil {
         b[3] = (byte) (num >> 24 & 0xff);
         return b;
     }
-
 }
 

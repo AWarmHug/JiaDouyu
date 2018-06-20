@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.warm.livelive.R;
-import com.warm.livelive.douyu.data.bean.douyu.Activity;
+import com.warm.livelive.douyu.data.bean.Activity;
 import com.warm.livelive.utils.TimeUtil;
 
 import java.util.List;

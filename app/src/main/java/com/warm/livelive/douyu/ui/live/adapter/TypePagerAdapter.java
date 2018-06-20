@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1;
 import com.warm.livelive.douyu.ui.live.TypePagerItemFragment;
 
 /**

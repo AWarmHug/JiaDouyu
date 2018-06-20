@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.warm.livelive.LiveApp;
 import com.warm.livelive.R;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.utils.NumUtil;
 import com.warm.livelive.widget.recycleview2.DouyuExpandAdapter;
 import com.warm.livelive.widget.recycleview2.adpter.BaseViewHolder;

@@ -44,12 +44,37 @@ public class NettyClient {
     public void startConnect(InetSocketAddress inetSocketAddress, @NonNull OnLoadListener loadListener) {
         CheckUtil.checkNotNull(inetSocketAddress);
         CheckUtil.checkNotNull(loadListener);
-        connect(inetSocketAddress, loadListener);
+        OnLoadListener my=new OnLoadListener() {
+            @Override
+            public void onLoading() {
+                loadListener.onLoading();
+            }
+
+            @Override
+            public void onError(KnownException e) {
+                loadListener.onError(e);
+
+            }
+
+            @Override
+            public void onSuccess() {
+                loadListener.onSuccess();
+            }
+
+            @Override
+            public void onMessage(String type, String msg) {
+                if (type.equals("chatmsg")){
+                    loadListener.onMessage(type, msg);
+                }else {
+                    endConnect();
+                }
+            }
+        };
+        connect(inetSocketAddress, my);
     }
 
     private void connect(InetSocketAddress inetSocketAddress, OnLoadListener listener) {
         boolean success;
-        listener.onLoading();
         try {
             ChannelFuture future = mBootstrap
                     .handler(new DanmuChannelInitializer(listener))

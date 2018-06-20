@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.warm.livelive.R;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1;
 import com.warm.livelive.utils.DisplayUtil;
 import com.warm.livelive.widget.viewpager.ViewPagerIndicator;
 

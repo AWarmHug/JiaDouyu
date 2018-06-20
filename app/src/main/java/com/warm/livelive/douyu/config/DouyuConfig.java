@@ -15,9 +15,6 @@ public class DouyuConfig {
 
     public static final String DANMU_HOST = "openbarrage.douyutv.com";
 
-
     public static final int DANMU_PORT = 8601;
-
-    public static final String HEADER_IMG_PAHT = "https://github.com/AWarmHug/AWarmHug.github.io/blob/master/img/random/material-2.png?raw=true";
 
 }

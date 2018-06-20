@@ -1,17 +1,17 @@
 package com.warm.livelive.douyu.data.http.api.apiv2;
 
-import com.warm.livelive.douyu.data.bean.douyu.ActivityList;
-import com.warm.livelive.douyu.data.bean.douyu.BaseBean;
-import com.warm.livelive.douyu.data.bean.douyu.Component;
-import com.warm.livelive.douyu.data.bean.douyu.Promotion;
-import com.warm.livelive.douyu.data.bean.douyu.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.douyu.SlideList;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate1;
-import com.warm.livelive.douyu.data.bean.douyu.TabCate2List;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate1List;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveCate2ByCate1;
-import com.warm.livelive.douyu.data.bean.douyu.live.LiveRoomList;
+import com.warm.livelive.douyu.data.bean.ActivityList;
+import com.warm.livelive.douyu.data.bean.BaseBean;
+import com.warm.livelive.douyu.data.bean.Component;
+import com.warm.livelive.douyu.data.bean.Promotion;
+import com.warm.livelive.douyu.data.bean.RtmpUrl;
+import com.warm.livelive.douyu.data.bean.SlideList;
+import com.warm.livelive.douyu.data.bean.TabCate;
+import com.warm.livelive.douyu.data.bean.TabCate1;
+import com.warm.livelive.douyu.data.bean.TabCate2List;
+import com.warm.livelive.douyu.data.bean.live.LiveCate1List;
+import com.warm.livelive.douyu.data.bean.live.LiveCate2ByCate1;
+import com.warm.livelive.douyu.data.bean.live.LiveRoomList;
 
 import java.util.List;
 
