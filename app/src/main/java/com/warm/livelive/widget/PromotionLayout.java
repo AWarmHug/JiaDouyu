@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.R;
 import com.warm.livelive.douyu.data.bean.Promotion;
 import com.warm.livelive.douyu.data.bean.Slide;
@@ -78,8 +78,8 @@ public class PromotionLayout extends LinearLayout {
             if (!line.isShown()) {
                 line.setVisibility(VISIBLE);
             }
-            LiveApp.getInstance().getImageLoader().loadImage(getContext(), ivBg, promotion.getBanner());
-            LiveApp.getInstance().getImageLoader().loadImage(getContext(), ivIcon, promotion.getIcon());
+            MyApp.getInstance().getImageLoader().loadImage(getContext(), ivBg, promotion.getBanner());
+            MyApp.getInstance().getImageLoader().loadImage(getContext(), ivIcon, promotion.getIcon());
             tvTitle.setText(promotion.getApp_name());
             tvDe.setText("下载");
             tvDe.append(NumUtil.mini(promotion.getApp_downloads()));

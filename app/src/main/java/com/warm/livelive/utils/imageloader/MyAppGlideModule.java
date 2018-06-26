@@ -61,7 +61,7 @@ public class MyAppGlideModule extends AppGlideModule {
             DiskCache.Factory diskCacheFactory = new DiskLruCacheFactory(file.getAbsolutePath(), diskSize);
             builder.setDiskCache(diskCacheFactory);
         }
-        RequestOptions options = new RequestOptions().centerCrop()
+        RequestOptions options = new RequestOptions()
                 .centerCrop()
                 .encodeQuality(50)
                 .format(DecodeFormat.PREFER_RGB_565);

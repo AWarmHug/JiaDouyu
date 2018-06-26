@@ -1,36 +1,42 @@
 package com.warm.livelive.douyu.ui.live;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.widget.TextView;
 
 import com.warm.livelive.R;
-import com.warm.livelive.base.fragment.LazyRxFragment;
+import com.warm.livelive.base.fragment.LazyFragment;
+import com.warm.livelive.douyu.data.bean.KeyWord;
 import com.warm.livelive.douyu.data.bean.TabCate1;
-import com.warm.livelive.utils.rx.ThrowableConsumer;
+import com.warm.livelive.douyu.mvp.DouyuLiveContract;
+import com.warm.livelive.douyu.mvp.DouyuLivePresenter;
+import com.warm.livelive.douyu.ui.search.SearchActivity;
 import com.warm.tablayout.TabLayout;
 
 import java.util.List;
 
 import butterknife.BindView;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * 作者：warm
  * 时间：2018-06-11 12:28
  * 描述：
  */
-public class DouyuLiveFragment extends LazyRxFragment {
+public class DouyuLiveFragment extends LazyFragment implements DouyuLiveContract.View {
 
+    @BindView(R.id.edit)
+    TextView tvSearch;
     @BindView(R.id.tab)
     TabLayout mTab;
     @BindView(R.id.pager)
     ViewPager mPager;
+
+    private DouyuLivePresenter mPresenter;
 
     private Adapter mAdapter;
 
@@ -41,6 +47,12 @@ public class DouyuLiveFragment extends LazyRxFragment {
         return fragment;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPresenter = new DouyuLivePresenter();
+        mPresenter.attach(this);
+    }
 
     @Override
     protected void doInVisible() {
@@ -49,23 +61,12 @@ public class DouyuLiveFragment extends LazyRxFragment {
 
     @Override
     protected void doFirstVisible() {
+
         if (mAdapter == null) {
-            Disposable d = mDataManager.getTabCate1List()
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .map(tabCate1s -> {
-                        tabCate1s.add(0, TabCate1.TYPE);
-                        tabCate1s.add(1, TabCate1.ALL);
-                        tabCate1s.add(tabCate1s.size(), TabCate1.SPORT);
-                        return tabCate1s;
-                    })
-                    .subscribe(tabCate1s -> {
-                        mAdapter = new Adapter(getChildFragmentManager(), tabCate1s);
-                        mPager.setAdapter(mAdapter);
-                        mTab.setupWithViewPager(mPager);
-                    }, new ThrowableConsumer(this));
-            addDisposable(d);
+            mPresenter.getTabCate1List();
+            mPresenter.getTodayHot();
         }
+        tvSearch.setOnClickListener(v -> startActivity(new Intent(getContext(), SearchActivity.class)));
     }
 
     @Override
@@ -74,8 +75,15 @@ public class DouyuLiveFragment extends LazyRxFragment {
     }
 
     @Override
-    public int layoutResId() {
-        return R.layout.fragment_douyu_live;
+    public void getTabCate1List(List<TabCate1> tabCate1s) {
+        mAdapter = new DouyuLiveFragment.Adapter(getChildFragmentManager(), tabCate1s);
+        mPager.setAdapter(mAdapter);
+        mTab.setupWithViewPager(mPager);
+    }
+
+    @Override
+    public void showTodayHot(KeyWord keyWords) {
+        tvSearch.setHint(keyWords.getKw());
     }
 
 
@@ -112,6 +120,11 @@ public class DouyuLiveFragment extends LazyRxFragment {
         public CharSequence getPageTitle(int position) {
             return tabCate1s.get(position).getCate_name();
         }
+    }
+
+    @Override
+    public int layoutResId() {
+        return R.layout.fragment_douyu_live;
     }
 
 }

@@ -123,5 +123,71 @@
 
     https://apiv2.douyucdn.cn/Video/cate/getVideoAllCate?client_sys=android
 
+17. 获取今日热点关键词
+
+    https://apiv2.douyucdn.cn/live/search/getTodayHot?token=&client_sys=android
+
+18. 鱼吧热搜
+
+    https://mapi-yuba.douyu.com/wb/main/hotsearch2?client_sys=android
+
+19. 猜你喜欢
+
+    https://apiv2.douyucdn.cn/live/search/getRecFavor?token=&client_sys=android
+
+20. 根据id 获取直播间信息
+
+    https://apiv2.douyucdn.cn/live/room/info/4825737?client_sys=android
+
+21. 搜索结果
+
+    全部：参数1/1   1指全部 
+
+    https://capi.douyucdn.cn/api/v1/mobileSearch/1/1?sk=skt&offset=0&limit=20&client_sys=android
+
+    直播：参数2/1 2指直播 1-3指下方的相关度，热度值，关注度 
+
+    https://capi.douyucdn.cn/api/v1/mobileSearch/2/1?sk=%E6%9D%8E%E7%9F%A5%E6%81%A9&offset=0&limit=20&client_sys=android
+
+    视频（sort 对应相关度， 最热等）：
+
+    https://apiv2.douyucdn.cn/video/search/getData?sk=%E6%9D%8E%E7%9F%A5%E6%81%A9&sort=1&offset=0&limit=20&client_sys=android
+
+    主播：
+
+    https://capi.douyucdn.cn/api/v1/mobileSearch/4/1?sk=%E6%9D%8E%E7%9F%A5%E6%81%A9&offset=0&limit=20&client_sys=android
+
+22. 视频详情
+
+    https://apiv2.douyucdn.cn/video/videoinfo/getvidinfo2?vid=jXqeO74mPxPMxywG&client_sys=android
+
+23. 获取视频链接
+
+    https://vmobile.douyu.com/video/getInfo?vid=wkDe0W2AeX2MA4Bz
+
+24. 视频封面
+
+    https://apiv2.douyucdn.cn/video/videoinfo/getExtVideoInfo?vid=y2Bj8vGLmbr7Obnd&client_sys=android
+
+25. 视频中的弹幕
+
+    https://apiv2.douyucdn.cn/video/videoinfo/getDanMu?vid=jXqeO74mPxPMxywG&client_sys=android
+
+26. 获取推荐视频
+
+    https://apiv2.douyucdn.cn/video/home/getRecVideoList?offset=0&limit=20&token=&client_sys=android
+
+
+
+
+
+
+
+
+
+
+
+
+
 Cookie:acf_did=c49d9187c0c739fedd9e63a830505111
 

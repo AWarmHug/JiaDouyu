@@ -12,7 +12,8 @@
         <item name="android:textViewStyle">@style/AppTheme.TextView</item>
         <item name="android:editTextStyle">@style/AppTheme.EditText</item>
         <item name="android:checkboxStyle">@style/AppTheme.CheckBox</item>
-        <item name="android:radioButtonStyle">@style/AppTheme.RadioButton</item>
+        <item name="radioButtonStyle">@style/AppTheme.RadioButton</item>
+
     </style>
 
 
@@ -24,9 +25,11 @@
 
     <style name="AppTheme.Toolbar" parent="Widget.AppCompat.Toolbar">
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="android:elevation">4dp</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:minHeight">48dp</item>
         <item name="maxButtonHeight">45dp</item>
+        <item name="contentInsetStart">0dp</item>
         <item name="contentInsetStartWithNavigation">0dp</item>
         <item name="titleTextAppearance">@style/AppTheme.TextAppearance.ToolBar</item>
     </style>
@@ -131,12 +134,19 @@
         <item name="android:paddingRight">4dp</item>
     </style>
 
-
-    <style name="AppTheme.TabLayout" parent="Widget.Design.TabLayout">
+    <style name="AppTheme.TabLayout" parent="LibraryTabLayout">
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabTextAppearance">@style/AppTheme.TextAppearance.Tab</item>
         <item name="tabIndicatorColor">?attr/colorPrimary</item>
+        <item name="tabTextColor">@color/text_dark</item>
         <item name="tabSelectedTextColor">?attr/colorPrimary</item>
+        <item name="tabMode">fixed</item>
+        <item name="tabGravity">fill</item>
+        <item name="tabIndicatorBottom">4dp</item>
+        <item name="tabIndicatorShape">roundRect</item>
+        <item name="tabIndicatorStretch">0.8</item>
+        <item name="tabIndicatorEqual">equalToText</item>
+        <item name="android:background">@color/white</item>
     </style>
 
 
@@ -203,8 +213,18 @@
 
     <style name="AppTheme.RadioButton" parent="Widget.AppCompat.CompoundButton.RadioButton">
         <item name="android:textSize">16sp</item>
-        <item name="android:paddingLeft">8dp</item>
+        <item name="android:textColor">@color/text_selected</item>
+        <item name="android:paddingStart">8dp</item>
+        <item name="android:paddingEnd">8dp</item>
+        <item name="android:button">@null</item>
+        <item name="android:gravity">center</item>
     </style>
+
+    <style name="AppTheme.CardView" parent="CardView">
+        <item name="cardCornerRadius">4dp</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+    </style>
+
 
     <style name="ViewPagerIndicator" parent="android:Widget">
         <item name="indicatorSrc">@drawable/viewpager_indicator</item>

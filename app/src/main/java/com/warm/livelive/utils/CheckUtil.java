@@ -2,6 +2,8 @@ package com.warm.livelive.utils;
 
 import android.support.annotation.Nullable;
 
+import java.util.List;
+
 /**
  * 作者：warm
  * 时间：2018-02-06 10:14
@@ -42,4 +44,9 @@ public class CheckUtil {
             return reference;
         }
     }
+
+    public static boolean listIsEmpty(List list) {
+        return list != null && list.size() != 0;
+    }
+
 }

@@ -53,11 +53,13 @@
             android:id="@+id/tab"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             app:tabGravity="center"
             app:tabIndicatorHeight="0dp"
             app:tabMode="scrollable"
             app:tabSelectedTextColor="?attr/colorPrimary"
-            app:tabTextColor="@color/dark_text">
+            app:tabTextColor="@color/dark_text"
+            tools:visibility="visible">
 
         </com.warm.tablayout.TabLayout>
 

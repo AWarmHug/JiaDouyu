@@ -123,13 +123,13 @@ public class LoadRecyclerView extends RecyclerView {
         super.onScrollStateChanged(state);
 //        switch (state){
 //            case RecyclerView.SCROLL_STATE_IDLE:
-//                LiveApp.getInstance().getImageLoader().resume(getContext());
+//                MyApp.getInstance().getImageLoader().resume(getContext());
 //                break;
 //            case RecyclerView.SCROLL_STATE_DRAGGING:
-//                LiveApp.getInstance().getImageLoader().pause(getContext());
+//                MyApp.getInstance().getImageLoader().pause(getContext());
 //                break;
 //            case RecyclerView.SCROLL_STATE_SETTLING:
-//                LiveApp.getInstance().getImageLoader().pause(getContext());
+//                MyApp.getInstance().getImageLoader().pause(getContext());
 //                break;
 //        }
 

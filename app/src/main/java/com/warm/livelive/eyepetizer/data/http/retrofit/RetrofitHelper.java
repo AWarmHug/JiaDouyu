@@ -4,7 +4,7 @@ package com.warm.livelive.eyepetizer.data.http.retrofit;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.warm.livelive.BuildConfig;
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.eyepetizer.config.EyeConfig;
 import com.warm.livelive.eyepetizer.data.bean.data.BaseData;
 import com.warm.livelive.eyepetizer.data.bean.data.FollowCardData;
@@ -54,7 +54,7 @@ public class RetrofitHelper {
 
     public static OkHttpClient provideOkHttpClient() {
         //设置Http缓存
-        Cache cache = new Cache(new File(LiveApp.getInstance().getExternalCacheDir(),"cache_http"), 1024 * 1024 * 10);
+        Cache cache = new Cache(new File(MyApp.getInstance().getExternalCacheDir(),"cache_http"), 1024 * 1024 * 10);
 
 
         OkHttpClient.Builder builder = new OkHttpClient.Builder()

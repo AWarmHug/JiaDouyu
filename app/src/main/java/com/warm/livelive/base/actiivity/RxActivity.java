@@ -3,8 +3,8 @@ package com.warm.livelive.base.actiivity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
-import com.warm.livelive.LiveApp;
-import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.MyApp;
+import com.warm.livelive.douyu.data.http.HttpManager;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -17,15 +17,15 @@ import io.reactivex.disposables.Disposable;
 
 public abstract class RxActivity extends BaseActivity {
 
-    public DataManager getDataManager() {
-        return mDataManager;
+    public HttpManager getDataManager() {
+        return mHttpManager;
     }
 
-    public void setDataManager(DataManager dataManager) {
-        this.mDataManager = dataManager;
+    public void setDataManager(HttpManager httpManager) {
+        this.mHttpManager = httpManager;
     }
 
-    protected DataManager mDataManager;
+    protected HttpManager mHttpManager;
 
     /**
      * 管理所有添加进来的Disposable；
@@ -35,7 +35,7 @@ public abstract class RxActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDataManager = LiveApp.getInstance().getDataManager();
+        mHttpManager = MyApp.getInstance().getHttpManager();
 
     }
 

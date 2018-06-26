@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.widget.OnItemClickListener;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class LoopPagerAdapter extends PagerAdapter {
                 mOnItemClickListener.itemClick(position);
             }
         });
-        LiveApp.getInstance().getImageLoader().loadImage(mContext,imageView,url);
+        MyApp.getInstance().getImageLoader().loadImage(mContext,imageView,url);
         return imageView;
     }
 

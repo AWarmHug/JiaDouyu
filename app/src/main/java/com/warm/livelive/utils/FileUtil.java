@@ -4,7 +4,7 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 
 import java.io.File;
 
@@ -38,7 +38,7 @@ public class FileUtil {
     public static final String CRASH = "crash";
 
     public static File createFileDir(String dirName) {
-        return createFileDir(getExternalCacheDir(LiveApp.getInstance()), dirName);
+        return createFileDir(getExternalCacheDir(MyApp.getInstance()), dirName);
     }
 
     public static File createFileDir(String parentPath, String dirPath) {

@@ -85,7 +85,14 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
             mPresenter.getActivityList(tabCate1.getCate_id());
         }
         if (tabCate1.getLevel() == 1) {
-            mPresenter.getTabCate2List(tabCate1.getTab_id());
+            //颜值==26,颜值获取Cate2
+            if (tabCate1.getTab_id() == 26) {
+                getChildFragmentManager().beginTransaction()
+                        .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
+                        .commit();
+            } else {
+                mPresenter.getTabCate2List(tabCate1.getTab_id());
+            }
         } else {
             mPresenter.getThreeCate(tabCate1.getCate_id());
         }
@@ -130,14 +137,17 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
     @Override
     public void showTabCate2List(List<TabCate2> tabCate2s) {
         if (tabCate2s.size() != 0) {
-            tab.setVisibility(View.VISIBLE);
+            tab.setVisibility(tabCate2s.size() > 1 ? View.VISIBLE : View.GONE);
             for (TabCate2 tabCate2 : tabCate2s) {
                 tab.addTab(tab.newTab().setText(tabCate2.getCate2_name()));
             }
             tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
-
+                   int pos= tab.getPosition();
+                    getChildFragmentManager().beginTransaction()
+                            .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel()+1, tabCate2s.get(pos).getCate2_id()))
+                            .commit();
                 }
 
                 @Override
@@ -150,22 +160,19 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
 
                 }
             });
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel()+1, tabCate2s.get(0).getCate2_id()))
+                    .commit();
         }
-        getChildFragmentManager().beginTransaction()
-                .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
-                .commit();
     }
 
     @Override
     public void showThreeCate(List<Cate3> cate3s) {
         if (cate3s.size() != 0) {
-            tab.setVisibility(View.VISIBLE);
+            tab.setVisibility(cate3s.size() > 1 ? View.VISIBLE : View.GONE);
             for (Cate3 cate3 : cate3s) {
                 tab.addTab(tab.newTab().setText(cate3.getName()));
             }
-            getChildFragmentManager().beginTransaction()
-                    .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
-                    .commit();
             tab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
                 @Override
                 public void onTabSelected(TabLayout.Tab tab) {
@@ -191,6 +198,9 @@ public class LiveTabItemFragment extends LazyFragment implements LiveTabItemCont
 
                 }
             });
+            getChildFragmentManager().beginTransaction()
+                    .replace(R.id.frag, LiveTabListFragment.newInstance(tabCate1.getLevel(), tabCate1.getCate_id()))
+                    .commit();
         }
     }
 

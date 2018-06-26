@@ -29,12 +29,12 @@ public class DouyuCommonInterceptor implements Interceptor {
 
         request = request.newBuilder()
                 .url(url)
-//                    .header("User-Device", "YzQ5ZDkxODdjMGM3MzlmZWRkOWU2M2E4MzA1MDUxMTF8djQuMi4w")
-                .header("User-Agent", "android/4.2.0 (android 7.0; ; MI+5)")
-                .header("time", String.valueOf(System.currentTimeMillis() / 1000))
-                .header("channel", "30")
-                .header("aid", "android1")
-//                    .header("Cookie", "acf_did=c49d9187c0c739fedd9e63a830505111")
+//                .header("User-Device", "YzQ5ZDkxODdjMGM3MzlmZWRkOWU2M2E4MzA1MDUxMTF8djQuMi4w")
+//                .header("User-Agent", "android/4.2.0 (android 7.0; ; MI+5)")
+//                .header("time", String.valueOf(System.currentTimeMillis() / 1000))
+//                .header("channel", "30")
+//                .header("aid", "android1")
+//                .header("Cookie", "acf_did=c49d9187c0c739fedd9e63a830505111")
                 .build();
 //        Log.d(TAG, "intercept: "+url);
         return chain.proceed(request);

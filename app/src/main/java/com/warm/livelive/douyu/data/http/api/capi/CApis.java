@@ -6,6 +6,7 @@ import com.warm.livelive.douyu.data.bean.HlsUrl;
 import com.warm.livelive.douyu.data.bean.LiveRoom;
 import com.warm.livelive.douyu.data.bean.SubChannel;
 import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.search.SearchData;
 
 import java.util.List;
 
@@ -33,7 +34,8 @@ public interface CApis {
      * @return
      */
     @GET("getColumnDetail")
-    Observable<BaseBean<List<SubChannel>>> getSubChannel(@Query("shortName") String shortName);
+    Observable<BaseBean<List<SubChannel>>> getSubChannel(@Query("shortName") String shortName,@Query("time") long time);
+
 
     /**
      * 由{@link #getSubChannel(String)}
@@ -46,11 +48,13 @@ public interface CApis {
     @GET("live/{tagId}")
     Observable<BaseBean<List<LiveRoom>>> getLiveRooms(@Path("tagId") String tagId, @Query("limit") int limit, @Query("offset") int offset);
 
+
     @GET("searchNew")
     Observable<BaseBean<List<LiveRoom>>> getSearchNew();
 
     @GET
     Observable<BaseBean<HlsUrl>> getHlsUrl(@Url String url, @Query("roomId") String roomId);
+
     @Headers({
             "user-agent: Mozilla/5.0 (iPad; CPU OS 8_1_3 like Mac OS X) AppleWebKit/600.1.4 (KHTML, like Gecko) Version/8.0 Mobile/12B466 Safari/600.1.4"
     })
@@ -64,5 +68,15 @@ public interface CApis {
 
     @GET("api/v1/qie")
     Observable<BaseBean<List<LiveRoomItem>>> getSportLiveRoom(@Query("offset") int offset, @Query("limit") int limit, @Query("time") long time);
+
+    //    https://capi.douyucdn.cn/api/v1/mobileSearch/1/1?sk=skt&offset=0&limit=20&client_sys=android
+    public static final int SORT1_ALL=1;
+    public static final int SORT1_LIVE=2;
+    public static final int SORT1_VIDEO=3;
+    public static final int SORT1_ANCHOR=4;
+
+    @GET("/api/v1/mobileSearch/{sort1}/{sort2}")
+    Observable<BaseBean<SearchData>> mobileSearch(@Path("sort1") int sort1, @Path("sort2") int sort2, @Query("sk") String sk, @Query("offset") int offset, @Query("limit") int limit);
+
 
 }

@@ -2,8 +2,8 @@ package com.warm.livelive.douyu.mvp;
 
 import com.warm.livelive.base.BasePresenter;
 import com.warm.livelive.base.BaseView;
+import com.warm.livelive.douyu.data.bean.RoomInfo;
 import com.warm.livelive.douyu.data.bean.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 
 /**
  * 作者：warm
@@ -13,7 +13,7 @@ import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 public interface PlayContract {
 
     interface Presenter extends BasePresenter<View>{
-        void playPrepare(LiveRoomItem item);
+        void playPrepare(RoomInfo item);
 
         void loadDanmu(RtmpUrl rtmpUrl);
     }

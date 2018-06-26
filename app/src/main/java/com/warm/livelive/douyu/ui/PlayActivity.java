@@ -8,6 +8,7 @@ import android.support.v4.util.ArrayMap;
 
 import com.warm.livelive.R;
 import com.warm.livelive.base.actiivity.BaseActivity;
+import com.warm.livelive.douyu.data.bean.RoomInfo;
 import com.warm.livelive.douyu.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.douyu.mvp.PlayContract;
@@ -27,16 +28,16 @@ import master.flame.danmaku.danmaku.model.android.Danmakus;
 import master.flame.danmaku.danmaku.parser.BaseDanmakuParser;
 
 public class PlayActivity extends BaseActivity implements PlayContract.View {
-    public static final String LIVE_URL = "http://flashmedia.eastday.com/newdate/news/2016-11/shznews1125-19.mp4";
+    public static final String LIVE_URL = "http://vodhls1.douyucdn.cn/live/normal_wdffans-3168536r3042177-20180410220207/playlist.m3u8?k=66d84bed81b35673c33ac543cf0f9b8f&t=5b2a0e12&u=0&ct=h5&vid=3650059&pt=2&d=354ef1469d5a888879fbc64e522b128a";
     //    public static final String LIVE_URL="http://zv.3gv.ifeng.com/live/zhongwen800k.m3u8";
-    private static final String KEY_LIVE_ROOM_ITEM = "LiveRoomItem";
+    private static final String KEY_ROOM_INFO = "RoomInfo";
 
     private PlayPresenter mPresenter;
 
     @BindView(R.id.videoView)
     JustVideoPlayer videoView;
 
-    private LiveRoomItem item;
+    private RoomInfo roomInfo;
 
     private DanmakuContext mDanmaContext;
 
@@ -45,7 +46,7 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        item = getIntent().getParcelableExtra(KEY_LIVE_ROOM_ITEM);
+        roomInfo = getIntent().getParcelableExtra(KEY_ROOM_INFO);
 
         mPresenter = new PlayPresenter();
         mPresenter.attach(this);
@@ -65,14 +66,14 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 //        .setCacheStuffer(new BackgroundCacheStuffer())  // 绘制背景使用BackgroundCacheStuffer
                 .setMaximumLines(maxLinesPair)
                 .preventOverlapping(overlappingEnablePair).setDanmakuMargin(40);
-        if (item!=null&&item.getIs_vertical() == 0) {
+        if (roomInfo != null && roomInfo.getIsVertical() == 0) {
 
             mController = new LivePlayController(this);
-        }else {
+        } else {
             // TODO: 2018/6/20 添加一个竖直的播放器
             mController = new LivePlayController(this);
         }
-        mPresenter.playPrepare(item);
+        mPresenter.playPrepare(roomInfo);
 //        mPresenter.playPrepare(String.valueOf(rtmpUrl.getRoom_id()), "-9999");
     }
 
@@ -116,13 +117,20 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
         danmaku.textSize = 32;
         danmaku.textColor = Color.WHITE;
         return danmaku;
-
     }
 
     public static Intent goPlay(Context context, LiveRoomItem item) {
+        RoomInfo roomInfo=new RoomInfo(item.getRoom_id(),item.getRoom_name(),item.getIs_vertical(),item.getRoom_src());
         Intent intent = new Intent();
         intent.setClass(context, PlayActivity.class);
-        intent.putExtra(KEY_LIVE_ROOM_ITEM, item);
+        intent.putExtra(KEY_ROOM_INFO, roomInfo);
+        return intent;
+    }
+
+    public static Intent goPlay(Context context, RoomInfo roomInfo) {
+        Intent intent = new Intent();
+        intent.setClass(context, PlayActivity.class);
+        intent.putExtra(KEY_ROOM_INFO, roomInfo);
         return intent;
     }
 
@@ -146,6 +154,6 @@ public class PlayActivity extends BaseActivity implements PlayContract.View {
 
     @Override
     public void showDanmu(String type, String msg) {
-        videoView.addDanma(createDanmaku(true,msg));
+        videoView.addDanma(createDanmaku(true, msg));
     }
 }

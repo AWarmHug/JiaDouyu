@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.R;
 import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
 import com.warm.livelive.utils.NumUtil;
@@ -32,7 +32,7 @@ public class LiveAllListAdapter extends DouyuExpandAdapter<LiveRoomItem> {
     protected void onBindDefaultItem(BaseViewHolder holder, int position, List<Object> payloads) {
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder itemViewHolder = (ItemViewHolder) holder;
-            LiveApp.getInstance().getImageLoader().loadImage(mFragment, itemViewHolder.room_src, mDatas.get(position).getRoom_src());
+            MyApp.getInstance().getImageLoader().loadImage(mFragment, itemViewHolder.room_src, mDatas.get(position).getRoom_src());
             itemViewHolder.online_num.setText(NumUtil.mini(mDatas.get(position).getOnline_num()));
             itemViewHolder.nickname.setText(mDatas.get(position).getNickname());
             itemViewHolder.room_name.setText(mDatas.get(position).getRoom_name());

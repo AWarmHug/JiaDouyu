@@ -4,9 +4,9 @@ import android.util.Log;
 
 import com.warm.livelive.base.RxPresenter;
 import com.warm.livelive.douyu.config.DouyuConfig;
-import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.douyu.data.bean.RoomInfo;
 import com.warm.livelive.douyu.data.bean.RtmpUrl;
-import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.http.HttpManager;
 import com.warm.livelive.douyu.data.socket.netty.Douyu;
 import com.warm.livelive.douyu.data.socket.netty.NettyClient;
 import com.warm.livelive.douyu.data.socket.netty.OnLoadListener;
@@ -29,19 +29,19 @@ import io.reactivex.functions.Consumer;
  */
 public class PlayPresenter extends RxPresenter<PlayContract.View> implements PlayContract.Presenter {
     private static final String TAG = "PlayPresenter";
-    private DataManager mDataManager;
+    private HttpManager mHttpManager;
     private PlayContract.View mView;
     private NettyClient mClient;
 
     public PlayPresenter() {
-        mDataManager = DataManager.getInstance();
+        mHttpManager = HttpManager.getInstance();
         mClient = NettyClient.getInstance();
     }
 
     @Override
-    public void playPrepare(LiveRoomItem item) {
+    public void playPrepare(RoomInfo item) {
 
-        Disposable disposable = mDataManager.getRtmpUrl(item.getRoom_id())
+        Disposable disposable = mHttpManager.getRtmpUrl(item.getRoom_id())
                 .compose(RxUtils.ioToMain())
                 .subscribe(new Consumer<RtmpUrl>() {
                     @Override

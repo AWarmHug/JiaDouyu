@@ -3,6 +3,7 @@ package com.warm.livelive.douyu.data.http.api.apiv2;
 import com.warm.livelive.douyu.data.bean.ActivityList;
 import com.warm.livelive.douyu.data.bean.BaseBean;
 import com.warm.livelive.douyu.data.bean.Component;
+import com.warm.livelive.douyu.data.bean.KeyWord;
 import com.warm.livelive.douyu.data.bean.Promotion;
 import com.warm.livelive.douyu.data.bean.RtmpUrl;
 import com.warm.livelive.douyu.data.bean.SlideList;
@@ -12,6 +13,8 @@ import com.warm.livelive.douyu.data.bean.TabCate2List;
 import com.warm.livelive.douyu.data.bean.live.LiveCate1List;
 import com.warm.livelive.douyu.data.bean.live.LiveCate2ByCate1;
 import com.warm.livelive.douyu.data.bean.live.LiveRoomList;
+import com.warm.livelive.douyu.data.bean.search.RecFavor;
+import com.warm.livelive.douyu.data.bean.search.SearchData;
 
 import java.util.List;
 
@@ -33,7 +36,7 @@ public interface LiveApis {
      *
      * @return
      */
-    @GET("live/TabCate/custom?client_sys=android")
+    @GET("live/TabCate/custom")
     Observable<BaseBean<List<TabCate>>> getTabCate();
 
 
@@ -88,5 +91,16 @@ public interface LiveApis {
     @GET("mgame/cate2promotion/getPromo")
     Observable<BaseBean<Promotion>> getPromo(@Query("cate2_id") int cate2_id);
 
+    //1. https://apiv2.douyucdn.cn/live/search/getTodayHot?token=&client_sys=android
+    @GET("live/search/getTodayHot")
+    Observable<BaseBean<List<KeyWord>>> getTodayHot(@Query("token") String token);
+
+//    https://apiv2.douyucdn.cn/live/search/getRecFavor?token=&client_sys=android
+    @GET("live/search/getRecFavor")
+    Observable<BaseBean<List<RecFavor>>> getRecFavor(@Query("token") String token);
+
+    //    https://apiv2.douyucdn.cn/video/search/getData?sk=%E6%9D%8E%E7%9F%A5%E6%81%A9&sort=1&offset=0&limit=20&client_sys=android
+    @GET("/video/search/getData")
+    Observable<BaseBean<SearchData>> getVideoSearchData(@Query("sk") String sk, @Query("sort") int sort2, @Query("offset") int offset, @Query("limit") int limit);
 
 }

@@ -10,7 +10,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.R;
 import com.warm.livelive.base.fragment.LazyRxFragment;
 import com.warm.livelive.douyu.data.bean.live.LiveCate1;
@@ -71,7 +71,7 @@ public class TypePagerItemFragment extends LazyRxFragment {
         } else {
             mLoad.loadBegan("正在加载");
             int offset = TypePagerAdapter.ITEM_COUNT * pagePosition;
-            Disposable disposable = mDataManager.getLiveCate2ByCate1(mLiveCate1.getCate1_id(), Math.min(TypePagerAdapter.ITEM_COUNT, mLiveCate1.getCate2_count() - offset), offset)
+            Disposable disposable = mHttpManager.getLiveCate2ByCate1(mLiveCate1.getCate1_id(), Math.min(TypePagerAdapter.ITEM_COUNT, mLiveCate1.getCate2_count() - offset), offset)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(this::setAdapter
@@ -133,7 +133,7 @@ public class TypePagerItemFragment extends LazyRxFragment {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            LiveApp.getInstance().getImageLoader().loadImage(TypePagerItemFragment.this, holder.image, cate2s.get(position).getSquare_icon_url());
+            MyApp.getInstance().getImageLoader().loadImage(TypePagerItemFragment.this, holder.image, cate2s.get(position).getSquare_icon_url());
             holder.text.setText(cate2s.get(position).getCate2_name());
             return convertView;
         }

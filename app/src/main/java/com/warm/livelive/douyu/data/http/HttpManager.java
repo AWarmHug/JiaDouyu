@@ -1,10 +1,12 @@
-package com.warm.livelive.douyu.data;
+package com.warm.livelive.douyu.data.http;
 
 
 import com.warm.livelive.douyu.data.bean.Activity;
+import com.warm.livelive.douyu.data.bean.BaseBean;
 import com.warm.livelive.douyu.data.bean.Cate3;
 import com.warm.livelive.douyu.data.bean.Component;
 import com.warm.livelive.douyu.data.bean.HlsUrl;
+import com.warm.livelive.douyu.data.bean.KeyWord;
 import com.warm.livelive.douyu.data.bean.LiveRoom;
 import com.warm.livelive.douyu.data.bean.Promotion;
 import com.warm.livelive.douyu.data.bean.RtmpUrl;
@@ -16,6 +18,9 @@ import com.warm.livelive.douyu.data.bean.TabCate2;
 import com.warm.livelive.douyu.data.bean.live.LiveCate1;
 import com.warm.livelive.douyu.data.bean.live.LiveCate2;
 import com.warm.livelive.douyu.data.bean.live.LiveRoomItem;
+import com.warm.livelive.douyu.data.bean.search.RecFavor;
+import com.warm.livelive.douyu.data.bean.search.SearchData;
+import com.warm.livelive.douyu.data.bean.search.Video;
 import com.warm.livelive.douyu.data.http.api.apiv2.LiveApis;
 import com.warm.livelive.douyu.data.http.api.capi.CApis;
 import com.warm.livelive.douyu.data.http.retrofit.RetrofitHelper;
@@ -34,20 +39,22 @@ import io.reactivex.Observable;
  * 描述：
  */
 
-public class DataManager {
+public class HttpManager {
 
-    public static final DataManager INSTANCE = new DataManager();
+
+    private static final HttpManager INSTANCE = new HttpManager();
 
     private CApis mCApis;
     private LiveApis mLiveApis;
 
-    public static DataManager getInstance() {
+    public static HttpManager getInstance() {
         return INSTANCE;
     }
 
-    private DataManager() {
+    private HttpManager() {
         mCApis = RetrofitHelper.provideApi(CApis.class);
         mLiveApis = RetrofitHelper.provideApiV2(LiveApis.class);
+
     }
 
     public Observable<List<TabCate>> getTabCate() {
@@ -55,7 +62,8 @@ public class DataManager {
     }
 
     public Observable<List<SubChannel>> getSubChannel(String shortName) {
-        return mCApis.getSubChannel(shortName).compose(RxUtils.<List<SubChannel>>handleResult());
+
+        return mCApis.getSubChannel(shortName,System.currentTimeMillis()/1000).compose(RxUtils.<List<SubChannel>>handleResult());
     }
 
     public Observable<List<LiveRoom>> getLiveRooms(String tagId, int page) {
@@ -166,6 +174,31 @@ public class DataManager {
     public Observable<List<LiveRoomItem>> getSportLiveRoom(int offset, int limit) {
         return mCApis.getSportLiveRoom(offset, limit, System.currentTimeMillis() / 1000)
                 .compose(RxUtils.handleListResult());
+    }
+
+    public Observable<List<KeyWord>> getTodayHotKeyWord() {
+        return mLiveApis.getTodayHot("").compose(RxUtils.handleListResult());
+    }
+
+    public Observable<List<RecFavor>> getRecFavor() {
+        return mLiveApis.getRecFavor("").compose(RxUtils.handleListResult());
+    }
+
+
+    public Observable<List<Video>> getVideoSearchData(String sk, int sort, int offset, int limit) {
+        return mLiveApis.getVideoSearchData(sk, sort, offset, limit)
+                .compose(RxUtils.handleResult())
+                .map(searchData -> searchData.getVideo());
+    }
+
+    public Observable<SearchData> mobileSearch(int sort1, int sort2, String sk, int offset, int limit) {
+        Observable<BaseBean<SearchData>> observable;
+        if (sort1 == CApis.SORT1_VIDEO) {
+            observable = mLiveApis.getVideoSearchData(sk, sort2, offset, limit);
+        } else {
+            observable = mCApis.mobileSearch(sort1, sort2, sk, offset, limit);
+        }
+        return observable.compose(RxUtils.handleResult());
     }
 
 

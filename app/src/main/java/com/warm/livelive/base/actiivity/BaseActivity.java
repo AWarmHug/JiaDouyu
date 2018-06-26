@@ -22,7 +22,6 @@ import com.warm.livelive.base.BaseView;
 import com.warm.livelive.error.KnownException;
 
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 
 public abstract class BaseActivity extends AppCompatActivity implements BaseView {
@@ -32,7 +31,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
 
     private ProgressDialog pDialog;
 
-    private Unbinder unbinder;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,7 +43,7 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
         //禁止屏幕旋转
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
-        unbinder = ButterKnife.bind(this);
+         ButterKnife.bind(this);
     }
 
     private void reviseFont() {
@@ -162,7 +160,6 @@ public abstract class BaseActivity extends AppCompatActivity implements BaseView
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unbinder.unbind();
     }
 
 }

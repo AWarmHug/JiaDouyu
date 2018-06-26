@@ -2,7 +2,8 @@ package com.warm.livelive;
 
 import android.app.Application;
 
-import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.douyu.data.dao.DaoManager;
+import com.warm.livelive.douyu.data.http.HttpManager;
 import com.warm.livelive.utils.imageloader.GlideImageLoader;
 import com.warm.livelive.utils.imageloader.ImageLoader;
 
@@ -12,13 +13,13 @@ import com.warm.livelive.utils.imageloader.ImageLoader;
  * 描述：
  */
 
-public class LiveApp extends Application {
+public class MyApp extends Application {
 
 
-    private static LiveApp instance;
+    private static MyApp instance;
 
-    private DataManager mDataManager;
-
+    private HttpManager mHttpManager;
+    private DaoManager mDaoManager;
 
     private ImageLoader mImageLoader;
 
@@ -31,16 +32,21 @@ public class LiveApp extends Application {
         super.onCreate();
         instance = this;
         mImageLoader = new GlideImageLoader();
-        mDataManager = DataManager.getInstance();
+        mHttpManager = HttpManager.getInstance();
+        mDaoManager=DaoManager.getInstance();
+
     }
 
-    public static LiveApp getInstance() {
+    public static MyApp getInstance() {
         return instance;
     }
 
+    public HttpManager getHttpManager() {
+        return mHttpManager;
+    }
 
-    public DataManager getDataManager() {
-        return mDataManager;
+    public DaoManager getDaoManager() {
+        return mDaoManager;
     }
 
     public ImageLoader getImageLoader() {

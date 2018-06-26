@@ -1,8 +1,8 @@
 package com.warm.livelive.douyu.mvp;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.base.RxPresenter;
-import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.douyu.data.http.HttpManager;
 import com.warm.livelive.douyu.data.bean.live.LiveCate1;
 import com.warm.livelive.douyu.data.bean.live.LiveCate2;
 import com.warm.livelive.utils.rx.ThrowableConsumer;
@@ -22,11 +22,11 @@ import io.reactivex.schedulers.Schedulers;
  */
 public class LiveTypePresenter extends RxPresenter<LiveTypeContract.View> implements LiveTypeContract.Presenter {
 
-    private DataManager mDataManager;
+    private HttpManager mHttpManager;
     private LiveTypeContract.View mView;
 
     public LiveTypePresenter() {
-        mDataManager = LiveApp.getInstance().getDataManager();
+        mHttpManager = MyApp.getInstance().getHttpManager();
     }
 
     @Override
@@ -38,8 +38,8 @@ public class LiveTypePresenter extends RxPresenter<LiveTypeContract.View> implem
     public void getLiveCate1List() {
 
         Disposable disposable = Observable
-                .zip(mDataManager.getLiveCate1List()
-                        , mDataManager.getLiveRecommendCate2()
+                .zip(mHttpManager.getLiveCate1List()
+                        , mHttpManager.getLiveRecommendCate2()
                                 .map(liveCate2s -> {
                                     List<LiveCate2> newList = new ArrayList<>();
                                     for (int i = 0; i < 8; i++) {

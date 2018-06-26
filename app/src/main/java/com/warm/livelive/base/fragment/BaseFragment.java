@@ -11,11 +11,13 @@ import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.warm.livelive.MyApp;
 import com.warm.livelive.base.BaseView;
 import com.warm.livelive.base.actiivity.BaseActivity;
 import com.warm.livelive.error.KnownException;
-import com.warm.livelive.utils.CheckUtil;
+import com.warm.livelive.utils.DisplayUtil;
 import com.warm.livelive.widget.load.DouyuLoadView;
 
 import butterknife.ButterKnife;
@@ -29,8 +31,8 @@ import butterknife.Unbinder;
 public abstract class BaseFragment extends Fragment implements BaseView {
 
     private Unbinder binder;
-    private ViewGroup mViewGroup;
-    private DouyuLoadView mLoadView;
+    protected ViewGroup mViewGroup;
+    protected DouyuLoadView mLoadView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,26 +41,33 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(layoutResId(), container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
+        View view = inflater.inflate(layoutResId(), container, false);
+        FrameLayout layout=new FrameLayout(inflater.getContext());
+        FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT,FrameLayout.LayoutParams.MATCH_PARENT);
+        layout.setLayoutParams(params);
+        layout.addView(view);
+        addLoadView(layout);
+        return layout;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binder = ButterKnife.bind(this, view);
-        if (view instanceof ViewGroup){
-            mViewGroup= (ViewGroup) view;
-            mLoadView=new DouyuLoadView(view.getContext());
-            mViewGroup.addView(mLoadView);
-            mLoadView.setVisibility(View.GONE);
-        }
+    }
+
+    private void addLoadView(ViewGroup group) {
+        mViewGroup = group;
+        mLoadView = new DouyuLoadView(mViewGroup.getContext());
+        mViewGroup.addView(mLoadView);
+        mLoadView.setVisibility(View.GONE);
     }
 
 
     @Override
     public void emptyLoad() {
-        CheckUtil.checkNotNull(mViewGroup);
 
     }
 
@@ -104,7 +113,7 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
         if (getBVActivity() != null) {
             return getBVActivity().getStateBarHeight();
-        }else {
+        } else {
             return 0;
         }
 
@@ -130,5 +139,13 @@ public abstract class BaseFragment extends Fragment implements BaseView {
 
     public abstract int layoutResId();
 
+
+    protected int dp2px(float dp) {
+        Context context = getContext();
+        if (context == null) {
+            context = MyApp.getInstance();
+        }
+        return DisplayUtil.dp2px(context, dp);
+    }
 
 }

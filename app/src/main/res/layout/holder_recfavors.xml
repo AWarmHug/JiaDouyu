@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:paddingEnd="16dp"
+    android:paddingStart="16dp">
+
+    <ImageView
+        android:id="@+id/iv_avatar"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:scaleType="fitXY"
+        tools:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/bt_isLive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/iv_avatar"
+        android:background="@drawable/bg_blue_solid_4dp"
+        android:elevation="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="2dp"
+        android:textColor="@color/white"
+        android:textSize="8sp"
+        tools:text="直播中" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/iv_avatar">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:textSize="16sp"
+            tools:text="小松鼠" />
+
+        <TextView
+            android:id="@+id/tv_rank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_name"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/live_bg_line_1px"
+            android:paddingLeft="6dp"
+            android:paddingRight="6dp"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="12sp"
+            tools:text="30级" />
+
+        <TextView
+            android:id="@+id/tv_followNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/tv_rank"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@+id/tv_rank"
+            android:text="粉丝数:"
+            android:textSize="12sp" />
+
+
+        <TextView
+            android:id="@+id/tv_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="10sp"
+            tools:text="1万个观众" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/tv_online"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/ic_vec_right" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

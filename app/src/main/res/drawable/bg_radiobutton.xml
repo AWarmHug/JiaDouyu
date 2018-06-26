@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/bg_blue_solid_2dp" android:state_enabled="true"/>
+    <item android:drawable="@drawable/bg_bluelight_solid_2dp" android:state_enabled="false"/>
+    <item android:drawable="@drawable/bg_bluelight_solid_2dp" android:state_focused="false"/>
+    <item android:drawable="@drawable/bg_bluelight_solid_2dp" android:state_pressed="false" />
+</selector>

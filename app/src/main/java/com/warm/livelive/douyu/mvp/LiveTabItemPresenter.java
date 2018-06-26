@@ -1,8 +1,8 @@
 package com.warm.livelive.douyu.mvp;
 
-import com.warm.livelive.LiveApp;
+import com.warm.livelive.MyApp;
 import com.warm.livelive.base.RxPresenter;
-import com.warm.livelive.douyu.data.DataManager;
+import com.warm.livelive.douyu.data.http.HttpManager;
 import com.warm.livelive.douyu.data.bean.Cate3;
 import com.warm.livelive.douyu.data.bean.Component;
 import com.warm.livelive.douyu.data.bean.Promotion;
@@ -34,10 +34,10 @@ import static com.warm.livelive.douyu.mvp.LiveTabItemContract.TabItemView;
 public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Presenter {
     private TabItemView mTabView;
     private ListView mListView;
-    private DataManager mDataManager;
+    private HttpManager mHttpManager;
 
     public LiveTabItemPresenter() {
-        mDataManager = LiveApp.getInstance().getDataManager();
+        mHttpManager = MyApp.getInstance().getHttpManager();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
     @Override
     public void getAllComponentList(int cate2_id) {
 
-        Disposable disposable = mDataManager.getAllComponentList(cate2_id)
+        Disposable disposable = mHttpManager.getAllComponentList(cate2_id)
                 .map(components -> {
                     components.add(0, Component.LIVE);
                     List<Component> components1 = new ArrayList<>();
@@ -73,7 +73,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
 
     @Override
     public void getPromo(int cate2_id) {
-        Disposable disposable = mDataManager.getPromo(cate2_id)
+        Disposable disposable = mHttpManager.getPromo(cate2_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .flatMap((Function<Promotion, ObservableSource<Promotion>>) promotion -> {
@@ -83,7 +83,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
                 .observeOn(Schedulers.io())
                 .flatMap((Function<Promotion, ObservableSource<List<Slide>>>) promotion -> {
                     if (promotion == null || promotion.getId() == 0) {
-                        return mDataManager.getSlideLists(cate2_id);
+                        return mHttpManager.getSlideLists(cate2_id);
                     } else {
                         return Observable.just(new ArrayList<>());
                     }
@@ -96,7 +96,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
     @Override
     public void getThreeCate(int cate2_id) {
 
-        Disposable disposable = mDataManager.getThreeCate(cate2_id)
+        Disposable disposable = mHttpManager.getThreeCate(cate2_id)
                 .map(new Function<List<Cate3>, List<Cate3>>() {
                     @Override
                     public List<Cate3> apply(List<Cate3> cate3s) throws Exception {
@@ -112,7 +112,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
 
     @Override
     public void getTabCate2List(int tab_id) {
-        Disposable disposable = mDataManager.getTabCate2List(tab_id)
+        Disposable disposable = mHttpManager.getTabCate2List(tab_id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cate3s -> mTabView.showTabCate2List(cate3s), new ThrowableConsumer(mTabView));
@@ -121,7 +121,7 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
 
     @Override
     public void getActivityList(int cid2) {
-        Disposable disposable = mDataManager.getActivityList(cid2)
+        Disposable disposable = mHttpManager.getActivityList(cid2)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(activities -> mTabView.showActivityList(activities), new ThrowableConsumer(mTabView));
@@ -132,9 +132,9 @@ public class LiveTabItemPresenter extends RxPresenter<TabItemView> implements Pr
     public void getRoomList(int level, int cate_id, int offset, int limit) {
         Observable<List<LiveRoomItem>> observable;
         if (cate_id == -3) {
-            observable = mDataManager.getSportLiveRoom(offset, limit);
+            observable = mHttpManager.getSportLiveRoom(offset, limit);
         } else {
-            observable = mDataManager
+            observable = mHttpManager
                     .getRoomList(level, cate_id, offset, limit);
         }
         Disposable disposable = observable
